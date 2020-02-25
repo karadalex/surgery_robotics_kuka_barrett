@@ -11,6 +11,13 @@
       </plugin>
     </gazebo-->
 
+    <!-- robot_base -->
+    <gazebo reference="custom_base">
+      <material>Gazebo/Grey</material>
+      <mu1>0.2</mu1>
+      <mu2>0.2</mu2>
+    </gazebo>
+
     <!-- Link0 -->
     <gazebo reference="${robot_name}_link_0">
       <material>Gazebo/Grey</material>

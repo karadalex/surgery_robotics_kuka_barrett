@@ -16,11 +16,44 @@
   <xacro:property name="max_velocity" value="10"/>
   
   <xacro:macro name="iiwa14" params="parent hardware_interface robot_name *origin">
-    
-    <!--joint between {parent} and link_0-->
-    <joint name="${parent}_${robot_name}_joint" type="fixed">
+
+    <!--joint between {parent} (world) and custom_base-->
+    <joint name="${parent}_custom_base_joint" type="fixed">
       <xacro:insert_block name="origin"/>
       <parent link="${parent}"/>
+      <child link="custom_base"/>
+    </joint>
+
+    <!-- Robot base -->
+    <link name="custom_base">
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="10"/>
+        <inertia ixx="100"  ixy="0"  ixz="0" iyy="100" iyz="0" izz="100" />
+      </inertial>
+
+      <visual>
+        <origin xyz="0 0 0.4110095" rpy="0 0 0" />
+        <geometry>
+          <box size="0.483711 0.509896 0.822019" />
+        </geometry>
+        <material name="Cyan">
+          <color rgba="0 1.0 1.0 1.0"/>
+        </material>
+      </visual>
+
+      <collision>
+        <origin xyz="0 0 0.4110095" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.483711 0.509896 0.822019" />
+        </geometry>
+      </collision>
+    </link>
+    
+    <!--joint between base and link_0-->
+    <joint name="custom_base_${robot_name}_joint" type="fixed">
+      <origin xyz="0 0 0.822019" rpy="0 0 0"/>
+      <parent link="custom_base"/>
       <child link="${robot_name}_link_0"/>
     </joint>
     
