@@ -1,11 +1,6 @@
 Surgery Robotics with KUKA LBR iiwa and Barrett
 ================================================
 
-## Third-party software, assets & references
-
-- LBR iiwa [https://github.com/ros-industrial/kuka_experimental]()
-- KUKA LBR iiwa and Barrett Hand [https://github.com/karahbit/Gazebo-Manual-Pick-and-Place-iiwa14]()
-
 ## Instructions
 
 - ROS melodic (full installation) [https://wiki.ros.org/melodic/Installation/Ubuntu]()
@@ -18,3 +13,18 @@ source devel/setup.bash # or setup.sh, setup.zsh
 ```
 - Run gazebo `roslaunch roslaunch kuka_barrett_control kuka_barrett_control.launch`
 - Run moveit in RViz `roslaunch iiwa_moveit_config demo.launch`
+
+To rebuild xacro description:
+```
+xacro ./src/kuka_barrett_description/urdf/kuka_barrett.xacro > ./src/kuka_barrett_description/urdf/kuka_barrett.xacro.urdf
+```
+
+## Troubleshooting
+
+- _UnicodeDecodeError: 'ascii' codec can't decode byte 0xce in position 33: ordinal not in range(128)_ : Make sure the project path doesn't contain any greek characters
+
+
+## Third-party software, assets & references
+
+- LBR iiwa [https://github.com/ros-industrial/kuka_experimental]()
+- KUKA LBR iiwa and Barrett Hand [https://github.com/karahbit/Gazebo-Manual-Pick-and-Place-iiwa14]()
