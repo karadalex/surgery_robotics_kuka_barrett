@@ -8,6 +8,11 @@
   <arg name="headless" default="false"/>
   <arg name="debug" default="false"/>
 
+  <!-- load the world plugin loader (in package gazebo_world_plugin_loader) which launches several
+  world plugins according to the specification in the ROS parameters. Note that you will
+  have to load those parameters on the ROS parameter server BEFORE gazebo gets launched.  -->
+  <arg name="load_world_plugins" default="true"/>
+
   <!-- run an empty world in gazebo -->
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
     <arg name="world_name" value="$(find kuka_barrett_gazebo)/worlds/or_world1.world"/>
@@ -16,6 +21,7 @@
     <arg name="paused" value="$(arg paused)"/>
     <arg name="use_sim_time" value="$(arg use_sim_time)"/>
     <arg name="headless" value="$(arg headless)"/>
+    <arg if="$(arg load_world_plugins)" name="extra_gazebo_args" value="-s libgazebo_world_plugin_loader.so"/>
   </include>
 
 <!-- <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />

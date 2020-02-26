@@ -1,0 +1,12 @@
+[submodule "src/general-message-pkgs"]
+	path = src/general-message-pkgs
+	url = https://github.com/JenniferBuehler/general-message-pkgs.git
+[submodule "src/gazebo-pkgs"]
+	path = src/gazebo-pkgs
+	url = https://github.com/JenniferBuehler/gazebo-pkgs.git
+[submodule "src/moveit-pkgs"]
+	path = src/moveit-pkgs
+	url = https://github.com/JenniferBuehler/moveit-pkgs.git
+[submodule "src/convenience-pkgs"]
+	path = src/convenience-pkgs
+	url = https://github.com/JenniferBuehler/convenience-pkgs.git

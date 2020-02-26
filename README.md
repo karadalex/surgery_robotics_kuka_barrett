@@ -3,6 +3,7 @@ Surgery Robotics with KUKA LBR iiwa and Barrett
 
 ## Instructions
 
+- Clone this repository with **--recurse-submodules** flag to download submodule repositories
 - ROS melodic (full installation) [https://wiki.ros.org/melodic/Installation/Ubuntu]()
 - Moveit `sudo apt-get install ros-melodic-moveit`
 - Joint TRajectory controller package `sudo apt-get install ros-kinetic-joint-trajectory-controller`
@@ -28,3 +29,7 @@ xacro ./src/kuka_barrett_description/urdf/kuka_barrett.xacro > ./src/kuka_barret
 
 - LBR iiwa [https://github.com/ros-industrial/kuka_experimental]()
 - KUKA LBR iiwa and Barrett Hand [https://github.com/karahbit/Gazebo-Manual-Pick-and-Place-iiwa14]()
+- [https://github.com/JenniferBuehler/general-message-pkgs.git]()
+- [https://github.com/JenniferBuehler/gazebo-pkgs.git]()
+- [https://github.com/JenniferBuehler/moveit-pkgs.git]()
+- [https://github.com/JenniferBuehler/convenience-pkgs.git]()

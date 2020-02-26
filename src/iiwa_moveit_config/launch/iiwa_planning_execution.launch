@@ -1,26 +1,30 @@
 <launch>
 
-<include file="$(find kuka_barrett_control)/launch/kuka_barrett_control.launch"/>
- 
- 
-<rosparam command="load" file="$(find iiwa_moveit_config)/config/joint_names.yaml"/>
-<include file="$(find iiwa_moveit_config)/launch/planning_context.launch" >
-<arg name="load_robot_description" value="true" />
-</include>
- 
- 
-<node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
-<param name="/use_gui" value="false"/>
-<rosparam param="/source_list">[/joint_states]</rosparam>
-</node>
- 
- 
-<include file="$(find iiwa_moveit_config)/launch/move_group.launch">
-<arg name="publish_monitored_planning_scene" value="true" />
-</include>
- 
- 
-<include file="$(find iiwa_moveit_config)/launch/moveit_rviz.launch">
-<arg name="config" value="true"/>
-</include>
+    <!-- Load gazebo_state_plugins ROS parameters -->
+    <include file="$(find gazebo_test_tools)/launch/gazebo_fake_object_recognition.launch"/>
+    <!-- Load MoveIt! collision object generator -->
+    <include file="$(find moveit_object_handling)/launch/collision_object_generator.launch">
+        <arg name="config_file" value="$(find moveit_object_handling)/config/CollisionObjectsGenerator.yaml"/>
+    </include>
+
+    <include file="$(find kuka_barrett_control)/launch/kuka_barrett_control.launch"/>
+    
+    <rosparam command="load" file="$(find iiwa_moveit_config)/config/joint_names.yaml"/>
+
+    <include file="$(find iiwa_moveit_config)/launch/planning_context.launch" >
+        <arg name="load_robot_description" value="false" />
+    </include>
+    
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+        <param name="/use_gui" value="false"/>
+        <rosparam param="/source_list">[/joint_states]</rosparam>
+    </node>
+    
+    <include file="$(find iiwa_moveit_config)/launch/move_group.launch">
+        <arg name="publish_monitored_planning_scene" value="true" />
+    </include>
+    
+    <include file="$(find iiwa_moveit_config)/launch/moveit_rviz.launch">
+        <arg name="config" value="true"/>
+    </include>
 </launch>
