@@ -12,7 +12,7 @@ Surgery Robotics with KUKA LBR iiwa and Barrett
 catkin_make
 source devel/setup.bash # or setup.sh, setup.zsh
 ```
-- Run gazebo `roslaunch roslaunch kuka_barrett_control kuka_barrett_control.launch`
+- Run gazebo `roslaunch kuka_barrett_control kuka_barrett_control.launch`
 - Run moveit in RViz `roslaunch iiwa_moveit_config demo.launch`
 
 To rebuild xacro description:
