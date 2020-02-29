@@ -10,4 +10,6 @@
     <node name="tool2" pkg="gazebo_test_tools" type="fake_object_recognizer_cmd" args="tool2 1" />
     <node name="tool3" pkg="gazebo_test_tools" type="fake_object_recognizer_cmd" args="tool3 1" />
     <node name="tool4" pkg="gazebo_test_tools" type="fake_object_recognizer_cmd" args="tool4 1" />
+
+    <node name="image_view" pkg="image_view" type="image_view" args="image:=/barrett/camera1/image_raw" />
 </launch>
