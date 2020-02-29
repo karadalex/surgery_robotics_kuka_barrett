@@ -997,7 +997,7 @@
   </gazebo>
   <joint name="camera_joint" type="fixed">
     <axis xyz="0 1 0"/>
-    <origin rpy="0 0 0" xyz="0.05 0 0"/>
+    <origin rpy="0.785 0 0" xyz="0 0 0.1"/>
     <parent link="iiwa_link_ee"/>
     <child link="camera_link"/>
   </joint>
@@ -1005,13 +1005,13 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <box size="0.05 0.05 0.05"/>
+        <box size="0.025 0.05 0.05"/>
       </geometry>
     </collision>
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <box size="0.05 0.05 0.05"/>
+        <box size="0.025 0.05 0.05"/>
       </geometry>
       <material name="red"/>
     </visual>
@@ -1029,8 +1029,8 @@
       <camera name="head">
         <horizontal_fov>1.3962634</horizontal_fov>
         <image>
-          <width>800</width>
-          <height>800</height>
+          <width>1280</width>
+          <height>720</height>
           <format>R8G8B8</format>
         </image>
         <clip>

@@ -5,7 +5,7 @@
 
     <joint name="camera_joint" type="fixed">
         <axis xyz="0 1 0" />
-        <origin xyz="${camera_link} 0 0" rpy="0 0 0"/>
+        <origin xyz="0 0 ${2*camera_link}" rpy="0 -1.57 0"/>
         <parent link="${parent}"/>
         <child link="camera_link"/>
     </joint>
@@ -14,14 +14,14 @@
 			<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>
-					<box size="${camera_link} ${camera_link} ${camera_link}"/>
+					<box size="${camera_link/2} ${camera_link} ${camera_link}"/>
 				</geometry>
 			</collision>
 
 			<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>
-					<box size="${camera_link} ${camera_link} ${camera_link}"/>
+					<box size="${camera_link/2} ${camera_link} ${camera_link}"/>
 				</geometry>
 				<material name="red"/>
 			</visual>
