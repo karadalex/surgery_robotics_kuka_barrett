@@ -9,9 +9,10 @@ project(kuka_barrett)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
     roscpp
-       std_msgs
-       actionlib
-       actionlib_msgs
+    std_msgs
+    actionlib
+    actionlib_msgs
+    kinematics
 )
 
 ## System dependencies are found with CMake's conventions

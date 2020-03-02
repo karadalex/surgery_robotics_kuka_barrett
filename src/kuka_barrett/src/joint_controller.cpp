@@ -1,6 +1,7 @@
 #include <ros/ros.h>
 #include <std_msgs/Float64.h>
 #include <trajectory_msgs/JointTrajectory.h>
+#include "kinematics/Pose.h"
 
 /* There are two mechanisms for sending trajectories to the controller:
  by means of the action interface or the topic interface.
@@ -27,7 +28,7 @@ int main(int argc, char **argv)
   ros::Publisher pub7 = nh.advertise<std_msgs::Float64>("/bh_j31_position_controller/command",1000);
   ros::Publisher pub8 = nh.advertise<std_msgs::Float64>("/bh_j32_position_controller/command",1000);
   ros::Publisher pub9 = nh.advertise<std_msgs::Float64>("/bh_j33_position_controller/command",1000);
-  //ros::Publisher pub5 = nh.advertise<trajectory_msgs::JointTrajectory > ("/arm_controller/command", 1000);
+  ros::Publisher pub10 = nh.advertise<trajectory_msgs::JointTrajectory > ("/arm_controller/command", 1000);
   ros::Rate loop_rate(1);
 
   std_msgs::Float64 msg1;  msg1.data = 0.2f;
@@ -39,44 +40,46 @@ int main(int argc, char **argv)
   std_msgs::Float64 msg7;  msg7.data = 0.9f;
   std_msgs::Float64 msg8;  msg8.data = 1.7f;
   std_msgs::Float64 msg9;  msg9.data = 2.0f;
-/*
-  trajectory_msgs::JointTrajectory msg5;
-  msg5.header.seq = 0;
-  msg5.header.stamp.sec = 0;
-  msg5.header.stamp.nsec = 0;
-  msg5.header.frame_id = "";
 
-  msg5.joint_names.push_back("iiwa_joint_1");
-  msg5.joint_names.push_back("iiwa_joint_2");
-  msg5.joint_names.push_back("iiwa_joint_3");
-  msg5.joint_names.push_back("iiwa_joint_4");
-  msg5.joint_names.push_back("iiwa_joint_5");
-  msg5.joint_names.push_back("iiwa_joint_6");
-  msg5.joint_names.push_back("iiwa_joint_7");
+  trajectory_msgs::JointTrajectory msg10;
+  msg10.header.seq = 0;
+  msg10.header.stamp.sec = 0;
+  msg10.header.stamp.nsec = 0;
+  msg10.header.frame_id = "";
 
-  msg5.points.resize(1);
+  msg10.joint_names.push_back("iiwa_joint_1");
+  msg10.joint_names.push_back("iiwa_joint_2");
+  msg10.joint_names.push_back("iiwa_joint_3");
+  msg10.joint_names.push_back("iiwa_joint_4");
+  msg10.joint_names.push_back("iiwa_joint_5");
+  msg10.joint_names.push_back("iiwa_joint_6");
+  msg10.joint_names.push_back("iiwa_joint_7");
+
+  msg10.points.resize(1);
 
   int ind = 0;
-  msg5.points[ind].positions.resize(7);
-  msg5.points[ind].positions[0] = 1.7;
-  msg5.points[ind].positions[1] = 1.1;
-  msg5.points[ind].positions[2] = 0.5;
-  msg5.points[ind].positions[3] = 0.7;
-  msg5.points[ind].positions[4] = 0.9;
-  msg5.points[ind].positions[5] = 1.2;
-  msg5.points[ind].positions[6] = 1.5;
+  msg10.points[ind].positions.resize(7);
+  msg10.points[ind].positions[0] = 1.7;
+  msg10.points[ind].positions[1] = 1.1;
+  msg10.points[ind].positions[2] = 0.5;
+  msg10.points[ind].positions[3] = 0.7;
+  msg10.points[ind].positions[4] = 0.9;
+  msg10.points[ind].positions[5] = 1.2;
+  msg10.points[ind].positions[6] = 1.5;
 
   // Velocities
-  msg5.points[ind].velocities.resize(7);
-  msg5.points[ind].effort.resize(7);
+  msg10.points[ind].velocities.resize(7);
+  msg10.points[ind].effort.resize(7);
        for (size_t j = 0; j < 7; ++j)
        {
-         msg5.points[ind].velocities[j]=0.0;
-         msg5.points[ind].effort[j] = 0.0;
+         msg10.points[ind].velocities[j]=0.0;
+         msg10.points[ind].effort[j] = 0.0;
        }
   // To be reached 1 second after starting along the trajectory
-  msg5.points[ind].time_from_start = ros::Duration(1.0);
-*/
+  msg10.points[ind].time_from_start = ros::Duration(1.0);
+
+   Pose* pose = new Pose(0.1,0.2,0.3,0.4,0.5,0.6);
+
   while(ros::ok()){
     pub1.publish(msg1);
     pub2.publish(msg2);
@@ -87,6 +90,8 @@ int main(int argc, char **argv)
     pub7.publish(msg7);
     pub8.publish(msg8);
     pub9.publish(msg9);
+    pub10.publish(msg10);
+
     ros::spinOnce();
     loop_rate.sleep();
     }
