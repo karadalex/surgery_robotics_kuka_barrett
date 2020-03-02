@@ -1,0 +1,4 @@
+<launch>
+  <node name="moveit_path" pkg="kinematics" type="moveit_path.py" respawn="false" output="screen">
+  </node>
+</launch>

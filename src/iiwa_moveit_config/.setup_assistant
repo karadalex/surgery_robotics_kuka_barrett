@@ -6,6 +6,6 @@ moveit_setup_assistant_config:
   SRDF:
     relative_path: config/kuka_barrett.srdf
   CONFIG:
-    author_name: George Koubbe
-    author_email: g.koubbe@rutgers.edu
-    generated_timestamp: 1583005847
+    author_name: Alexios Karadimos
+    author_email: karadalex@gmail.com
+    generated_timestamp: 1583016875

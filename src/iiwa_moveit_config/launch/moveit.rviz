@@ -6,8 +6,8 @@ Panels:
       Expanded:
         - /MotionPlanning1
         - /MotionPlanning1/Planning Request1
-      Splitter Ratio: 0.742560029
-    Tree Height: 340
+      Splitter Ratio: 0.7425600290298462
+    Tree Height: 255
   - Class: rviz/Help
     Name: Help
   - Class: rviz/Views
@@ -15,6 +15,10 @@ Panels:
       - /Current View1
     Name: Views
     Splitter Ratio: 0.5
+Preferences:
+  PromptSaveOnExit: true
+Toolbars:
+  toolButtonStyle: 2
 Visualization Manager:
   Class: ""
   Displays:
@@ -24,7 +28,7 @@ Visualization Manager:
       Color: 160; 160; 164
       Enabled: true
       Line Style:
-        Line Width: 0.0299999993
+        Line Width: 0.029999999329447746
         Value: Lines
       Name: Grid
       Normal Cell Count: 0
@@ -36,14 +40,18 @@ Visualization Manager:
       Plane Cell Count: 10
       Reference Frame: <Fixed Frame>
       Value: true
-    - Class: moveit_rviz_plugin/MotionPlanning
+    - Acceleration_Scaling_Factor: 1
+      Class: moveit_rviz_plugin/MotionPlanning
       Enabled: true
       Move Group Namespace: ""
       MoveIt_Allow_Approximate_IK: false
       MoveIt_Allow_External_Program: false
+      MoveIt_Allow_Replanning: false
+      MoveIt_Allow_Sensor_Positioning: false
       MoveIt_Goal_Tolerance: 0
       MoveIt_Planning_Attempts: 10
       MoveIt_Planning_Time: 5
+      MoveIt_Use_Cartesian_Path: false
       MoveIt_Use_Constraint_Aware_IK: true
       MoveIt_Warehouse_Host: 127.0.0.1
       MoveIt_Warehouse_Port: 33829
@@ -116,6 +124,16 @@ Visualization Manager:
             Show Axes: false
             Show Trail: false
             Value: true
+          camera_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          custom_base:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
           iiwa_link_0:
             Alpha: 1
             Show Axes: false
@@ -179,7 +197,7 @@ Visualization Manager:
         Show Manipulability: false
         Show Manipulability Index: false
         Show Weight Limit: false
-        TextHeight: 0.0799999982
+        TextHeight: 0.07999999821186066
       Planning Request:
         Colliding Link Color: 255; 0; 0
         Goal State Alpha: 1
@@ -197,7 +215,7 @@ Visualization Manager:
       Scene Geometry:
         Scene Alpha: 1
         Scene Color: 50; 230; 50
-        Scene Display Time: 0.200000003
+        Scene Display Time: 0.20000000298023224
         Show Scene Geometry: true
         Voxel Coloring: Z-Axis
         Voxel Rendering: Occupied Voxels
@@ -259,6 +277,16 @@ Visualization Manager:
             Show Axes: false
             Show Trail: false
             Value: true
+          camera_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          custom_base:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
           iiwa_link_0:
             Alpha: 1
             Show Axes: false
@@ -311,6 +339,7 @@ Visualization Manager:
         Show Robot Collision: false
         Show Robot Visual: false
       Value: true
+      Velocity_Scaling_Factor: 1
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -327,30 +356,30 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/XYOrbit
-      Distance: 2.99650002
+      Distance: 4.514279365539551
       Enable Stereo Rendering:
-        Stereo Eye Separation: 0.0599999987
+        Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0.113567002
-        Y: 0.105920002
-        Z: 2.23518001e-07
+        X: -0.43341588973999023
+        Y: -0.2855527997016907
+        Z: -4.91737750962784e-7
       Focal Shape Fixed Size: true
-      Focal Shape Size: 0.0500000007
+      Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
-      Near Clip Distance: 0.00999999978
-      Pitch: 0.414797068
+      Near Clip Distance: 0.009999999776482582
+      Pitch: 0.48479706048965454
       Target Frame: world
       Value: XYOrbit (rviz)
-      Yaw: 4.77494764
+      Yaw: 5.839961528778076
     Saved: ~
 Window Geometry:
   Displays:
     collapsed: false
-  Height: 1337
+  Height: 1025
   Help:
     collapsed: false
   Hide Left Dock: false
@@ -359,9 +388,9 @@ Window Geometry:
     collapsed: false
   MotionPlanning - Trajectory Slider:
     collapsed: false
-  QMainWindow State: 000000ff00000000fd0000000100000000000004b1000004ccfc0200000007fb000000100044006900730070006c00610079007301000000400000020c000000fa00fffffffb0000000800480065006c00700000000342000000bb0000009300fffffffb0000000a0056006900650077007300000003b0000000b0000000e500fffffffb0000000c00430061006d00650072006100000002ff000001610000000000000000fb0000001e004d006f00740069006f006e00200050006c0061006e006e0069006e00670100000374000001890000000000000000fb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000222000000720000007200fffffffb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e00670100000258000002b40000026c00ffffff00000267000004cc00000001000000020000000100000002fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd0000000100000000000003a1000003a7fc0200000007fb000000100044006900730070006c006100790073010000003d00000190000000c900fffffffb0000000800480065006c00700000000342000000bb0000006e00fffffffb0000000a0056006900650077007300000003b0000000b0000000a400fffffffb0000000c00430061006d00650072006100000002ff000001610000000000000000fb0000001e004d006f00740069006f006e00200050006c0061006e006e0069006e00670100000374000001890000000000000000fb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000222000000720000004100fffffffb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e006701000001d3000002110000019b00ffffff000003d9000003a700000001000000020000000100000002fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   Views:
     collapsed: false
-  Width: 1828
-  X: 566
-  Y: 141
+  Width: 1920
+  X: 1440
+  Y: 27
