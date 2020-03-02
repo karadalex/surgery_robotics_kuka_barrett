@@ -11,6 +11,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
   std_msgs
+  custom_math
 )
 
 ## System dependencies are found with CMake's conventions
@@ -123,7 +124,7 @@ include_directories(
 ## Declare a C++ library
  add_library(${PROJECT_NAME}
    src/Pose.cpp
- )
+    src/Iiwa14Inv.cpp include/kinematics/Iiwa14Inv.h)
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries

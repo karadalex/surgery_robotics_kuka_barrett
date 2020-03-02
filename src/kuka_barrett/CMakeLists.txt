@@ -13,6 +13,7 @@ find_package(catkin REQUIRED COMPONENTS
     actionlib
     actionlib_msgs
     kinematics
+    custom_math
 )
 
 ## System dependencies are found with CMake's conventions
