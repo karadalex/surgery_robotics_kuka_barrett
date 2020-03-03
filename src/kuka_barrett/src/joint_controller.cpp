@@ -6,22 +6,14 @@
 
 using namespace std;
 
-/* There are two mechanisms for sending trajectories to the controller:
- by means of the action interface or the topic interface.
- Both use the trajectory_msgs/JointTrajectory message to specify trajectories,
- and require specifying values for all the controller joints (as opposed to only a subset)
- if allow_partial_joints_goal is not set to True.
- I could use actionlib to send the trajectory but I just wanted to use the topic and move the
- arm joints. Also for Barrett Hand, I use the topic and no actionlib.
- one more thing, to move the arm joint, I could use position_controllers/JointPositionController
- instead of position_controllers/JointTrajectoryController but the later is used by MoveIt so
- that is why I used it.*/
-
 int main(int argc, char **argv)
 {
   // Set up ROS.
   ros::init(argc, argv, "joint_controller");
   ros::NodeHandle nh;
+
+  // Barrett hand publishers
+  // TODO: clean up code with std::vector for publishers (D.R.Y)
   ros::Publisher pub1 = nh.advertise<std_msgs::Float64>("/bh_j11_position_controller/command",1000);
   ros::Publisher pub2 = nh.advertise<std_msgs::Float64>("/bh_j12_position_controller/command",1000);
   ros::Publisher pub3 = nh.advertise<std_msgs::Float64>("/bh_j13_position_controller/command",1000);
@@ -31,9 +23,13 @@ int main(int argc, char **argv)
   ros::Publisher pub7 = nh.advertise<std_msgs::Float64>("/bh_j31_position_controller/command",1000);
   ros::Publisher pub8 = nh.advertise<std_msgs::Float64>("/bh_j32_position_controller/command",1000);
   ros::Publisher pub9 = nh.advertise<std_msgs::Float64>("/bh_j33_position_controller/command",1000);
+
+  // KUKA iiwa LBR 14 arm controller publisher
   ros::Publisher pub10 = nh.advertise<trajectory_msgs::JointTrajectory > ("/arm_controller/command", 1000);
+
   ros::Rate loop_rate(1);
 
+  // Barrett hand command values
   std_msgs::Float64 msg1;  msg1.data = 0.2f;
   std_msgs::Float64 msg2;  msg2.data = 1.7f;
   std_msgs::Float64 msg3;  msg3.data = 2.0f;
@@ -44,6 +40,7 @@ int main(int argc, char **argv)
   std_msgs::Float64 msg8;  msg8.data = 1.7f;
   std_msgs::Float64 msg9;  msg9.data = 2.0f;
 
+  // Build iiwa arm joint trajectory message
   trajectory_msgs::JointTrajectory msg10;
   msg10.header.seq = 0;
   msg10.header.stamp.sec = 0;
@@ -60,10 +57,12 @@ int main(int argc, char **argv)
 
   msg10.points.resize(1);
 
+  // Solve Inverse Kinematics
 	Pose* M_U_TCP = new Pose(0.1,0.2,0.3,0.4,0.5,0.6);
 	Iiwa14Inv* iiwa14Inv = new Iiwa14Inv(M_U_TCP);
 	Matrix::invTransf(M_U_TCP->pose);
 
+	// Send first angle-position point
   int ind = 0;
   msg10.points[ind].positions.resize(7);
   msg10.points[ind].positions[0] = 1.7;
