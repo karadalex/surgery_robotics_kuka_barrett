@@ -36,7 +36,7 @@ matrixf Matrix::invTransf(matrixf m) {
 	}
 	result[3][3] = 1;
 
-	cout << "Pose matrix = " << endl;
+	cout << "Inverse matrix = " << endl;
 	for(i=0; i<4; ++i) {
 		for(j=0; j<4; ++j)
 			cout << result[i][j] <<" ";

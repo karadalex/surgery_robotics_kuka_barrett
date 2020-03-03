@@ -2,6 +2,9 @@
 #include <std_msgs/Float64.h>
 #include <trajectory_msgs/JointTrajectory.h>
 #include "kinematics/Pose.h"
+#include "kinematics/Iiwa14Inv.h"
+
+using namespace std;
 
 /* There are two mechanisms for sending trajectories to the controller:
  by means of the action interface or the topic interface.
@@ -57,28 +60,31 @@ int main(int argc, char **argv)
 
   msg10.points.resize(1);
 
+	Pose* M_U_TCP = new Pose(0.1,0.2,0.3,0.4,0.5,0.6);
+	Iiwa14Inv* iiwa14Inv = new Iiwa14Inv(M_U_TCP);
+	Matrix::invTransf(M_U_TCP->pose);
+
   int ind = 0;
   msg10.points[ind].positions.resize(7);
   msg10.points[ind].positions[0] = 1.7;
-  msg10.points[ind].positions[1] = 1.1;
-  msg10.points[ind].positions[2] = 0.5;
-  msg10.points[ind].positions[3] = 0.7;
-  msg10.points[ind].positions[4] = 0.9;
-  msg10.points[ind].positions[5] = 1.2;
-  msg10.points[ind].positions[6] = 1.5;
+  msg10.points[ind].positions[1] = iiwa14Inv->th1[0];
+  msg10.points[ind].positions[2] = iiwa14Inv->th2[0];
+  msg10.points[ind].positions[3] = iiwa14Inv->th3[0];
+  msg10.points[ind].positions[4] = iiwa14Inv->th4[0];
+  msg10.points[ind].positions[5] = iiwa14Inv->th5[0];
+  msg10.points[ind].positions[6] = iiwa14Inv->th6[0];
 
   // Velocities
   msg10.points[ind].velocities.resize(7);
   msg10.points[ind].effort.resize(7);
-       for (size_t j = 0; j < 7; ++j)
-       {
-         msg10.points[ind].velocities[j]=0.0;
-         msg10.points[ind].effort[j] = 0.0;
-       }
+	for (size_t j = 0; j < 7; ++j)
+	{
+		msg10.points[ind].velocities[j]=0.0;
+		msg10.points[ind].effort[j] = 0.0;
+	}
   // To be reached 1 second after starting along the trajectory
   msg10.points[ind].time_from_start = ros::Duration(1.0);
 
-   Pose* pose = new Pose(0.1,0.2,0.3,0.4,0.5,0.6);
 
   while(ros::ok()){
     pub1.publish(msg1);

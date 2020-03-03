@@ -30,18 +30,16 @@ Pose::Pose(float x, float y, float z, float roll, float pitch, float yaw) {
 	matrixf rot_rpy = Matrix::mul(rot_roll, rot_pitch);
 	rot_rpy = Matrix::mul(rot_rpy, rot_yaw);
 
-	matrixf resultPose = rot_rpy;
-	resultPose[0][3] = x;
-	resultPose[1][3] = y;
-	resultPose[2][3] = z;
-	resultPose[3][3] = 1;
+	pose = rot_rpy;
+	pose[0][3] = x;
+	pose[1][3] = y;
+	pose[2][3] = z;
+	pose[3][3] = 1;
 
 	cout << "Pose matrix = " << endl;
 	for(int i=0; i<4; ++i) {
 		for(int j=0; j<4; ++j)
-			cout << resultPose[i][j] <<" ";
+			cout << pose[i][j] <<" ";
 		cout << endl;
 	}
-
-
 }
