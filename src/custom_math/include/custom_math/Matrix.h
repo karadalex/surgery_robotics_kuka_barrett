@@ -11,11 +11,13 @@
 using namespace std;
 
 typedef vector<vector<float>> matrixf;
+typedef vector<float> vecf;
 
 class Matrix {
 public:
 	Matrix();
 	static matrixf mul(matrixf a, matrixf b);
+	static matrixf invTransf(matrixf m);
 };
 
 

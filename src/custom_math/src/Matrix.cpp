@@ -20,3 +20,28 @@ matrixf Matrix::mul(matrixf a, matrixf b) {
 
 	return result;
 }
+
+matrixf Matrix::invTransf(matrixf m) {
+	int i, j ,k;
+	matrixf result;
+	result.resize(4, vector<float>(4, 0));
+
+	for (i = 0; i < 3; i++) {
+		for (j = 0; j < 3; ++j) {
+			result[i][j] = m[j][i];
+		}
+	}
+	for (i = 0; i < 3; i++) {
+		result[i][3] = -m[i][3];
+	}
+	result[3][3] = 1;
+
+	cout << "Pose matrix = " << endl;
+	for(i=0; i<4; ++i) {
+		for(j=0; j<4; ++j)
+			cout << result[i][j] <<" ";
+		cout << endl;
+	}
+
+	return result;
+}
