@@ -124,7 +124,9 @@ include_directories(
 ## Declare a C++ library
  add_library(${PROJECT_NAME}
    src/Pose.cpp
-    src/Iiwa14Inv.cpp include/kinematics/Iiwa14Inv.h)
+   src/Iiwa14Inv.cpp
+   src/Transformation.cpp
+)
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
