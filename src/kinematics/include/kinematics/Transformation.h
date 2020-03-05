@@ -13,8 +13,12 @@
 class Transformation {
 public:
 	Transformation(float L, float d, float a, float th);
+	float L, d, a, th;
+
 	matrixf matrix;
 	matrixf inverse;
+
+	Transformation* update(float th);
 };
 
 

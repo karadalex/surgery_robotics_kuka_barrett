@@ -14,11 +14,10 @@ matrixf Matrix::mul(matrixf a, matrixf b) {
 
 	for(i=0; i<4; ++i)
 		for(j=0; j<4; ++j)
-			for(k=0; k<4; ++k) {
+			for(k=0; k<4; ++k)
 				result[i][j]+=a[i][k]*b[k][j];
-			}
 
-	return result;
+	return roundf(result);
 }
 
 matrixf Matrix::invTransf(matrixf m) {
@@ -36,12 +35,31 @@ matrixf Matrix::invTransf(matrixf m) {
 	}
 	result[3][3] = 1;
 
-	cout << "Inverse matrix = " << endl;
-	for(i=0; i<4; ++i) {
-		for(j=0; j<4; ++j)
-			cout << result[i][j] <<" ";
+	return roundf(result);
+}
+
+void Matrix::printMatrix(matrixf m, string name) {
+	cout << name << " = " << endl;
+	for(int i=0; i<4; ++i) {
+		for(int j=0; j<4; ++j)
+			cout << m[i][j] <<" ";
 		cout << endl;
 	}
 
-	return result;
+}
+
+matrixf Matrix::eye() {
+	matrixf eye;
+	eye.resize(4, vector<float>(4, 0));
+	for (int i = 0; i < 4; ++i) {
+		eye[i][i] = 1;
+	}
+	return eye;
+}
+
+matrixf Matrix::roundf(matrixf m) {
+	for (int i = 0; i < 3; i++)
+		for (int j = 0; j < 3; ++j)
+			m[i][j] = Scalar::round(m[i][j]);
+	return m;
 }

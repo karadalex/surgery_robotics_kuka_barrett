@@ -6,7 +6,9 @@
 #define SRC_MATRIX_H
 
 #include <iostream>
+#include <string>
 #include <vector>
+#include "custom_math/Scalar.h"
 
 using namespace std;
 
@@ -18,6 +20,10 @@ public:
 	Matrix();
 	static matrixf mul(matrixf a, matrixf b);
 	static matrixf invTransf(matrixf m);
+	static matrixf pseudoInverse(matrixf m);
+	static matrixf eye();
+	static matrixf roundf(matrixf m);
+	static void printMatrix(matrixf m, string name = "matrix");
 };
 
 

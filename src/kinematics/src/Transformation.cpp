@@ -4,7 +4,12 @@
 
 #include "kinematics/Transformation.h"
 
-Transformation::Transformation(float L, float d, float a, float th) {
+Transformation::Transformation(float L, float d, float a, float th) : L(L), d(d), a(a), th(th) {
+	update(th);
+}
+
+Transformation* Transformation::update(float _th) {
+	th = _th;
 	matrix = {
 		{cos(th),            -sin(th),      0,            L},
 		{sin(th)*cos(a), cos(th)*cos(a), -sin(a), -sin(a)*d},
@@ -13,4 +18,6 @@ Transformation::Transformation(float L, float d, float a, float th) {
 	};
 
 	inverse = Matrix::invTransf(matrix);
+
+	return this;
 }

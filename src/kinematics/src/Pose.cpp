@@ -35,11 +35,4 @@ Pose::Pose(float x, float y, float z, float roll, float pitch, float yaw) {
 	pose[1][3] = y;
 	pose[2][3] = z;
 	pose[3][3] = 1;
-
-	cout << "Pose matrix = " << endl;
-	for(int i=0; i<4; ++i) {
-		for(int j=0; j<4; ++j)
-			cout << pose[i][j] <<" ";
-		cout << endl;
-	}
 }

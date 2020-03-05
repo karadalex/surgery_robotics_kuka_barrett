@@ -3,6 +3,7 @@
 #include <trajectory_msgs/JointTrajectory.h>
 #include "kinematics/Pose.h"
 #include "kinematics/Iiwa14Inv.h"
+#include "custom_math/Matrix.h"
 
 using namespace std;
 
@@ -58,20 +59,27 @@ int main(int argc, char **argv)
   msg10.points.resize(1);
 
   // Solve Inverse Kinematics
-	Pose* M_U_TCP = new Pose(0.1,0.2,0.3,0.4,0.5,0.6);
+	Pose* M_U_TCP = new Pose(0,0,2.18,0,0,0);
 	Iiwa14Inv* iiwa14Inv = new Iiwa14Inv(M_U_TCP);
-	Matrix::invTransf(M_U_TCP->pose);
+	Matrix::printMatrix(M_U_TCP->pose, "M_U_TCP");
+
 
 	// Send first angle-position point
   int ind = 0;
   msg10.points[ind].positions.resize(7);
-  msg10.points[ind].positions[0] = 1.7;
-  msg10.points[ind].positions[1] = iiwa14Inv->th1[0];
-  msg10.points[ind].positions[2] = iiwa14Inv->th2[0];
-  msg10.points[ind].positions[3] = iiwa14Inv->th3[0];
-  msg10.points[ind].positions[4] = iiwa14Inv->th4[0];
-  msg10.points[ind].positions[5] = iiwa14Inv->th5[0];
-  msg10.points[ind].positions[6] = iiwa14Inv->th6[0];
+	msg10.points[ind].positions[0] = 0.0;
+	msg10.points[ind].positions[1] = iiwa14Inv->th1[0];
+	cout << "th1=" << iiwa14Inv->th1[1] << endl;
+	msg10.points[ind].positions[2] = iiwa14Inv->th2[0];
+	msg10.points[ind].positions[3] = iiwa14Inv->th3[0];
+	msg10.points[ind].positions[4] = iiwa14Inv->th4[0];
+	msg10.points[ind].positions[5] = iiwa14Inv->th5[0];
+	msg10.points[ind].positions[6] = iiwa14Inv->th6[0];
+
+  // Home position (all angles 0)
+//	 for (int i = 0; i < 7; i++) {
+//	 	msg10.points[ind].positions[i] = 0.0f;
+//	 }
 
   // Velocities
   msg10.points[ind].velocities.resize(7);
@@ -82,7 +90,7 @@ int main(int argc, char **argv)
 		msg10.points[ind].effort[j] = 0.0;
 	}
   // To be reached 1 second after starting along the trajectory
-  msg10.points[ind].time_from_start = ros::Duration(1.0);
+  msg10.points[ind].time_from_start = ros::Duration(2.0);
 
 
   while(ros::ok()){
