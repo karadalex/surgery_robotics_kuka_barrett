@@ -33,9 +33,9 @@
       </inertial>
 
       <visual>
-        <origin xyz="0 0 0.4110095" rpy="0 0 0" />
+        <origin xyz="0 0 0.5" rpy="0 0 0" />
         <geometry>
-          <box size="0.483711 0.509896 0.822019" />
+          <box size="0.5 0.5 1" />
         </geometry>
         <material name="Cyan">
           <color rgba="0 1.0 1.0 1.0"/>
@@ -43,23 +43,23 @@
       </visual>
 
       <collision>
-        <origin xyz="0 0 0.4110095" rpy="0 0 0"/>
+        <origin xyz="0 0 0.5" rpy="0 0 0"/>
         <geometry>
-          <box size="0.483711 0.509896 0.822019" />
+          <box size="0.5 0.5 1" />
         </geometry>
       </collision>
     </link>
     
     <!--joint between base and link_0-->
     <joint name="custom_base_${robot_name}_joint" type="fixed">
-      <origin xyz="0 0 0.822019" rpy="0 0 0"/>
+      <origin xyz="0 0 1" rpy="0 0 0"/>
       <parent link="custom_base"/>
       <child link="${robot_name}_link_0"/>
     </joint>
     
     <link name="${robot_name}_link_0">
       <inertial>
-        <origin xyz="-0.1 0 0.07" rpy="0 0 0"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
         <mass value="5"/>
         <inertia ixx="0.05"  ixy="0"  ixz="0" iyy="0.06" iyz="0" izz="0.03" />
       </inertial>
