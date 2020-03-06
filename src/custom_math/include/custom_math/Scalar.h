@@ -9,6 +9,7 @@
 class Scalar {
 public:
 	static float round(float scalar);
+	static float clamp(float scalar, float low, float high);
 };
 
 
