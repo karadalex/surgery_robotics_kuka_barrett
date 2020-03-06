@@ -19,6 +19,7 @@ class Matrix {
 public:
 	Matrix();
 	static matrixf mul(matrixf a, matrixf b);
+	static vecf mul(matrixf a, vecf vec);
 	static matrixf invTransf(matrixf m);
 	static matrixf pseudoInverse(matrixf m);
 	static matrixf eye();

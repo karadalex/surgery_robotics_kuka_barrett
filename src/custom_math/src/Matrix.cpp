@@ -15,9 +15,21 @@ matrixf Matrix::mul(matrixf a, matrixf b) {
 	for(i=0; i<4; ++i)
 		for(j=0; j<4; ++j)
 			for(k=0; k<4; ++k)
-				result[i][j]+=a[i][k]*b[k][j];
+				result[i][j] += a[i][k] * b[k][j];
 
 	return roundf(result);
+}
+
+vecf Matrix::mul(matrixf a, vecf vec) {
+	int i, j, k;
+	vecf result;
+	result.resize(4, 0);
+
+	for(i=0; i<4; ++i)
+			for(k=0; k<4; ++k)
+				result[i] += a[i][k] * vec[k];
+
+	return result;
 }
 
 matrixf Matrix::invTransf(matrixf m) {
