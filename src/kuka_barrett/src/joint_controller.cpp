@@ -59,7 +59,7 @@ int main(int argc, char **argv)
   msg10.points.resize(1);
 
   // Solve Inverse Kinematics
-	Pose* M_U_TCP = new Pose(0,0,2.18,0,0,0);
+	Pose* M_U_TCP = new Pose(0,-0.8,1.1,0.5,0,0);
 	Iiwa14Inv* iiwa14Inv = new Iiwa14Inv(M_U_TCP);
 	Matrix::printMatrix(M_U_TCP->pose, "M_U_TCP");
 
@@ -67,14 +67,17 @@ int main(int argc, char **argv)
 	// Send first angle-position point
   int ind = 0;
   msg10.points[ind].positions.resize(7);
-	msg10.points[ind].positions[0] = 0.0;
-	msg10.points[ind].positions[1] = iiwa14Inv->th1[0];
-	cout << "th1=" << iiwa14Inv->th1[1] << endl;
-	msg10.points[ind].positions[2] = iiwa14Inv->th2[0];
-	msg10.points[ind].positions[3] = iiwa14Inv->th3[0];
-	msg10.points[ind].positions[4] = iiwa14Inv->th4[0];
-	msg10.points[ind].positions[5] = iiwa14Inv->th5[0];
-	msg10.points[ind].positions[6] = iiwa14Inv->th6[0];
+	msg10.points[ind].positions[0] = iiwa14Inv->th1[0];
+//	msg10.points[ind].positions[1] = iiwa14Inv->th2[0];
+	msg10.points[ind].positions[1] = 2;
+	msg10.points[ind].positions[2] = iiwa14Inv->th3[0];
+	msg10.points[ind].positions[3] = iiwa14Inv->th4[0];
+	msg10.points[ind].positions[4] = iiwa14Inv->th5[0];
+	msg10.points[ind].positions[5] = iiwa14Inv->th6[0];
+	msg10.points[ind].positions[6] = iiwa14Inv->th7[0];
+	for (int k = 0; k < 7; ++k) {
+		cout << "th" << k+1 << " = " << msg10.points[ind].positions[k] << endl;
+	}
 
   // Home position (all angles 0)
 //	 for (int i = 0; i < 7; i++) {

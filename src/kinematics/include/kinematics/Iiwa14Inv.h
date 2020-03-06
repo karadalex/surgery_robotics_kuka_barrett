@@ -20,16 +20,18 @@ public:
 	vector<float> d, a;
 	vector<Transformation*> fwdTransformations;
 	Transformation* M_U_0, *M_7_TCP;
+	matrixf M_0_7;
 	void updateForwardKinematics(float th[7]);
 
 	// Inverse Kinematics
-	vecf th1,th2,th3,th4,th5,th6;
+	vecf th1,th2,th3,th4,th5,th6,th7;
 	void solveIK(Pose* targetPose);
 	void buildSolutionSet();
 	void solveIKNumerically(Pose* targetPose);
 
 private:
-	float ky,s5,kx,c4,s4,iy,c6,s6,px,py,pz,c3,s3,s2,c2,g11,g12;
+	float ky,s6,jy,iy,kz,kx,py,px,pz,c4,s4,c1,s1;
+	vecf p_0_5;
 
 	void initializeForwardKinematicsTransformations();
 
@@ -39,6 +41,7 @@ private:
 	void th4_sol();
 	void th5_sol();
 	void th6_sol();
+	void th7_sol();
 
 };
 
