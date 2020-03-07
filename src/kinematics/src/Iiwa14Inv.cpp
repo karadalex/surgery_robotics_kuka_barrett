@@ -25,15 +25,10 @@ void Iiwa14Inv::initializeForwardKinematicsTransformations() {
 }
 
 void Iiwa14Inv::th1_sol() {
-	float sol1 = atan2(py/p1x, px/p1x);
-	float sol2 = atan2(py/p1x, px/p1x);
-	cout << "sol1 = " << sol1 << endl;
-	cout << "py = " << py << endl;
-	cout << "p1x = " << p1x << endl;
+	float sol = atan2(py/p1x, px/p1x);
 	// Check for singularity.
 	// If th1 is not defined (px=py=0) then th1=0
-	if (!isnan(sol1)) th1.push_back(sol1); else th1.push_back(0);
-	if (!isnan(sol2)) th1.push_back(sol2); else th1.push_back(0);
+	if (!isnan(sol)) th1.push_back(sol); else th1.push_back(0);
 }
 
 void Iiwa14Inv::th2_sol() {
@@ -43,7 +38,6 @@ void Iiwa14Inv::th2_sol() {
 	if (isnan(phi)) phi = 0;
 	float sol1 = atan2(p1x, p_1_5[2]) + phi;
 	float sol2 = atan2(p1x, p_1_5[2]) - phi;
-	cout << "phi = " << phi << endl;
 	th2.push_back(sol1);
 	th2.push_back(sol2);
 }
@@ -111,10 +105,12 @@ void Iiwa14Inv::solveIK(Pose* targetPose) {
 	p_1_5 = Matrix::mul(fwdTransformations.at(0)->inverse, p_0_5);
 	p_1_5_len = p_1_5[0]*p_1_5[0] + p_1_5[1]*p_1_5[1] + p_1_5[2]*p_1_5[2];
 	p1x = sqrt(py*py + px*px);
-	cout << "py*py = " << py*py << endl;
 
 	// Calculate solutions
 	th3_sol(); th6_sol(); th7_sol(); th5_sol(); th1_sol(); th4_sol(); th2_sol();
+
+	buildSolutionSet();
+	printSolutionSet();
 }
 
 void Iiwa14Inv::solveIKNumerically(Pose *targetPose) {
@@ -122,9 +118,22 @@ void Iiwa14Inv::solveIKNumerically(Pose *targetPose) {
 }
 
 void Iiwa14Inv::buildSolutionSet() {
+	for (int i = 0; i < 2; ++i)
+		for (int j = 0; j < 2; ++j)
+			for (int k = 0; k < 2; ++k)
+				solutionSet.push_back({th1[0], th2[k], th3[0], th4[j], th5[0], th6[i], th7[0]});
+}
 
+void Iiwa14Inv::printSolutionSet() {
+	// TODO: Keep only unique solutions
+	cout << "th1 | th2 | th3 | th4 | th5 | th6 | th7" << endl;
+	cout << "---------------------------------------" << endl;
+	for (int i = 0; i < 8; ++i) {
+		for (int j = 0; j < 7; ++j) cout << solutionSet[i][j] << " ";
+		cout << endl;
+	}
 }
 
 matrixf Iiwa14Inv::getSolutionSet() {
-	return matrixf();
+	return solutionSet;
 }

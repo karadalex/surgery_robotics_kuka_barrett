@@ -27,6 +27,7 @@ public:
 	vecf th1,th2,th3,th4,th5,th6,th7;
 	void solveIK(Pose* targetPose);
 	void buildSolutionSet();
+	void printSolutionSet();
 	void solveIKNumerically(Pose* targetPose);
 
 	matrixf getSolutionSet();
@@ -34,6 +35,7 @@ public:
 private:
 	float ky,s6,jy,iy,kz,kx,py,px,pz,p_1_5_len,p1x,c4,s4,c1,s1;
 	vecf p_0_5, p_1_5;
+	// Solution set = 2(th6) x 2(th4) x 2(th2) -> 8rows, 6columns
 	matrixf solutionSet;
 
 	void initializeForwardKinematicsTransformations();
