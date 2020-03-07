@@ -19,3 +19,11 @@ float Scalar::clamp(float scalar, float low, float high) {
 		return scalar;
 	}
 }
+
+float Scalar::normalise(float value, float lowBoundary, float highBoundary)
+{
+	float width = highBoundary - lowBoundary;
+	float offsetValue = value - lowBoundary ;
+
+	return offsetValue - (floorf(offsetValue / width) * width) + lowBoundary ;
+}
