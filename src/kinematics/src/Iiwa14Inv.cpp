@@ -8,7 +8,7 @@ Iiwa14Inv::Iiwa14Inv(Pose* targetPose) : target(targetPose) {
 
 	initializeForwardKinematicsTransformations();
 	M_U_0 = new Transformation(0, 1, 0, 0);
-	M_7_TCP = new Transformation(0, 0.119, 0, 0);
+	M_7_TCP = new Transformation(0, 0, M_PI/2, 0);
 
 	solveIK(targetPose);
 }
@@ -25,19 +25,27 @@ void Iiwa14Inv::initializeForwardKinematicsTransformations() {
 }
 
 void Iiwa14Inv::th1_sol() {
-	py = M_0_7[1][3];
-	px = M_0_7[0][3];
-	float p1x = sqrt(py*py + px*px);
 	float sol1 = atan2(py/p1x, px/p1x);
-	float sol2 = atan2(-py/p1x, -px/p1x);
-	th1.push_back(sol1);
-	th1.push_back(sol2);
+	float sol2 = atan2(py/p1x, px/p1x);
+	cout << "sol1 = " << sol1 << endl;
+	cout << "py = " << py << endl;
+	cout << "p1x = " << p1x << endl;
+	// Check for singularity.
+	// If th1 is not defined (px=py=0) then th1=0
+	if (!isnan(sol1)) th1.push_back(sol1); else th1.push_back(0);
+	if (!isnan(sol2)) th1.push_back(sol2); else th1.push_back(0);
 }
 
 void Iiwa14Inv::th2_sol() {
-	pz = M_0_7[2][3];
-	float sol = atan2(px*c1 + py*s1, pz - 0.36) + th4.at(0);
-	th2.push_back(sol);
+	float phi = acosf((d[2]*d[2] + p_1_5_len*p_1_5_len - d[3]*d[3])/ (2*d[2]*p_1_5_len));
+	// Check for singularity
+	// If phi is not defined (fully extended) then phi = 0
+	if (isnan(phi)) phi = 0;
+	float sol1 = atan2(p1x, p_1_5[2]) + phi;
+	float sol2 = atan2(p1x, p_1_5[2]) - phi;
+	cout << "phi = " << phi << endl;
+	th2.push_back(sol1);
+	th2.push_back(sol2);
 }
 
 void Iiwa14Inv::th3_sol() {
@@ -45,17 +53,19 @@ void Iiwa14Inv::th3_sol() {
 }
 
 void Iiwa14Inv::th4_sol() {
-	p_0_5.resize(4, 0);
-	for (int i = 0; i < 4; ++i) {
-		p_0_5[i] = M_0_7[i][3];
-	}
-	vecf p_1_5 = Matrix::mul(fwdTransformations.at(0)->inverse, p_0_5);
-	float p_1_5_len = p_1_5[0]*p_1_5[0] + p_1_5[1]*p_1_5[1] + p_1_5[2]*p_1_5[2];
-	cout << "p_1_5_len = " << p_1_5_len << endl;
 	c4 = (p_1_5_len*p_1_5_len - d[2]*d[2] - d[3]*d[3]) / (2 * d[2] * d[3]);
+	// -1 <= c4 <= 1
+	c4 = Scalar::clamp(c4, -1, 1);
 	s4 = sqrt(1 - c4*c4);
-	th4.push_back(atan2(s4, c4));
-	th4.push_back(atan2(-s4, c4));
+	// Check for singularity.
+	// If c4=0, then atan2 is not defined and th4=pi/2
+	if (c4 != 0.0) {
+		th4.push_back(atan2(s4, c4));
+		th4.push_back(atan2(-s4, c4));
+	} else {
+		th4.push_back(0);
+		th4.push_back(0);
+	}
 }
 
 void Iiwa14Inv::th5_sol() {
@@ -67,6 +77,7 @@ void Iiwa14Inv::th5_sol() {
 void Iiwa14Inv::th6_sol() {
 	ky = M_0_7[1][2];
 	s6 = sqrt(1-ky*ky);
+	if (isnan(s6)) s6 = 0;
 	th6.push_back(atan2(s6, ky));
 	th6.push_back(atan2(+s6, ky));
 }
@@ -90,10 +101,30 @@ void Iiwa14Inv::solveIK(Pose* targetPose) {
 	M_0_7 = Matrix::mul(M_U_0->inverse, M_0_7);
 	Matrix::printMatrix(M_0_7, "M_0_7");
 
+	py = M_0_7[1][3];
+	px = M_0_7[0][3];
+	p_0_5.resize(4, 0);
+	for (int i = 0; i < 4; ++i) {
+		p_0_5[i] = M_0_7[i][3];
+	}
+	// p_1_5 is used in th2_sol and th4_sol methods
+	p_1_5 = Matrix::mul(fwdTransformations.at(0)->inverse, p_0_5);
+	p_1_5_len = p_1_5[0]*p_1_5[0] + p_1_5[1]*p_1_5[1] + p_1_5[2]*p_1_5[2];
+	p1x = sqrt(py*py + px*px);
+	cout << "py*py = " << py*py << endl;
+
 	// Calculate solutions
 	th3_sol(); th6_sol(); th7_sol(); th5_sol(); th1_sol(); th4_sol(); th2_sol();
 }
 
+void Iiwa14Inv::solveIKNumerically(Pose *targetPose) {
+	// TODO
+}
+
 void Iiwa14Inv::buildSolutionSet() {
 
+}
+
+matrixf Iiwa14Inv::getSolutionSet() {
+	return matrixf();
 }
