@@ -133,7 +133,3 @@ void Iiwa14Inv::printSolutionSet() {
 		cout << endl;
 	}
 }
-
-matrixf Iiwa14Inv::getSolutionSet() {
-	return solutionSet;
-}
