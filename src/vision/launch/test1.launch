@@ -1,0 +1,4 @@
+<launch>
+    <!-- <node name="image_view" pkg="image_view" type="image_view" args="image:=/barrett/camera1/image_raw" /> -->
+    <node name="opencv_image_view" pkg="vision" type="test1.py"/>
+</launch>
