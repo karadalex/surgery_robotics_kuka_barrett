@@ -20,6 +20,10 @@ To rebuild xacro description:
 xacro ./src/kuka_barrett_description/urdf/kuka_barrett.xacro > ./src/kuka_barrett_description/urdf/kuka_barrett.xacro.urdf
 ```
 
+### Import surgical tools to Gazebo database
+
+Copy the folder **surgical_tool** which is inside **src/kuka_barrett_gazebo/objects** and paste it in **/home/<YOUR_USERNAME>/.gazebo/models**
+
 ### Install CoppeliaSim (VREP) with ROS
 
 1. Install VREP
