@@ -26,31 +26,47 @@ class image_converter:
 
     (rows,cols,channels) = cv_image.shape
 
+    blueColor = (255,0,0)
+
+    # Define and draw detection area
+    detectionAreaXRange = (int(rows/3), int(2*rows/3))
+    detectionAreaYRange = (int(cols/3), int(2*cols/3))
+
+    # Count blue pixels within detection area
     numBluePixels = 0
-    for i in range(rows):
-      for j in range(cols):
+    for i in range(detectionAreaXRange[0], detectionAreaXRange[1]):
+      for j in range(detectionAreaYRange[0], detectionAreaYRange[1]):
         if cv_image[i,j,0] >= 200:
           numBluePixels += 1
 
+    # Decide if there are enough blue pixels to consider them a blue tool
     if numBluePixels >= 20:
       detectionMsg = "Blue tool detected"
     else:
       detectionMsg = "No tool detected"
 
+    # Draw detection message
     font                   = cv2.FONT_HERSHEY_SIMPLEX
     topLeftCorner = (50,50)
     fontScale              = 1
-    fontColor              = (255,255,255)
     lineType               = 2
-
     cv2.putText(
       cv_image,
       detectionMsg, 
       topLeftCorner, 
       font, 
       fontScale,
-      fontColor,
+      blueColor,
       lineType
+    )
+
+    # Draw detection area
+    cv2.rectangle(
+      cv_image,
+      (detectionAreaYRange[0], detectionAreaXRange[0]),  # top left corner
+      (detectionAreaYRange[1], detectionAreaXRange[1]),  # bottom right corner
+      blueColor,
+      2 # 2px thickness
     )
 
     cv2.imshow("OpenCV Image", cv_image)
