@@ -51,17 +51,17 @@ class image_converter:
 
     # calculate points for each contour
     for i in range(len(contours)):
-			# creating convex hull object for each contour
+      # creating convex hull object for each contour
       hull.append(cv2.convexHull(contours[i], False))
 
     # draw contours and hull points
     for i in range(1, len(contours)):
-			contour_color = (0, 0, 255)
-			convex_hull_color = (0, 255, 0)
-			# draw ith contour
-			cv2.drawContours(img_detection_region, contours, i, contour_color, 2, 8, hierarchy)
-			# draw ith convex hull object
-			cv2.drawContours(img_detection_region, hull, i, convex_hull_color, 2, 8)
+      contour_color = (0, 0, 255)
+      convex_hull_color = (0, 255, 0)
+      # draw ith contour
+      cv2.drawContours(img_detection_region, contours, i, contour_color, 2, 8, hierarchy)
+      # draw ith convex hull object
+      cv2.drawContours(img_detection_region, hull, i, convex_hull_color, 2, 8)
 
     cv2.imshow("OpenCV Image", cv_image)
     cv2.waitKey(3)
