@@ -560,9 +560,9 @@
         <projection_type>perspective</projection_type>
       </camera>
     </gui>
-    <model name='tool1'>
-      <pose frame=''>0 -0.881062 1.0493 0 -2.4e-05 4.6e-05</pose>
-      <link name='link'>
+    <model name='surgical_tool1'>
+      <pose frame=''>0 -0.881062 1.0493 0 0 0</pose>
+      <link name='surgical_tool_link'>
         <inertial>
           <mass>1</mass>
           <inertia>
@@ -576,9 +576,9 @@
         </inertial>
         <collision name='collision'>
           <geometry>
-            <box>
-              <size>0.04525 0.693251 0.06859</size>
-            </box>
+            <mesh>
+              <uri>model://surgical_tool/meshes/surgical_tool.stl</uri>
+            </mesh>
           </geometry>
           <max_contacts>10</max_contacts>
           <surface>
@@ -596,9 +596,9 @@
         </collision>
         <visual name='visual'>
           <geometry>
-            <box>
-              <size>0.04525 0.693251 0.06859</size>
-            </box>
+            <mesh>
+              <uri>model://surgical_tool/meshes/surgical_tool.stl</uri>
+            </mesh>
           </geometry>
           <material>
             <script>
@@ -612,9 +612,9 @@
         <kinematic>0</kinematic>
       </link>
     </model>
-    <model name='tool2'>
-      <pose frame=''>0.2 -0.881062 1.0493 0 -2.4e-05 4.6e-05</pose>
-      <link name='link'>
+    <model name='surgical_tool2'>
+      <pose frame=''>0.2 -0.881062 1.0493 0 0 0</pose>
+      <link name='surgical_tool_link'>
         <inertial>
           <mass>1</mass>
           <inertia>
@@ -628,9 +628,9 @@
         </inertial>
         <collision name='collision'>
           <geometry>
-            <box>
-              <size>0.04525 0.693251 0.06859</size>
-            </box>
+            <mesh>
+              <uri>model://surgical_tool/meshes/surgical_tool.stl</uri>
+            </mesh>
           </geometry>
           <max_contacts>10</max_contacts>
           <surface>
@@ -648,9 +648,9 @@
         </collision>
         <visual name='visual'>
           <geometry>
-            <box>
-              <size>0.04525 0.693251 0.06859</size>
-            </box>
+            <mesh>
+              <uri>model://surgical_tool/meshes/surgical_tool.stl</uri>
+            </mesh>
           </geometry>
           <material>
             <script>
@@ -664,9 +664,9 @@
         <kinematic>0</kinematic>
       </link>
     </model>
-    <model name='tool3'>
-      <pose frame=''>0.4 -0.881062 1.0493 0 -2.4e-05 4.6e-05</pose>
-      <link name='link'>
+    <model name='surgical_tool3'>
+      <pose frame=''>0.4 -0.881062 1.0493 0 0 0</pose>
+      <link name='surgical_tool_link'>
         <inertial>
           <mass>1</mass>
           <inertia>
@@ -680,9 +680,9 @@
         </inertial>
         <collision name='collision'>
           <geometry>
-            <box>
-              <size>0.04525 0.693251 0.06859</size>
-            </box>
+            <mesh>
+              <uri>model://surgical_tool/meshes/surgical_tool.stl</uri>
+            </mesh>
           </geometry>
           <max_contacts>10</max_contacts>
           <surface>
@@ -700,9 +700,9 @@
         </collision>
         <visual name='visual'>
           <geometry>
-            <box>
-              <size>0.04525 0.693251 0.06859</size>
-            </box>
+            <mesh>
+              <uri>model://surgical_tool/meshes/surgical_tool.stl</uri>
+            </mesh>
           </geometry>
           <material>
             <script>
@@ -716,9 +716,9 @@
         <kinematic>0</kinematic>
       </link>
     </model>
-    <model name='tool4'>
-      <pose frame=''>0.6 -0.881062 1.0493 0 -2.4e-05 4.6e-05</pose>
-      <link name='link'>
+    <model name='surgical_tool4'>
+      <pose frame=''>0.6 -0.881062 1.0493 0 0 0</pose>
+      <link name='surgical_tool_link'>
         <inertial>
           <mass>1</mass>
           <inertia>
@@ -732,9 +732,9 @@
         </inertial>
         <collision name='collision'>
           <geometry>
-            <box>
-              <size>0.04525 0.693251 0.06859</size>
-            </box>
+            <mesh>
+              <uri>model://surgical_tool/meshes/surgical_tool.stl</uri>
+            </mesh>
           </geometry>
           <max_contacts>10</max_contacts>
           <surface>
@@ -752,9 +752,9 @@
         </collision>
         <visual name='visual'>
           <geometry>
-            <box>
-              <size>0.04525 0.693251 0.06859</size>
-            </box>
+            <mesh>
+              <uri>model://surgical_tool/meshes/surgical_tool.stl</uri>
+            </mesh>
           </geometry>
           <material>
             <script>
