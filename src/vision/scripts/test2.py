@@ -27,14 +27,16 @@ class image_converter:
 
     (rows,cols,channels) = cv_image.shape
 
-    gray = cv2.cvtColor(cv_image,cv2.COLOR_BGR2GRAY)
+    # Restrict detection in the center columns
+    img_detection_region = cv_image[0:rows, int(cols/3):int(2*cols/3)]
 
-    corners = cv2.goodFeaturesToTrack(gray,25,0.01,10)
+    gray = cv2.cvtColor(img_detection_region,cv2.COLOR_BGR2GRAY)
+
+    corners = cv2.goodFeaturesToTrack(gray,25,0.5,30,blockSize=1)
     corners = np.int0(corners)
-
     for i in corners:
         x,y = i.ravel()
-        cv2.circle(cv_image,(x,y),3,(0,0,255),-1)
+        cv2.circle(img_detection_region,(x,y),3,(0,0,255),-1)
 
     cv2.imshow("OpenCV Image", cv_image)
     cv2.waitKey(3)
