@@ -520,10 +520,10 @@
         </link>
       </model>
       <model name='unit_box_clone'>
-        <pose frame=''>-0.004177 -0.881062 1.0493 0 -2.4e-05 4.6e-05</pose>
+        <pose frame=''>-0.004177 -0.8 1.0493 0 -2.4e-05 4.6e-05</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose frame=''>-0.004177 -0.881062 1.0493 0 -2.4e-05 4.6e-05</pose>
+          <pose frame=''>-0.004177 -0.8 1.0493 0 -2.4e-05 4.6e-05</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
@@ -561,7 +561,7 @@
       </camera>
     </gui>
     <model name='surgical_tool1'>
-      <pose frame=''>0 -0.881062 1.0493 0 0 0</pose>
+      <pose frame=''>0 -0.8 1.0493 0 0 3.14</pose>
       <link name='surgical_tool_link'>
         <inertial>
           <mass>1</mass>
@@ -613,7 +613,7 @@
       </link>
     </model>
     <model name='surgical_tool2'>
-      <pose frame=''>0.2 -0.881062 1.0493 0 0 0</pose>
+      <pose frame=''>0.2 -0.8 1.0493 0 0 3.14</pose>
       <link name='surgical_tool_link'>
         <inertial>
           <mass>1</mass>
@@ -665,7 +665,7 @@
       </link>
     </model>
     <model name='surgical_tool3'>
-      <pose frame=''>0.4 -0.881062 1.0493 0 0 0</pose>
+      <pose frame=''>0.4 -0.8 1.0493 0 0 3.14</pose>
       <link name='surgical_tool_link'>
         <inertial>
           <mass>1</mass>
@@ -717,7 +717,7 @@
       </link>
     </model>
     <model name='surgical_tool4'>
-      <pose frame=''>0.6 -0.881062 1.0493 0 0 0</pose>
+      <pose frame=''>0.6 -0.8 1.0493 0 0 3.14</pose>
       <link name='surgical_tool_link'>
         <inertial>
           <mass>1</mass>
