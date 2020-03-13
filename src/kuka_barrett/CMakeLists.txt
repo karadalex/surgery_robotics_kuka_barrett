@@ -8,6 +8,10 @@ project(kuka_barrett)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
+    moveit_core
+    moveit_ros_planning
+    moveit_ros_planning_interface
+    moveit_visual_tools
     roscpp
     std_msgs
     actionlib
@@ -18,6 +22,9 @@ find_package(catkin REQUIRED COMPONENTS
 
 ## System dependencies are found with CMake's conventions
  find_package(Boost REQUIRED COMPONENTS system)
+
+find_package(Eigen3 REQUIRED)
+include_directories(${Eigen3_INCLUDE_DIRS})
 
 
 ## Uncomment this if the package has a setup.py. This macro ensures
@@ -205,3 +212,5 @@ include_directories(
 add_executable(joint_controller src/joint_controller.cpp)
 target_link_libraries(joint_controller ${catkin_LIBRARIES})
 
+add_executable(joint_controller_moveit src/joint_controller_moveit.cpp)
+target_link_libraries(joint_controller_moveit ${catkin_LIBRARIES} ${Boost_LIBRARIES})

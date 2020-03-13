@@ -44,16 +44,17 @@ int main(int argc, char **argv)
 	vector<Pose*> path;
 	vector<Iiwa14Inv*> pathSolutions;
 
-	path.push_back(new Pose(0,-0.88,1.6,M_PI/2,0,M_PI));
-	path.push_back(new Pose(0,-0.88,1.35,M_PI/2,0,M_PI));
-	path.push_back(new Pose(0,-0.88,1.6,M_PI/2,0,M_PI));
-	path.push_back(new Pose(0,0.88,1.6,M_PI/2,0,M_PI));
-	path.push_back(new Pose(0,0.88,1.4,M_PI/2,0,M_PI));
-	path.push_back(new Pose(0,0.88,1.6,M_PI/2,0,M_PI));
-	path.push_back(new Pose(0.2,-0.88,1.6,M_PI/2,0,M_PI));
-	path.push_back(new Pose(0.2,-0.88,1.4,M_PI/2,0,M_PI));
-	path.push_back(new Pose(0.2,-0.88,1.6,M_PI/2,0,M_PI));
+	path.push_back(new Pose(0,-0.84,1.6,0,0,0));
+	path.push_back(new Pose(0,-0.84,1.35,0,0,0));
+	path.push_back(new Pose(0,-0.84,1.6,0,0,0));
+	path.push_back(new Pose(0,0.84,1.6,0,0,0));
+	path.push_back(new Pose(0,0.84,1.4,0,0,0));
+	path.push_back(new Pose(0,0.84,1.6,0,0,0));
+	path.push_back(new Pose(0.2,-0.84,1.6,0,0,0));
+	path.push_back(new Pose(0.2,-0.84,1.4,0,0,0));
+	path.push_back(new Pose(0.2,-0.84,1.6,0,0,0));
 	path.push_back(new Pose(0,0,2.266,0,0,0));
+	path.push_back(new Pose(0,0,2.166,0,0,0));
 
 	// Build iiwa arm joint trajectory message
 	trajectory_msgs::JointTrajectory kuka_msg;
@@ -82,7 +83,7 @@ int main(int argc, char **argv)
 
 			kuka_msg.points[pathIndex].positions.resize(7);
 			for (int i = 0; i < 7; ++i) {
-				vecf angles = pathSolutions.at(pathIndex)->solutionSet[0]; // Select first solution of the solution set
+				vecf angles = pathSolutions.at(pathIndex)->solutionSet[3]; // Select first solution of the solution set
 				kuka_msg.points[pathIndex].positions[i] = angles[i];
 			}
 

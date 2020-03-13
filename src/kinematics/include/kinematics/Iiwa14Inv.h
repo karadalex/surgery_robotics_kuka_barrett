@@ -19,8 +19,8 @@ public:
 	// vector<float> L; // L parameters are all 0, no need to use them
 	vector<float> d, a;
 	vector<Transformation*> fwdTransformations;
-	Transformation* M_U_0, *M_7_TCP;
-	matrixf M_0_7;
+	Transformation* M_U_0;
+	matrixf M_0_7, M_7_TCP;
 	void updateForwardKinematics(float th[7]);
 
 	// Inverse Kinematics
@@ -33,7 +33,8 @@ public:
 	void solveIKNumerically(Pose* targetPose);
 
 private:
-	float ky,s6,jy,iy,kz,kx,py,px,pz,p_1_5_len,p1x,c4,s4,c1,s1;
+	float ix,iy,iz,jx,jy,jz,kx,ky,kz,px,py,pz;
+	float s6,p_1_5_len,p1x,c4,s4,c1,s1;
 	vecf p_0_5, p_1_5;
 
 	void initializeForwardKinematicsTransformations();
