@@ -8,6 +8,7 @@
 #include <cmath>
 #include <vector>
 #include "custom_math/Matrix.h"
+#include "kinematics/Transformation.h"
 
 
 class Pose {

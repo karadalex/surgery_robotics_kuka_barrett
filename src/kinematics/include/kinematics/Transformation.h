@@ -18,6 +18,11 @@ public:
 	matrixf matrix;
 	matrixf inverse;
 
+	static matrixf Roll(float roll);
+	static matrixf Pitch(float pitch);
+	static matrixf Yaw(float yaw);
+	static matrixf Translation(vecf p);
+
 	Transformation* update(float th);
 };
 

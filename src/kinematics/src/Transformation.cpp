@@ -21,3 +21,39 @@ Transformation* Transformation::update(float _th) {
 
 	return this;
 }
+
+matrixf Transformation::Roll(float roll) {
+	return {
+		{cos(roll), -sin(roll), 0, 0},
+		{sin(roll),  cos(roll), 0, 0},
+		{0,              0,     1, 0},
+		{0, 0, 0, 0}
+	};
+}
+
+matrixf Transformation::Pitch(float pitch) {
+	return {
+		{cos(pitch), 0, sin(pitch), 0},
+		{0,          1,      0,     0},
+		{-sin(pitch),0, cos(pitch), 0},
+		{0, 0, 0, 0}
+	};
+}
+
+matrixf Transformation::Yaw(float yaw) {
+	return {
+		{1,     0,         0,    0},
+		{0, cos(yaw), -sin(yaw), 0},
+		{0, sin(yaw), cos(yaw),  0},
+		{0, 0, 0, 0}
+	};
+}
+
+matrixf Transformation::Translation(vecf p) {
+	return {
+		{1, 0, 0, p[0]},
+		{0, 1, 0, p[1]},
+		{0, 0, 1, p[2]},
+		{0, 0, 0, 1}
+	};
+}
