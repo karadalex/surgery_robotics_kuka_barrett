@@ -6,7 +6,8 @@ Surgery Robotics with KUKA LBR iiwa and Barrett
 - Clone this repository with **--recurse-submodules** flag to download submodule repositories
 - ROS melodic (full installation) [https://wiki.ros.org/melodic/Installation/Ubuntu]()
 - Moveit `sudo apt-get install ros-melodic-moveit`
-- Joint TRajectory controller package `sudo apt-get install ros-kinetic-joint-trajectory-controller`
+- Joint Trajectory controller package `sudo apt-get install ros-kinetic-joint-trajectory-controller` and visual tools `sudo apt-get install ros-melodic-moveit-visual-tools`
+- ROS Controllers `sudo apt-get install ros-melodic-ros-controllers`
 - In the root directory of the project run:
 ```
 catkin_make
@@ -24,7 +25,7 @@ xacro ./src/kuka_barrett_description/urdf/kuka_barrett.xacro > ./src/kuka_barret
 
 Copy the folder **surgical_tool** which is inside **src/kuka_barrett_gazebo/objects** and paste it in **/home/<YOUR_USERNAME>/.gazebo/models**
 
-### Install CoppeliaSim (VREP) with ROS
+### Install CoppeliaSim (VREP) with ROS (optional)
 
 1. Install VREP
 2. Make sure to have installed the necessary libraries. e.g. for **tf2_sensor_msgs** run `sudo apt-get install ros-melodic-tf2-sensor-msgs`
@@ -54,6 +55,7 @@ While running make sure to check in the terminal that the plugin is loaded succe
 ## Troubleshooting
 
 - _UnicodeDecodeError: 'ascii' codec can't decode byte 0xce in position 33: ordinal not in range(128)_ : Make sure the project path doesn't contain any greek characters
+- _Eigen/Geometry: No such file or directory_: `sudo apt-get install libeigen3-dev` if that does not work either `sudo ln -s /usr/include/eigen3/Eigen /usr/include/Eigen`
 
 
 ## Third-party software, assets & references
