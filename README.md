@@ -1,14 +1,20 @@
 Surgery Robotics with KUKA LBR iiwa and Barrett
 ================================================
 
+## Requirements
+
+- This project is developed and tested in Ubuntu 18.04 (LTS) with ROS Melodic installed. ROS melodic (full installation) [https://wiki.ros.org/melodic/Installation/Ubuntu]()
+- Also the following packages must be installed:
+  - Moveit `sudo apt-get install ros-melodic-moveit`
+  - Moveit visual tools `sudo apt-get install ros-melodic-moveit-visual-tools`
+  - Moveit Grasps `sudo apt-get install ros-melodic-moveit-grasps` (As of 14/3/2020 this package is not available and must be installed from source see [instructions in official repository](https://github.com/ros-planning/moveit_grasps#install-from-source))
+  - Joint Trajectory controller package `sudo apt-get install ros-kinetic-joint-trajectory-controller`
+  - ROS Controllers `sudo apt-get install ros-melodic-ros-controllers`
+  - Catkin tools (optional) `sudo apt-get install ros-melodic-catkin python-catkin-tools`
+
 ## Instructions
 
 - Clone this repository with **--recurse-submodules** flag to download submodule repositories
-- ROS melodic (full installation) [https://wiki.ros.org/melodic/Installation/Ubuntu]()
-- Moveit `sudo apt-get install ros-melodic-moveit`
-- Joint Trajectory controller package `sudo apt-get install ros-kinetic-joint-trajectory-controller` and visual tools `sudo apt-get install ros-melodic-moveit-visual-tools`
-- ROS Controllers `sudo apt-get install ros-melodic-ros-controllers`
-- In the root directory of the project run:
 ```
 catkin_make
 source devel/setup.bash # or setup.sh, setup.zsh
