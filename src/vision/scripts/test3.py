@@ -63,8 +63,8 @@ class image_converter:
       # draw ith convex hull object
       cv2.drawContours(img_detection_region, hull, i, convex_hull_color, 2, 8)
 
-    cv2.imshow("OpenCV Image", cv_image)
-    cv2.waitKey(3)
+    # cv2.imshow("OpenCV Image", cv_image)
+    # cv2.waitKey(3)
 
     try:
       self.image_pub.publish(self.bridge.cv2_to_imgmsg(cv_image, "bgr8"))
