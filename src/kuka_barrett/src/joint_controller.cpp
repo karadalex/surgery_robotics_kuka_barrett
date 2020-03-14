@@ -44,15 +44,15 @@ int main(int argc, char **argv)
 	vector<Pose*> path;
 	vector<Iiwa14Inv*> pathSolutions;
 
-	path.push_back(new Pose(0,-0.84,1.6,0,0,0));
-	path.push_back(new Pose(0,-0.84,1.35,0,0,0));
-	path.push_back(new Pose(0,-0.84,1.6,0,0,0));
-	path.push_back(new Pose(0,0.84,1.6,0,0,0));
-	path.push_back(new Pose(0,0.84,1.4,0,0,0));
-	path.push_back(new Pose(0,0.84,1.6,0,0,0));
-	path.push_back(new Pose(0.2,-0.84,1.6,0,0,0));
-	path.push_back(new Pose(0.2,-0.84,1.4,0,0,0));
-	path.push_back(new Pose(0.2,-0.84,1.6,0,0,0));
+//	path.push_back(new Pose(0,-0.84,1.6,0,0,0));
+//	path.push_back(new Pose(0,-0.84,1.35,0,0,0));
+//	path.push_back(new Pose(0,-0.84,1.6,0,0,0));
+//	path.push_back(new Pose(0,0.84,1.6,0,0,0));
+//	path.push_back(new Pose(0,0.84,1.4,0,0,0));
+//	path.push_back(new Pose(0,0.84,1.6,0,0,0));
+//	path.push_back(new Pose(0.2,-0.84,1.6,0,0,0));
+//	path.push_back(new Pose(0.2,-0.84,1.4,0,0,0));
+//	path.push_back(new Pose(0.2,-0.84,1.6,0,0,0));
 	path.push_back(new Pose(0,0,2.266,0,0,0));
 	path.push_back(new Pose(0,0,2.166,0,0,0));
 

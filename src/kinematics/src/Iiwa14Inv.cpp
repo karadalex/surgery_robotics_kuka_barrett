@@ -112,7 +112,7 @@ void Iiwa14Inv::solveIK(Pose* targetPose) {
 	}
 	// p_1_5 is used in th2_sol and th4_sol methods
 	p_1_5 = Matrix::mul(fwdTransformations.at(0)->inverse, p_0_5);
-	p_1_5_len = p_1_5[0]*p_1_5[0] + p_1_5[1]*p_1_5[1] + p_1_5[2]*p_1_5[2];
+	p_1_5_len = sqrt(p_1_5[0]*p_1_5[0] + p_1_5[1]*p_1_5[1] + p_1_5[2]*p_1_5[2]);
 	p1x = sqrt(py*py + px*px);
 
 	// Calculate solutions for position
