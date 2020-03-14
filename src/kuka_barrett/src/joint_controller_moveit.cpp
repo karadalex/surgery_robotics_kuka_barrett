@@ -15,18 +15,18 @@ int main(int argc, char** argv)
   moveit::planning_interface::MoveGroupInterface move_group(PLANNING_GROUP);
 
   tf2::Quaternion quaternion;
-	quaternion.setRPY( 0, 0, 0 );
+	quaternion.setRPY( M_PI_2, 0, 0 );
 
   geometry_msgs::Pose target_pose1;
-  target_pose1.orientation.w = 1.0;
-	target_pose1.orientation.x = 0;
-	target_pose1.orientation.y = 0;
-	target_pose1.orientation.z = 0;
+  target_pose1.orientation.w = quaternion.getW();
+	target_pose1.orientation.x = quaternion.getX();
+	target_pose1.orientation.y = quaternion.getY();
+	target_pose1.orientation.z = quaternion.getZ();
   target_pose1.position.x = 0;
   target_pose1.position.y = -0.8;
   target_pose1.position.z = 1.2;
-  move_group.setGoalPositionTolerance(0.5);
-  move_group.setGoalOrientationTolerance(0.5);
+  move_group.setGoalPositionTolerance(0.05);
+  move_group.setGoalOrientationTolerance(0.05);
   move_group.setPoseTarget(target_pose1);
 	move_group.setPlanningTime(10);
 
