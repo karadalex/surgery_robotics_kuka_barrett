@@ -41,6 +41,46 @@
         <joint name="iiwa_joint_6" value="0" />
         <joint name="iiwa_joint_7" value="0" />
     </group_state>
+    <group_state name="gripper_open" group="barrett_group">
+        <joint name="bh_j11_joint" value="0" />
+        <joint name="bh_j12_joint" value="0" />
+        <joint name="bh_j13_joint" value="0" />
+        <joint name="bh_j21_joint" value="0" />
+        <joint name="bh_j22_joint" value="0" />
+        <joint name="bh_j23_joint" value="0" />
+        <joint name="bh_j32_joint" value="0" />
+        <joint name="bh_j33_joint" value="0" />
+    </group_state>
+    <group_state name="gripper_grasp1" group="barrett_group">
+        <joint name="bh_j11_joint" value="0" />
+        <joint name="bh_j12_joint" value="1.3346" />
+        <joint name="bh_j13_joint" value="0.84" />
+        <joint name="bh_j21_joint" value="0" />
+        <joint name="bh_j22_joint" value="1.3346" />
+        <joint name="bh_j23_joint" value="0.84" />
+        <joint name="bh_j32_joint" value="1.3346" />
+        <joint name="bh_j33_joint" value="0.84" />
+    </group_state>
+    <group_state name="gripper_grasp2" group="barrett_group">
+        <joint name="bh_j11_joint" value="0.6075" />
+        <joint name="bh_j12_joint" value="1.3346" />
+        <joint name="bh_j13_joint" value="0.84" />
+        <joint name="bh_j21_joint" value="0.6075" />
+        <joint name="bh_j22_joint" value="1.3346" />
+        <joint name="bh_j23_joint" value="0.84" />
+        <joint name="bh_j32_joint" value="1.3346" />
+        <joint name="bh_j33_joint" value="0.84" />
+    </group_state>
+    <group_state name="gripper_grasp3" group="barrett_group">
+        <joint name="bh_j11_joint" value="0" />
+        <joint name="bh_j12_joint" value="2.44" />
+        <joint name="bh_j13_joint" value="0.84" />
+        <joint name="bh_j21_joint" value="0" />
+        <joint name="bh_j22_joint" value="2.44" />
+        <joint name="bh_j23_joint" value="0.84" />
+        <joint name="bh_j32_joint" value="2.44" />
+        <joint name="bh_j33_joint" value="0.84" />
+    </group_state>
     <!--END EFFECTOR: Purpose: Represent information about an end effector.-->
     <end_effector name="barrett_gripper" parent_link="iiwa_link_7" group="barrett_group" />
     <!--VIRTUAL JOINT: Purpose: this element defines a virtual joint between a robot link and an external frame of reference (considered fixed with respect to the robot)-->
