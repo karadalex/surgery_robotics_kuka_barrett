@@ -53,10 +53,17 @@ While running make sure to check in the terminal that the plugin is loaded succe
 
 ## Usage
 
-- To run main program run in a sourced terminal `roslaunch main program1.launch`. This will run a 
-gazebo simulator with robot, tables and tools, RViz with Moveit plugins and camera views and an 
- OpenCV Node.
-- To run the **Computed Torque Controller** test run `roslaunch kuka_barrett_control computed_torque_controller_test.launch` 
+- To run main program run in a sourced terminal 
+```
+roslaunch main program1.launch
+```
+This will run a gazebo simulator with robot, tables and tools, RViz with Moveit plugins and camera 
+views and an OpenCV Node.
+
+- To run the **Computed Torque Controller** test run 
+```
+roslaunch kuka_barrett_control computed_torque_controller_test.launch
+```
 which will run gazebo with EffortJointInterface, the ComputedTorqueControl spawned in Controller Manager 
 and a rqt window with joint states plots.
 
@@ -66,3 +73,6 @@ and a rqt window with joint states plots.
 - _UnicodeDecodeError: 'ascii' codec can't decode byte 0xce in position 33: ordinal not in range(128)_ : Make sure the project path doesn't contain any greek characters
 - _Eigen/Geometry: No such file or directory_: `sudo apt-get install libeigen3-dev` if that does not work either `sudo ln -s /usr/include/eigen3/Eigen /usr/include/Eigen`
 
+## References
+
+See [REFERENCES.md](./REFERENCES.md)
