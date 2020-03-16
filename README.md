@@ -22,7 +22,7 @@ source devel/setup.bash # or setup.sh, setup.zsh
 
 ### Import surgical tools to Gazebo database
 
-Copy the folder **surgical_tool** which is inside **src/kuka_barrett_gazebo/objects** and paste it in **/home/<YOUR_USERNAME>/.gazebo/models**
+Copy the folder **surgical_tool** which is inside **src/kuka_barrett_gazebo/objects** and paste it in **/home/<YOUR_USERNAME>/.gazebo/models**. DO the same for **mounting_dock**
 
 ### Install CoppeliaSim (VREP) with ROS (optional)
 
