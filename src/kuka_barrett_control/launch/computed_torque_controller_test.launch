@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<launch>
+
+  <arg name="hardware_interface" default="EffortJointInterface"/>
+ 
+  <!-- Launch Gazebo -->
+  <include file="$(find kuka_barrett_gazebo)/launch/kuka_barrett_gazebo.launch">
+    <arg name="hardware_interface" value="$(arg hardware_interface)" />
+  </include>
+
+  <!-- Load joint controller CONFIGURATIONS from YAML file to parameter server -->
+  <rosparam file="$(find kuka_barrett_control)/config/barrett_control.yaml" command="load"/>
+  <rosparam file="$(find kuka_barrett_control)/config/kuka_computed_torque_controller.yaml" command="load"/>
+
+  <node name="kuka_controller_spawner" pkg="controller_manager" type="spawner" output="screen"
+    args="joint_state_controller computed_torque_controller" />
+  <node name="barrett_controller_spawner" pkg="controller_manager" type="spawner" args="gripper_controller" />
+
+  <rosparam command="load" file="$(find iiwa_moveit_config)/config/joint_names.yaml"/>
+
+  <include file="$(find iiwa_moveit_config)/launch/planning_context.launch" >
+    <arg name="load_robot_description" value="false" />
+  </include>
+  
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+    <param name="/use_gui" value="false"/>
+    <rosparam param="/source_list">[/joint_states]</rosparam>
+  </node>
+
+  <!-- Plot joint states -->
+  <node name="computed_torque_rqt_state" pkg="rqt_gui" type="rqt_gui" respawn="false"
+	  output="screen"
+    args="--perspective-file $(find kuka_barrett_control)/perspectives/kuka_barrett_computed_torque_controller.perspective" />
+
+</launch>
+

@@ -1,6 +1,16 @@
 References
 ==========
 
+## Repositories
+
+- LBR iiwa [https://github.com/ros-industrial/kuka_experimental]()
+- KUKA LBR iiwa and Barrett Hand [https://github.com/karahbit/Gazebo-Manual-Pick-and-Place-iiwa14]()
+- [https://github.com/JenniferBuehler/general-message-pkgs.git]()
+- [https://github.com/JenniferBuehler/gazebo-pkgs.git]()
+- [https://github.com/JenniferBuehler/moveit-pkgs.git]()
+- [https://github.com/JenniferBuehler/convenience-pkgs.git]()
+- [https://github.com/modulabs/arm-control]()
+
 
 ## Useful websites & documentation
 

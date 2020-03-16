@@ -1,0 +1,10 @@
+<library path="lib/libkuka_barrett_control">
+
+  <class name="kuka_barrett_control/ComputedTorqueControllerTest" type="kuka_barrett_control::ComputedTorqueControllerTest" base_class_type="controller_interface::ControllerBase">
+    <description>
+	    Computed Torque Controller Test
+    </description>
+  </class>
+
+</library>
+

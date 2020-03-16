@@ -19,13 +19,6 @@ Surgery Robotics with KUKA LBR iiwa and Barrett
 catkin_make
 source devel/setup.bash # or setup.sh, setup.zsh
 ```
-- Run gazebo `roslaunch kuka_barrett_control kuka_barrett_control.launch`
-- Run moveit in RViz `roslaunch iiwa_moveit_config demo.launch`
-
-To rebuild xacro description:
-```
-xacro ./src/kuka_barrett_description/urdf/kuka_barrett.xacro > ./src/kuka_barrett_description/urdf/kuka_barrett.xacro.urdf
-```
 
 ### Import surgical tools to Gazebo database
 
@@ -58,17 +51,18 @@ cp libsimExtROSInterface.so $COPPELIASIM_ROOT_DIR
 While running make sure to check in the terminal that the plugin is loaded successfully.
 
 
+## Usage
+
+- To run main program run in a sourced terminal `roslaunch main program1.launch`. This will run a 
+gazebo simulator with robot, tables and tools, RViz with Moveit plugins and camera views and an 
+ OpenCV Node.
+- To run the **Computed Torque Controller** test run `roslaunch kuka_barrett_control computed_torque_controller_test.launch` 
+which will run gazebo with EffortJointInterface, the ComputedTorqueControl spawned in Controller Manager 
+and a rqt window with joint states plots.
+
+
 ## Troubleshooting
 
 - _UnicodeDecodeError: 'ascii' codec can't decode byte 0xce in position 33: ordinal not in range(128)_ : Make sure the project path doesn't contain any greek characters
 - _Eigen/Geometry: No such file or directory_: `sudo apt-get install libeigen3-dev` if that does not work either `sudo ln -s /usr/include/eigen3/Eigen /usr/include/Eigen`
 
-
-## Third-party software, assets & references
-
-- LBR iiwa [https://github.com/ros-industrial/kuka_experimental]()
-- KUKA LBR iiwa and Barrett Hand [https://github.com/karahbit/Gazebo-Manual-Pick-and-Place-iiwa14]()
-- [https://github.com/JenniferBuehler/general-message-pkgs.git]()
-- [https://github.com/JenniferBuehler/gazebo-pkgs.git]()
-- [https://github.com/JenniferBuehler/moveit-pkgs.git]()
-- [https://github.com/JenniferBuehler/convenience-pkgs.git]()

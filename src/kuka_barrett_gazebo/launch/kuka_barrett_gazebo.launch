@@ -7,6 +7,7 @@
   <arg name="gui" default="true"/>
   <arg name="headless" default="false"/>
   <arg name="debug" default="false"/>
+  <arg name="hardware_interface" default="PositionJointInterface"/>
 
   <!-- load the world plugin loader (in package gazebo_world_plugin_loader) which launches several
   world plugins according to the specification in the ROS parameters. Note that you will
@@ -29,7 +30,8 @@
 
 <!-- Load the URDF into the ROS Parameter Server  -->
   <param name="robot_description"
-    command="$(find xacro)/xacro $(find kuka_barrett_description)/urdf/kuka_barrett.xacro" />
+    command="$(find xacro)/xacro $(find kuka_barrett_description)/urdf/kuka_barrett.xacro 
+    hardware_interface:=$(arg hardware_interface)" />
 
   <!-- Spawn the URDF. Run a python script to the send a service call to gazebo_ros to spawn a URDF robot -->
   <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
