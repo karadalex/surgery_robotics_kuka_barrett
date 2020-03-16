@@ -20,7 +20,7 @@ catkin_make
 source devel/setup.bash # or setup.sh, setup.zsh
 ```
 
-### Import surgical tools to Gazebo database
+### Import surgical tools to Gazebo database (optional)
 
 Copy the folder **surgical_tool** which is inside **src/kuka_barrett_gazebo/objects** and paste it in **/home/<YOUR_USERNAME>/.gazebo/models**. DO the same for **mounting_dock**
 

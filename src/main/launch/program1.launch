@@ -10,6 +10,7 @@
     <node name="surgical_tool2" pkg="gazebo_test_tools" type="fake_object_recognizer_cmd" args="surgical_tool2 1" />
     <node name="surgical_tool3" pkg="gazebo_test_tools" type="fake_object_recognizer_cmd" args="surgical_tool3 1" />
     <node name="surgical_tool4" pkg="gazebo_test_tools" type="fake_object_recognizer_cmd" args="surgical_tool4 1" />
+    <node name="mounting_dock" pkg="gazebo_test_tools" type="fake_object_recognizer_cmd" args="mounting_dock 1" />
 
     <!-- OpenCV - Computer Vision -->
     <!-- <node name="image_view" pkg="image_view" type="image_view" args="image:=/barrett/camera1/image_raw" /> -->

@@ -277,7 +277,7 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose frame=''>0.425088 -0.872043 0 0 -0 0</pose>
+      <pose frame=''>0.425088 -0.872043 0 0 0 0</pose>
     </model>
     <model name='table2'>
       <static>1</static>
@@ -472,7 +472,7 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose frame=''>0.263825 0.840154 0 0 -0 0</pose>
+      <pose frame=''>0.425088 0.872043 0 0 0 0</pose>
     </model>
     <state world_name='default'>
       <sim_time>157 528000000</sim_time>
@@ -578,7 +578,7 @@
         <collision name='collision'>
           <geometry>
             <mesh>
-              <uri>model://surgical_tool/meshes/surgical_tool.stl</uri>
+              <uri>model://kuka_barrett_gazebo/objects/surgical_tool/meshes/surgical_tool_collision.stl</uri>
             </mesh>
           </geometry>
           <max_contacts>10</max_contacts>
@@ -598,7 +598,7 @@
         <visual name='visual'>
           <geometry>
             <mesh>
-              <uri>model://surgical_tool/meshes/surgical_tool.stl</uri>
+              <uri>model://kuka_barrett_gazebo/objects/surgical_tool/meshes/surgical_tool.stl</uri>
             </mesh>
           </geometry>
           <material>
@@ -631,7 +631,7 @@
         <collision name='collision'>
           <geometry>
             <mesh>
-              <uri>model://surgical_tool/meshes/surgical_tool.stl</uri>
+              <uri>model://kuka_barrett_gazebo/objects/surgical_tool/meshes/surgical_tool_collision.stl</uri>
             </mesh>
           </geometry>
           <max_contacts>10</max_contacts>
@@ -651,7 +651,7 @@
         <visual name='visual'>
           <geometry>
             <mesh>
-              <uri>model://surgical_tool/meshes/surgical_tool.stl</uri>
+              <uri>model://kuka_barrett_gazebo/objects/surgical_tool/meshes/surgical_tool.stl</uri>
             </mesh>
           </geometry>
           <material>
@@ -684,7 +684,7 @@
         <collision name='collision'>
           <geometry>
             <mesh>
-              <uri>model://surgical_tool/meshes/surgical_tool.stl</uri>
+              <uri>model://kuka_barrett_gazebo/objects/surgical_tool/meshes/surgical_tool_collision.stl</uri>
             </mesh>
           </geometry>
           <max_contacts>10</max_contacts>
@@ -704,7 +704,7 @@
         <visual name='visual'>
           <geometry>
             <mesh>
-              <uri>model://surgical_tool/meshes/surgical_tool.stl</uri>
+              <uri>model://kuka_barrett_gazebo/objects/surgical_tool/meshes/surgical_tool.stl</uri>
             </mesh>
           </geometry>
           <material>
@@ -737,7 +737,7 @@
         <collision name='collision'>
           <geometry>
             <mesh>
-              <uri>model://surgical_tool/meshes/surgical_tool.stl</uri>
+              <uri>model://kuka_barrett_gazebo/objects/surgical_tool/meshes/surgical_tool_collision.stl</uri>
             </mesh>
           </geometry>
           <max_contacts>10</max_contacts>
@@ -757,7 +757,7 @@
         <visual name='visual'>
           <geometry>
             <mesh>
-              <uri>model://surgical_tool/meshes/surgical_tool.stl</uri>
+              <uri>model://kuka_barrett_gazebo/objects/surgical_tool/meshes/surgical_tool.stl</uri>
             </mesh>
           </geometry>
           <material>
@@ -773,7 +773,7 @@
       </link>
     </model>
     <model name='mounting_dock'>
-      <pose frame=''>0.2 0.7 1.2 0 0 -1.57</pose>
+      <pose frame=''>0.2 0.7 1 0 0 -1.57</pose>
       <link name='mounting_dock_link'>
         <inertial>
           <mass>1</mass>
@@ -790,7 +790,7 @@
         <collision name='collision'>
           <geometry>
             <mesh>
-              <uri>model://mounting_dock/meshes/mounting_dock.stl</uri>
+              <uri>model://kuka_barrett_gazebo/objects/mounting_dock/meshes/mounting_dock.stl</uri>
             </mesh>
           </geometry>
           <max_contacts>10</max_contacts>
@@ -810,7 +810,7 @@
         <visual name='visual'>
           <geometry>
             <mesh>
-              <uri>model://mounting_dock/meshes/mounting_dock.stl</uri>
+              <uri>model://kuka_barrett_gazebo/objects/mounting_dock/meshes/mounting_dock.stl</uri>
             </mesh>
           </geometry>
           <material>
@@ -824,6 +824,7 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
+      <static>true</static>
     </model>
   </world>
 </sdf>
