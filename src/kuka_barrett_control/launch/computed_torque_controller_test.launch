@@ -2,11 +2,19 @@
 <launch>
 
   <arg name="hardware_interface" default="EffortJointInterface"/>
- 
-  <!-- Launch Gazebo -->
-  <include file="$(find kuka_barrett_gazebo)/launch/kuka_barrett_gazebo.launch">
-    <arg name="hardware_interface" value="$(arg hardware_interface)" />
-  </include>
+
+  <!-- run an empty world in gazebo -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch" />
+
+  <!-- Load the URDF into the ROS Parameter Server  -->
+  <param name="robot_description"
+    command="$(find xacro)/xacro $(find kuka_barrett_description)/urdf/kuka_barrett.xacro 
+    hardware_interface:=$(arg hardware_interface)" />
+  <!-- Spawn the URDF. Run a python script to the send a service call to gazebo_ros to spawn a URDF robot -->
+  <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
+    args="-param robot_description -urdf -model robot"/>
+
+
 
   <!-- Load joint controller CONFIGURATIONS from YAML file to parameter server -->
   <rosparam file="$(find kuka_barrett_control)/config/barrett_control.yaml" command="load"/>
@@ -30,7 +38,7 @@
   <!-- Plot joint states -->
   <node name="computed_torque_rqt_state" pkg="rqt_gui" type="rqt_gui" respawn="false"
 	  output="screen"
-    args="--perspective-file $(find kuka_barrett_control)/perspectives/kuka_barrett_computed_torque_controller.perspective" />
+    args="--clear-config --perspective-file $(find kuka_barrett_control)/perspectives/kuka_barrett_computed_torque_controller.perspective" />
 
 </launch>
 
