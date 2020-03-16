@@ -773,7 +773,7 @@
       </link>
     </model>
     <model name='mounting_dock'>
-      <pose frame=''>0.2 0.7 1 0 0 -1.57</pose>
+      <pose frame=''>0.2 0.7 1 0 0 0</pose>
       <link name='mounting_dock_link'>
         <inertial>
           <mass>1</mass>
@@ -788,26 +788,17 @@
           </inertia>
         </inertial>
         <collision name='collision'>
+          <!-- <pose>-0.199999 0.400001 0.223973 0 0 1.57</pose> -->
+          <pose>0.1 0.2 0.223973 0 0 -1.57</pose>
           <geometry>
             <mesh>
-              <uri>model://kuka_barrett_gazebo/objects/mounting_dock/meshes/mounting_dock.stl</uri>
+              <uri>model://kuka_barrett_gazebo/objects/mounting_dock/meshes/mounting_dock_collision.stl</uri>
             </mesh>
           </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
         </collision>
         <visual name='visual'>
+          <!-- <pose>-0.199999 0.400001 0.223973 0 0 0</pose> -->
+          <pose>0 0 0 0 0 -1.57</pose>
           <geometry>
             <mesh>
               <uri>model://kuka_barrett_gazebo/objects/mounting_dock/meshes/mounting_dock.stl</uri>
