@@ -564,14 +564,15 @@
       <pose frame=''>0 -0.8 1.0493 0 0 3.14</pose>
       <link name='surgical_tool_link'>
         <inertial>
-          <mass>1</mass>
+          <mass>0.2</mass>
+          <pose>-0.001094 -0.144793 0.020361 0 0 0</pose>
           <inertia>
-            <ixx>0.166667</ixx>
+            <ixx>0.00001</ixx>
             <ixy>0</ixy>
             <ixz>0</ixz>
-            <iyy>0.166667</iyy>
+            <iyy>0</iyy>
             <iyz>0</iyz>
-            <izz>0.166667</izz>
+            <izz>0.00001</izz>
           </inertia>
         </inertial>
         <collision name='collision'>
@@ -616,14 +617,15 @@
       <pose frame=''>0.2 -0.8 1.0493 0 0 3.14</pose>
       <link name='surgical_tool_link'>
         <inertial>
-          <mass>1</mass>
+          <mass>0.2</mass>
+          <pose>-0.001094 -0.144793 0.020361 0 0 0</pose>
           <inertia>
-            <ixx>0.166667</ixx>
+            <ixx>0.00001</ixx>
             <ixy>0</ixy>
             <ixz>0</ixz>
-            <iyy>0.166667</iyy>
+            <iyy>0</iyy>
             <iyz>0</iyz>
-            <izz>0.166667</izz>
+            <izz>0.00001</izz>
           </inertia>
         </inertial>
         <collision name='collision'>
@@ -668,14 +670,15 @@
       <pose frame=''>0.4 -0.8 1.0493 0 0 3.14</pose>
       <link name='surgical_tool_link'>
         <inertial>
-          <mass>1</mass>
+          <mass>0.2</mass>
+          <pose>-0.001094 -0.144793 0.020361 0 0 0</pose>
           <inertia>
-            <ixx>0.166667</ixx>
+            <ixx>0.00001</ixx>
             <ixy>0</ixy>
             <ixz>0</ixz>
-            <iyy>0.166667</iyy>
+            <iyy>0</iyy>
             <iyz>0</iyz>
-            <izz>0.166667</izz>
+            <izz>0.00001</izz>
           </inertia>
         </inertial>
         <collision name='collision'>
@@ -720,14 +723,15 @@
       <pose frame=''>0.6 -0.8 1.0493 0 0 3.14</pose>
       <link name='surgical_tool_link'>
         <inertial>
-          <mass>1</mass>
+          <mass>0.2</mass>
+          <pose>-0.001094 -0.144793 0.020361 0 0 0</pose>
           <inertia>
-            <ixx>0.166667</ixx>
+            <ixx>0.00001</ixx>
             <ixy>0</ixy>
             <ixz>0</ixz>
-            <iyy>0.166667</iyy>
+            <iyy>0</iyy>
             <iyz>0</iyz>
-            <izz>0.166667</izz>
+            <izz>0.00001</izz>
           </inertia>
         </inertial>
         <collision name='collision'>
