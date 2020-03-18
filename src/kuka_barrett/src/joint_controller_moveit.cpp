@@ -3,6 +3,9 @@
 #include <moveit_msgs/CollisionObject.h>
 #include <moveit_visual_tools/moveit_visual_tools.h>
 #include <tf2/LinearMath/Quaternion.h>
+#include <std_msgs/Float64.h>
+
+using namespace std;
 
 int main(int argc, char** argv)
 {
@@ -22,47 +25,53 @@ int main(int argc, char** argv)
 	// Setup Move group
   static const std::string PLANNING_GROUP = "iiwa_arm";
   moveit::planning_interface::MoveGroupInterface move_group(PLANNING_GROUP);
-	move_group.setGoalPositionTolerance(0.05);
-	move_group.setGoalOrientationTolerance(0.05);
+	move_group.setGoalPositionTolerance(0.00005);
+	move_group.setGoalOrientationTolerance(0.00005);
+//	move_group.setGoalPositionTolerance(0.5);
+//	move_group.setGoalOrientationTolerance(0.5);
 	move_group.setPlanningTime(10);
+	move_group.allowReplanning(true);
 
-  tf2::Quaternion quaternion;
-	quaternion.setRPY( M_PI, 0, M_PI_2 );
+	vector<vector<float>> path;
+	// X Y Z Roll Pitch Yaw
+	// Pick position 1
+	path.push_back({0, -0.68, 1.5, M_PI, 0, M_PI_2});
+	path.push_back({0, -0.68, 1.19, M_PI, 0, M_PI_2});
+	path.push_back({0, -0.68, 1.5, M_PI, 0, M_PI_2});
+	// Fulcrum position 1
+	path.push_back({-0.14, 0.68, 1.68, M_PI, -0.59, 0});
+	path.push_back({0.06, 0.70, 1.38, M_PI, -0.59, 0});
+	path.push_back({-0.14, 0.68, 1.68, M_PI, -0.59, 0});
+	// Pick position 2
+	path.push_back({0.2, -0.68, 1.5, M_PI, 0, M_PI_2});
+	path.push_back({0.2, -0.68, 1.19, M_PI, 0, M_PI_2});
+	path.push_back({0.2, -0.68, 1.5, M_PI, 0, M_PI_2});
+	// Fulcrum position 2
+	path.push_back({-0.14, 0.68, 1.68, M_PI, -0.59, 0});
+	path.push_back({0.06, 0.70, 1.38, M_PI, -0.59, 0});
+	path.push_back({-0.14, 0.68, 1.68, M_PI, -0.59, 0});
 
-	// TARGET POSE 1
-  geometry_msgs::Pose target_pose1;
-  target_pose1.orientation.w = quaternion.getW();
-	target_pose1.orientation.x = quaternion.getX();
-	target_pose1.orientation.y = quaternion.getY();
-	target_pose1.orientation.z = quaternion.getZ();
-  target_pose1.position.x = 0;
-  target_pose1.position.y = -0.68;
-  target_pose1.position.z = 1.5;
-	move_group.setPoseTarget(target_pose1);
+	geometry_msgs::Pose target_pose;
+	tf2::Quaternion quaternion;
+	moveit::planning_interface::MoveGroupInterface::Plan my_plan;
+	for (int i = 0; i < path.size(); ++i) {
+		vector<float> pose = path.at(i);
+		target_pose.position.x = pose[0];
+		target_pose.position.y = pose[1];
+		target_pose.position.z = pose[2];
+		quaternion.setRPY(pose[3], pose[4], pose[5]);
+		target_pose.orientation.w = quaternion.getW();
+		target_pose.orientation.x = quaternion.getX();
+		target_pose.orientation.y = quaternion.getY();
+		target_pose.orientation.z = quaternion.getZ();
+		move_group.setPoseTarget(target_pose);
+		bool success = (move_group.plan(my_plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
+		ROS_INFO_NAMED("iiwa_planning", "Visualizing plan %d (pose goal) %s", i, success ? "SUCCESS" : "FAILED");
+		std::string nextButtonMsg = "Press 'next' in the RvizVisualToolsGui window to execute plan";
+		// visual_tools.prompt(nextButtonMsg);
+		move_group.move();
+	}
 
-  // Now, we call the planner to compute the plan and visualize it.
-  // Note that we are just planning, not asking move_group
-  // to actually move the robot.
-  moveit::planning_interface::MoveGroupInterface::Plan my_plan;
- 	move_group.plan(my_plan);
-
-	bool success = (move_group.plan(my_plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
-	ROS_INFO_NAMED("iiwa_palnning", "Visualizing plan 1 (pose goal) %s", success ? "SUCCESS" : "FAILED");
-	std::string nextButtonMsg = "Press 'next' in the RvizVisualToolsGui window to execute plan";
-	visual_tools.prompt(nextButtonMsg);
-  move_group.move();
-
-  // TARGET POSE 2
-  // same as previous but lower on the z-axis (approaching tool)
-	geometry_msgs::Pose target_pose2;
-	target_pose2 = target_pose1;
-	target_pose2.position.z = 1.25;
-	move_group.setPoseTarget(target_pose2);
-
-	success = (move_group.plan(my_plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
-	ROS_INFO_NAMED("iiwa_palnning", "Visualizing plan 2 (pose goal) %s", success ? "SUCCESS" : "FAILED");
-	visual_tools.prompt(nextButtonMsg);
-	move_group.move();
 
   ros::shutdown();
   return 0;
