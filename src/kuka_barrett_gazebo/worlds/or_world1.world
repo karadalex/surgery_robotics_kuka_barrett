@@ -378,7 +378,7 @@
       </camera>
     </gui>
     <model name='surgical_tool1'>
-      <pose frame=''>0 -0.8 1.0493 0 0 0</pose>
+      <pose frame=''>0 -0.72 1.0493 0 0 0</pose>
       <link name='surgical_tool_link'>
         <inertial>
           <mass>0.2</mass>
@@ -398,6 +398,19 @@
               <uri>model://kuka_barrett_gazebo/objects/surgical_tool/meshes/surgical_tool.stl</uri>
             </mesh>
           </geometry>
+          <max_contacts>30</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
         </collision>
         <visual name='visual'>
           <geometry>
@@ -418,7 +431,7 @@
       </link>
     </model>
     <model name='surgical_tool2'>
-      <pose frame=''>0.2 -0.8 1.0493 0 0 0</pose>
+      <pose frame=''>0.2 -0.72 1.0493 0 0 0</pose>
       <link name='surgical_tool_link'>
         <inertial>
           <mass>0.2</mass>
@@ -438,6 +451,19 @@
               <uri>model://kuka_barrett_gazebo/objects/surgical_tool/meshes/surgical_tool.stl</uri>
             </mesh>
           </geometry>
+          <max_contacts>30</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
         </collision>
         <visual name='visual'>
           <geometry>
@@ -458,7 +484,7 @@
       </link>
     </model>
     <model name='surgical_tool3'>
-      <pose frame=''>0.4 -0.8 1.0493 0 0 0</pose>
+      <pose frame=''>0.4 -0.72 1.0493 0 0 0</pose>
       <link name='surgical_tool_link'>
         <inertial>
           <mass>0.2</mass>
@@ -478,6 +504,19 @@
               <uri>model://kuka_barrett_gazebo/objects/surgical_tool/meshes/surgical_tool.stl</uri>
             </mesh>
           </geometry>
+          <max_contacts>30</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
         </collision>
         <visual name='visual'>
           <geometry>
@@ -498,8 +537,8 @@
       </link>
     </model>
     <model name='surgical_tool4'>
-      <!-- <pose frame=''>0.6 -0.8 1.0493 0 0 0</pose> -->
-      <pose frame=''>0.6 -0.8 1.07262 0 0 0</pose>
+      <!-- <pose frame=''>0.6 -0.72 1.0493 0 0 0</pose> -->
+      <pose frame=''>0.6 -0.72 1.0493 0 0 0</pose>
       <link name='surgical_tool_link'>
         <inertial>
           <mass>0.2</mass>
@@ -519,6 +558,19 @@
               <uri>model://kuka_barrett_gazebo/objects/surgical_tool/meshes/surgical_tool.stl</uri>
             </mesh>
           </geometry>
+          <max_contacts>30</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
         </collision>
         <visual name='visual'>
           <geometry>

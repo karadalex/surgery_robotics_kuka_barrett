@@ -147,7 +147,7 @@ iiwa_arm:
     - SPARS
     - SPARStwo
 barrett_group:
-  default_planner_config: None
+  default_planner_config: ""
   planner_configs:
     - SBL
     - EST
@@ -198,8 +198,6 @@ bh_finger1:
     - LazyPRMstar
     - SPARS
     - SPARStwo
-  projection_evaluator: joints(bh_j11_joint,bh_j12_joint)
-  longest_valid_segment_fraction: 0.005
 bh_finger2:
   default_planner_config: None
   planner_configs:
@@ -226,8 +224,6 @@ bh_finger2:
     - LazyPRMstar
     - SPARS
     - SPARStwo
-  projection_evaluator: joints(bh_j21_joint,bh_j22_joint)
-  longest_valid_segment_fraction: 0.005
 bh_finger3:
   default_planner_config: None
   planner_configs:

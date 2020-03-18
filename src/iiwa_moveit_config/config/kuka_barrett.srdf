@@ -36,6 +36,7 @@
         <group name="bh_finger3" />
     </group>
     <group name="bh_finger1">
+        <link name="bh_base_link" />
         <link name="bh_finger_11_link" />
         <link name="bh_finger_12_link" />
         <link name="bh_finger_13_link" />
@@ -45,6 +46,7 @@
         <chain base_link="bh_base_link" tip_link="bh_finger_13_link" />
     </group>
     <group name="bh_finger2">
+        <link name="bh_base_link" />
         <link name="bh_finger_21_link" />
         <link name="bh_finger_22_link" />
         <link name="bh_finger_23_link" />
@@ -54,6 +56,7 @@
         <chain base_link="bh_base_link" tip_link="bh_finger_23_link" />
     </group>
     <group name="bh_finger3">
+        <link name="bh_base_link" />
         <link name="bh_finger_31_link" />
         <link name="bh_finger_32_link" />
         <link name="bh_finger_33_link" />
