@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 from __future__ import print_function
-
 import roslib
-roslib.load_manifest('vision')
 import sys
 import rospy
 import cv2
@@ -10,8 +8,13 @@ import numpy as np
 from std_msgs.msg import String
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge, CvBridgeError
+from helpers import getRectangularNeighborhood
 
-class image_converter:
+
+roslib.load_manifest('vision')
+
+
+class ToolDetection:
 
   def __init__(self):
     self.image_pub = rospy.Publisher("/opencv/test_topic_1",Image)
@@ -26,6 +29,8 @@ class image_converter:
       print(e)
 
     (rows,cols,channels) = cv_image.shape
+
+    blueColor = (255,0,0)
 
     ###########################################################################################
     #    COLOR DETECTION
@@ -52,6 +57,7 @@ class image_converter:
     ###########################################################################################
     # Restrict detection in the center columns
     img_detection_region = cv_image[0:rows, int(cols/3):int(2*cols/3)]
+    # img_detection_region = cv_image
 
     # convert to grayscale
     gray = cv2.cvtColor(img_detection_region, cv2.COLOR_BGR2GRAY)
@@ -71,25 +77,40 @@ class image_converter:
 
     # create hull array for convex hull points
     hull = []
-
     # calculate points for each contour
     for i in range(len(contours)):
       # creating convex hull object for each contour
       hull.append(cv2.convexHull(contours[i], False))
+
+    # Calculate and store the center of mass of each convex hull
+    hullsCetersOfMass = []
+    for i in range(len(hull)):
+      sumX = 0
+      sumY = 0
+      for point in hull[i]:
+        sumX += point[0][0]
+        sumY += point[0][1]
+      avgX = int(sumX/len(hull[i]))
+      avgY = int(sumY/len(hull[i]))
+      hullsCetersOfMass.append([avgX, avgY])
 
 
     ###########################################################################################
     #    DRAW OPENCV IMAGE
     ###########################################################################################
     # draw contours and hull points if there was a blue tool detected
-    if numBluePixels >= 20:
-      for i in range(1, len(contours)):
-        contour_color = (0, 0, 255)
-        convex_hull_color = (0, 255, 0)
-        # draw ith contour
-        cv2.drawContours(img_detection_region, contours, i, contour_color, 2, 8, hierarchy)
-        # draw ith convex hull object
-        cv2.drawContours(img_detection_region, hull, i, convex_hull_color, 2, 8)
+    for i in range(1, len(contours)):
+      # if isHullBlueTool[i]:
+      contour_color = (0, 0, 255)
+      convex_hull_color = (0, 255, 0)
+      # draw ith contour
+      cv2.drawContours(img_detection_region, contours, i, contour_color, 2, 8, hierarchy)
+      # draw ith convex hull object
+      cv2.drawContours(img_detection_region, hull, i, convex_hull_color, 2, 8)
+      # draw center of mass of convex hull
+      cmX = hullsCetersOfMass[i][0]
+      cmY = hullsCetersOfMass[i][1]
+      cv2.circle(img_detection_region,(cmX,cmY),3,(0,0,255),-1)
 
     # Draw detection message
     font                   = cv2.FONT_HERSHEY_SIMPLEX
@@ -118,7 +139,7 @@ class image_converter:
 
 
 def main(args):
-  ic = image_converter()
+  ic = ToolDetection()
   rospy.init_node('opencv_image_view', anonymous=True)
   try:
     rospy.spin()
