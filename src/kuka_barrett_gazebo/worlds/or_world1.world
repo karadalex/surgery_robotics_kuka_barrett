@@ -133,19 +133,6 @@
               <length>1</length>
             </cylinder>
           </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
         </collision>
         <visual name='front_left_leg'>
           <pose frame=''>0.68 0.38 0.5 0 -0 0</pose>
@@ -170,19 +157,6 @@
               <length>1</length>
             </cylinder>
           </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
         </collision>
         <visual name='front_right_leg'>
           <pose frame=''>0.68 -0.38 0.5 0 -0 0</pose>
@@ -207,19 +181,6 @@
               <length>1</length>
             </cylinder>
           </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
         </collision>
         <visual name='back_right_leg'>
           <pose frame=''>-0.68 -0.38 0.5 0 -0 0</pose>
@@ -244,19 +205,6 @@
               <length>1</length>
             </cylinder>
           </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
         </collision>
         <visual name='back_left_leg'>
           <pose frame=''>-0.68 0.38 0.5 0 -0 0</pose>
@@ -328,19 +276,6 @@
               <length>1</length>
             </cylinder>
           </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
         </collision>
         <visual name='front_left_leg'>
           <pose frame=''>0.68 0.38 0.5 0 -0 0</pose>
@@ -365,19 +300,6 @@
               <length>1</length>
             </cylinder>
           </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
         </collision>
         <visual name='front_right_leg'>
           <pose frame=''>0.68 -0.38 0.5 0 -0 0</pose>
@@ -402,19 +324,6 @@
               <length>1</length>
             </cylinder>
           </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
         </collision>
         <visual name='back_right_leg'>
           <pose frame=''>-0.68 -0.38 0.5 0 -0 0</pose>
@@ -439,19 +348,6 @@
               <length>1</length>
             </cylinder>
           </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
         </collision>
         <visual name='back_left_leg'>
           <pose frame=''>-0.68 0.38 0.5 0 -0 0</pose>
@@ -474,85 +370,6 @@
       </link>
       <pose frame=''>0.425088 0.872043 0 0 0 0</pose>
     </model>
-    <state world_name='default'>
-      <sim_time>157 528000000</sim_time>
-      <real_time>55 830824090</real_time>
-      <wall_time>1582583508 733098473</wall_time>
-      <iterations>51385</iterations>
-      <model name='ground_plane'>
-        <pose frame=''>0 0 0 0 -0 0</pose>
-        <scale>1 1 1</scale>
-        <link name='link'>
-          <pose frame=''>0 0 0 0 -0 0</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 0 0 -0 0</acceleration>
-          <wrench>0 0 0 0 -0 0</wrench>
-        </link>
-      </model>
-      <model name='table'>
-        <pose frame=''>0.230673 -0.872043 0 0 -0 0</pose>
-        <scale>1 1 1</scale>
-        <link name='link'>
-          <pose frame=''>0.230673 -0.872043 0 0 -0 0</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 0 0 -0 0</acceleration>
-          <wrench>0 0 0 0 -0 0</wrench>
-        </link>
-      </model>
-      <model name='table_0'>
-        <pose frame=''>0.263825 0.840154 0 0 -0 0</pose>
-        <scale>1 1 1</scale>
-        <link name='link'>
-          <pose frame=''>0.263825 0.840154 0 0 -0 0</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 0 0 -0 0</acceleration>
-          <wrench>0 0 0 0 -0 0</wrench>
-        </link>
-      </model>
-      <model name='unit_box'>
-        <pose frame=''>-0.228443 -0.873995 1.0493 -0 -4e-05 4.6e-05</pose>
-        <scale>0.04525 0.693251 0.06859</scale>
-        <link name='link'>
-          <pose frame=''>-0.228443 -0.873995 1.0493 -0 -4e-05 4.6e-05</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0.045165 2e-06 -0.029794 -6e-05 1.31693 0</acceleration>
-          <wrench>0.045165 2e-06 -0.029794 0 -0 0</wrench>
-        </link>
-      </model>
-      <model name='unit_box_clone'>
-        <pose frame=''>-0.004177 -0.8 1.0493 0 -2.4e-05 4.6e-05</pose>
-        <scale>1 1 1</scale>
-        <link name='link'>
-          <pose frame=''>-0.004177 -0.8 1.0493 0 -2.4e-05 4.6e-05</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 0 0 -0 0</acceleration>
-          <wrench>0 0 0 0 -0 0</wrench>
-        </link>
-      </model>
-      <model name='unit_box_clone_clone'>
-        <pose frame=''>0.191584 -0.892832 1.0493 0 -2.4e-05 4.6e-05</pose>
-        <scale>1 1 1</scale>
-        <link name='link'>
-          <pose frame=''>0.191584 -0.892832 1.0493 0 -2.4e-05 4.6e-05</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 0 0 -0 0</acceleration>
-          <wrench>0 0 0 0 -0 0</wrench>
-        </link>
-      </model>
-      <model name='unit_box_clone_clone_0'>
-        <pose frame=''>0.385 -0.867916 1.0493 0 -2.4e-05 4.6e-05</pose>
-        <scale>1 1 1</scale>
-        <link name='link'>
-          <pose frame=''>0.385 -0.867916 1.0493 0 -2.4e-05 4.6e-05</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 0 0 -0 0</acceleration>
-          <wrench>0 0 0 0 -0 0</wrench>
-        </link>
-      </model>
-      <light name='sun'>
-        <pose frame=''>0 0 10 0 -0 0</pose>
-      </light>
-    </state>
     <gui fullscreen='0'>
       <camera name='user_camera'>
         <pose frame=''>0.675966 -4.02037 2.36311 0 0.275643 1.6274</pose>
@@ -561,11 +378,11 @@
       </camera>
     </gui>
     <model name='surgical_tool1'>
-      <pose frame=''>0 -0.8 1.0493 0 0 3.14</pose>
+      <pose frame=''>0 -0.8 1.0493 0 0 0</pose>
       <link name='surgical_tool_link'>
         <inertial>
           <mass>0.2</mass>
-          <pose>-0.001094 -0.144793 0.020361 0 0 0</pose>
+          <!-- <pose>-0.001094 -0.144793 0.020361 0 0 0</pose> -->
           <inertia>
             <ixx>0.00001</ixx>
             <ixy>0</ixy>
@@ -578,22 +395,9 @@
         <collision name='collision'>
           <geometry>
             <mesh>
-              <uri>model://kuka_barrett_gazebo/objects/surgical_tool/meshes/surgical_tool_collision.stl</uri>
+              <uri>model://kuka_barrett_gazebo/objects/surgical_tool/meshes/surgical_tool.stl</uri>
             </mesh>
           </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
         </collision>
         <visual name='visual'>
           <geometry>
@@ -614,11 +418,11 @@
       </link>
     </model>
     <model name='surgical_tool2'>
-      <pose frame=''>0.2 -0.8 1.0493 0 0 3.14</pose>
+      <pose frame=''>0.2 -0.8 1.0493 0 0 0</pose>
       <link name='surgical_tool_link'>
         <inertial>
           <mass>0.2</mass>
-          <pose>-0.001094 -0.144793 0.020361 0 0 0</pose>
+          <!-- <pose>-0.001094 -0.144793 0.020361 0 0 0</pose> -->
           <inertia>
             <ixx>0.00001</ixx>
             <ixy>0</ixy>
@@ -631,22 +435,9 @@
         <collision name='collision'>
           <geometry>
             <mesh>
-              <uri>model://kuka_barrett_gazebo/objects/surgical_tool/meshes/surgical_tool_collision.stl</uri>
+              <uri>model://kuka_barrett_gazebo/objects/surgical_tool/meshes/surgical_tool.stl</uri>
             </mesh>
           </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
         </collision>
         <visual name='visual'>
           <geometry>
@@ -667,11 +458,11 @@
       </link>
     </model>
     <model name='surgical_tool3'>
-      <pose frame=''>0.4 -0.8 1.0493 0 0 3.14</pose>
+      <pose frame=''>0.4 -0.8 1.0493 0 0 0</pose>
       <link name='surgical_tool_link'>
         <inertial>
           <mass>0.2</mass>
-          <pose>-0.001094 -0.144793 0.020361 0 0 0</pose>
+          <!-- <pose>-0.001094 -0.144793 0.020361 0 0 0</pose> -->
           <inertia>
             <ixx>0.00001</ixx>
             <ixy>0</ixy>
@@ -684,22 +475,9 @@
         <collision name='collision'>
           <geometry>
             <mesh>
-              <uri>model://kuka_barrett_gazebo/objects/surgical_tool/meshes/surgical_tool_collision.stl</uri>
+              <uri>model://kuka_barrett_gazebo/objects/surgical_tool/meshes/surgical_tool.stl</uri>
             </mesh>
           </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
         </collision>
         <visual name='visual'>
           <geometry>
@@ -720,11 +498,12 @@
       </link>
     </model>
     <model name='surgical_tool4'>
-      <pose frame=''>0.6 -0.8 1.0493 0 0 3.14</pose>
+      <!-- <pose frame=''>0.6 -0.8 1.0493 0 0 0</pose> -->
+      <pose frame=''>0.6 -0.8 1.07262 0 0 0</pose>
       <link name='surgical_tool_link'>
         <inertial>
           <mass>0.2</mass>
-          <pose>-0.001094 -0.144793 0.020361 0 0 0</pose>
+          <!-- <pose>-0.001094 -0.144793 0.020361 0 0 0</pose> -->
           <inertia>
             <ixx>0.00001</ixx>
             <ixy>0</ixy>
@@ -737,22 +516,9 @@
         <collision name='collision'>
           <geometry>
             <mesh>
-              <uri>model://kuka_barrett_gazebo/objects/surgical_tool/meshes/surgical_tool_collision.stl</uri>
+              <uri>model://kuka_barrett_gazebo/objects/surgical_tool/meshes/surgical_tool.stl</uri>
             </mesh>
           </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
         </collision>
         <visual name='visual'>
           <geometry>
@@ -773,11 +539,11 @@
       </link>
     </model>
     <model name='mounting_dock'>
-      <pose frame=''>0.2 0.7 1 0 0 0</pose>
+      <pose frame=''>0.4 0.7 1.223973 0 0 0</pose>
       <link name='mounting_dock_link'>
         <inertial>
           <mass>1</mass>
-          <pose>-0.199999 0.400001 0.223973 0 0 0</pose>
+          <!-- <pose>-0.199999 0.400001 0.223973 0 0 0</pose> -->
           <inertia>
             <ixx>0.003272</ixx>
             <ixy>0</ixy>
@@ -789,16 +555,14 @@
         </inertial>
         <collision name='collision'>
           <!-- <pose>-0.199999 0.400001 0.223973 0 0 1.57</pose> -->
-          <pose>0.1 0.2 0.223973 0 0 -1.57</pose>
           <geometry>
             <mesh>
-              <uri>model://kuka_barrett_gazebo/objects/mounting_dock/meshes/mounting_dock_collision.stl</uri>
+              <uri>model://kuka_barrett_gazebo/objects/mounting_dock/meshes/mounting_dock.stl</uri>
             </mesh>
           </geometry>
         </collision>
         <visual name='visual'>
           <!-- <pose>-0.199999 0.400001 0.223973 0 0 0</pose> -->
-          <pose>0 0 0 0 0 -1.57</pose>
           <geometry>
             <mesh>
               <uri>model://kuka_barrett_gazebo/objects/mounting_dock/meshes/mounting_dock.stl</uri>
