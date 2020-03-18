@@ -27,6 +27,29 @@ class image_converter:
 
     (rows,cols,channels) = cv_image.shape
 
+    ###########################################################################################
+    #    COLOR DETECTION
+    ###########################################################################################
+    blueColor = (255,0,0)
+    # Define color detection area
+    detectionAreaXRange = (int(rows/3), int(2*rows/3))
+    detectionAreaYRange = (int(cols/3), int(2*cols/3))
+    # Count blue pixels within detection area
+    numBluePixels = 0
+    for i in range(detectionAreaXRange[0], detectionAreaXRange[1], 3):
+      for j in range(detectionAreaYRange[0], detectionAreaYRange[1], 3):
+        if cv_image[i,j,0] >= 200:
+          numBluePixels += 1
+    # Decide if there are enough blue pixels to consider them a blue tool
+    if numBluePixels >= 20:
+      detectionMsg = "Blue tool detected"
+    else:
+      detectionMsg = "No tool detected"
+
+
+    ###########################################################################################
+    #    SHAPE DETECTION
+    ###########################################################################################
     # Restrict detection in the center columns
     img_detection_region = cv_image[0:rows, int(cols/3):int(2*cols/3)]
 
@@ -54,17 +77,37 @@ class image_converter:
       # creating convex hull object for each contour
       hull.append(cv2.convexHull(contours[i], False))
 
-    # draw contours and hull points
-    for i in range(1, len(contours)):
-      contour_color = (0, 0, 255)
-      convex_hull_color = (0, 255, 0)
-      # draw ith contour
-      cv2.drawContours(img_detection_region, contours, i, contour_color, 2, 8, hierarchy)
-      # draw ith convex hull object
-      cv2.drawContours(img_detection_region, hull, i, convex_hull_color, 2, 8)
 
-    # cv2.imshow("OpenCV Image", cv_image)
-    # cv2.waitKey(3)
+    ###########################################################################################
+    #    DRAW OPENCV IMAGE
+    ###########################################################################################
+    # draw contours and hull points if there was a blue tool detected
+    if numBluePixels >= 20:
+      for i in range(1, len(contours)):
+        contour_color = (0, 0, 255)
+        convex_hull_color = (0, 255, 0)
+        # draw ith contour
+        cv2.drawContours(img_detection_region, contours, i, contour_color, 2, 8, hierarchy)
+        # draw ith convex hull object
+        cv2.drawContours(img_detection_region, hull, i, convex_hull_color, 2, 8)
+
+    # Draw detection message
+    font                   = cv2.FONT_HERSHEY_SIMPLEX
+    topLeftCorner = (50,50)
+    fontScale              = 1
+    lineType               = 2
+    cv2.putText(
+      cv_image,
+      detectionMsg, 
+      topLeftCorner, 
+      font, 
+      fontScale,
+      blueColor,
+      lineType
+    )
+
+    cv2.imshow("OpenCV Image", cv_image)
+    cv2.waitKey(3)
 
     try:
       self.image_pub.publish(self.bridge.cv2_to_imgmsg(cv_image, "bgr8"))
