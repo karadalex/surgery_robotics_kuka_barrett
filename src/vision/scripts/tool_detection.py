@@ -5,6 +5,7 @@ import sys
 import rospy
 import cv2
 import numpy as np
+import math
 from std_msgs.msg import String
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge, CvBridgeError
@@ -94,23 +95,43 @@ class ToolDetection:
       avgY = int(sumY/len(hull[i]))
       hullsCetersOfMass.append([avgX, avgY])
 
+    # For each convex hull, calculate mean distance of hull points from center of mass
+    hullsMeanDistanceFromCenter = []
+    for i in range(len(hull)):
+      sumD = 0
+      for point in hull[i]:
+        cm = hullsCetersOfMass[i]
+        distance = math.sqrt((point[0][0] - cm[0])**2 + (point[0][1] - cm[1])**2)
+        sumD += distance
+      avgD = sumD/len(hull[i])
+      hullsMeanDistanceFromCenter.append(avgD)
+    # Calculate max convex hull by finding the maximum mean distance
+    if len(hull) > 1:
+      startFrom = 1 # Ignore first convex hull (if there are many), because it is the whole picture
+    else:
+      startFrom = 0
+    maxHullIndex = startFrom
+    for i in range(startFrom, len(hull)):
+      if hullsMeanDistanceFromCenter[i] > hullsMeanDistanceFromCenter[maxHullIndex]:
+        maxHullIndex = i
+
 
     ###########################################################################################
     #    DRAW OPENCV IMAGE
     ###########################################################################################
-    # draw contours and hull points if there was a blue tool detected
-    for i in range(1, len(contours)):
-      # if isHullBlueTool[i]:
+    # draw contour and hull points of the biggest convex hull, 
+    # TODO: Draw if there was a blue tool detected
+    if len(hull) > 1: # if there is only one hull, it means this is the while picture (default convex hull)
       contour_color = (0, 0, 255)
       convex_hull_color = (0, 255, 0)
       # draw ith contour
-      cv2.drawContours(img_detection_region, contours, i, contour_color, 2, 8, hierarchy)
+      cv2.drawContours(img_detection_region, contours, maxHullIndex, contour_color, 2, 8, hierarchy)
       # draw ith convex hull object
-      cv2.drawContours(img_detection_region, hull, i, convex_hull_color, 2, 8)
+      cv2.drawContours(img_detection_region, hull, maxHullIndex, convex_hull_color, 2, 8)
       # draw center of mass of convex hull
-      cmX = hullsCetersOfMass[i][0]
-      cmY = hullsCetersOfMass[i][1]
-      cv2.circle(img_detection_region,(cmX,cmY),3,(0,0,255),-1)
+      cmX = hullsCetersOfMass[maxHullIndex][0]
+      cmY = hullsCetersOfMass[maxHullIndex][1]
+      cv2.circle(img_detection_region,(cmX,cmY),5,(0,0,255),-1)
 
     # Draw detection message
     font                   = cv2.FONT_HERSHEY_SIMPLEX
