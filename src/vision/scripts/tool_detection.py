@@ -23,6 +23,9 @@ class ToolDetection:
     self.bridge = CvBridge()
     self.image_sub = rospy.Subscriber("/barrett/camera1/image_raw",Image,self.callback)
 
+    # Data to be available across every subscriber callback
+    self.toolCenterOfMass = [0, 0]
+
   def callback(self,data):
     try:
       cv_image = self.bridge.imgmsg_to_cv2(data, "bgr8")
@@ -117,6 +120,15 @@ class ToolDetection:
       if hullsMeanDistanceFromCenter[i] > hullsMeanDistanceFromCenter[maxHullIndex]:
         maxHullIndex = i
 
+    # Update toolCenterOfMass point variable only if there is a significant change in (x,y) values,
+    # in order to make the point stable at all times
+    maxHullCmX = contourCenterOfMass[maxHullIndex][0]
+    maxHullCmY = contourCenterOfMass[maxHullIndex][1]
+    cmChangeThreshold = 2
+    if (abs(self.toolCenterOfMass[0] - maxHullCmX) > cmChangeThreshold) and (abs(self.toolCenterOfMass[1] - maxHullCmY) > cmChangeThreshold):
+      self.toolCenterOfMass[0] = maxHullCmX
+      self.toolCenterOfMass[1] = maxHullCmY
+
 
     ###########################################################################################
     #    FIND GRASP POINTS - FORCE CLOSURE
@@ -136,8 +148,8 @@ class ToolDetection:
       # draw ith convex hull object
       cv2.drawContours(img_detection_region, hull, maxHullIndex, convex_hull_color, 2, 8)
       # draw center of mass of convex hull
-      cmX = contourCenterOfMass[maxHullIndex][0]
-      cmY = contourCenterOfMass[maxHullIndex][1]
+      cmX = self.toolCenterOfMass[0]
+      cmY = self.toolCenterOfMass[1]
       cv2.circle(img_detection_region,(cmX,cmY),5,(0,0,255),-1)
 
     # Draw detection message
