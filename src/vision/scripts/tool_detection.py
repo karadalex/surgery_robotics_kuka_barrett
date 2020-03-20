@@ -49,8 +49,10 @@ class ToolDetection:
     # Decide if there are enough blue pixels to consider them a blue tool
     if numBluePixels >= 20:
       detectionMsg = "Blue tool detected"
+      blueToolDetected = True
     else:
       detectionMsg = "No tool detected"
+      blueToolDetected = False
 
 
     ###########################################################################################
@@ -83,24 +85,24 @@ class ToolDetection:
       # creating convex hull object for each contour
       hull.append(cv2.convexHull(contours[i], False))
 
-    # Calculate and store the center of mass of each convex hull
-    hullsCetersOfMass = []
-    for i in range(len(hull)):
+    # Calculate and store the center of mass of each contour
+    contourCenterOfMass = []
+    for i in range(len(contours)):
       sumX = 0
       sumY = 0
-      for point in hull[i]:
+      for point in contours[i]:
         sumX += point[0][0]
         sumY += point[0][1]
-      avgX = int(sumX/len(hull[i]))
-      avgY = int(sumY/len(hull[i]))
-      hullsCetersOfMass.append([avgX, avgY])
+      avgX = int(sumX/len(contours[i]))
+      avgY = int(sumY/len(contours[i]))
+      contourCenterOfMass.append([avgX, avgY])
 
     # For each convex hull, calculate mean distance of hull points from center of mass
     hullsMeanDistanceFromCenter = []
     for i in range(len(hull)):
       sumD = 0
       for point in hull[i]:
-        cm = hullsCetersOfMass[i]
+        cm = contourCenterOfMass[i]
         distance = math.sqrt((point[0][0] - cm[0])**2 + (point[0][1] - cm[1])**2)
         sumD += distance
       avgD = sumD/len(hull[i])
@@ -117,20 +119,25 @@ class ToolDetection:
 
 
     ###########################################################################################
+    #    FIND GRASP POINTS - FORCE CLOSURE
+    ###########################################################################################
+    # TODO
+
+    ###########################################################################################
     #    DRAW OPENCV IMAGE
     ###########################################################################################
     # draw contour and hull points of the biggest convex hull, 
-    # TODO: Draw if there was a blue tool detected
-    if len(hull) > 1: # if there is only one hull, it means this is the while picture (default convex hull)
+    # Draw if there was a blue tool detected
+    if len(hull) > 1 and blueToolDetected : # if there is only one hull, it means this is the while picture (default convex hull)
       contour_color = (0, 0, 255)
       convex_hull_color = (0, 255, 0)
       # draw ith contour
-      cv2.drawContours(img_detection_region, contours, maxHullIndex, contour_color, 2, 8, hierarchy)
+      # cv2.drawContours(img_detection_region, contours, maxHullIndex, contour_color, 2, 8, hierarchy)
       # draw ith convex hull object
       cv2.drawContours(img_detection_region, hull, maxHullIndex, convex_hull_color, 2, 8)
       # draw center of mass of convex hull
-      cmX = hullsCetersOfMass[maxHullIndex][0]
-      cmY = hullsCetersOfMass[maxHullIndex][1]
+      cmX = contourCenterOfMass[maxHullIndex][0]
+      cmY = contourCenterOfMass[maxHullIndex][1]
       cv2.circle(img_detection_region,(cmX,cmY),5,(0,0,255),-1)
 
     # Draw detection message
