@@ -1,12 +1,15 @@
-[submodule "src/general-message-pkgs"]
-	path = src/general-message-pkgs
+[submodule "src/external/barrett_hand"]
+	path = src/external/barrett_hand
+	url = https://github.com/RobotnikAutomation/barrett_hand.git
+[submodule "src/external/general-message-pkgs"]
+	path = src/external/general-message-pkgs
 	url = https://github.com/JenniferBuehler/general-message-pkgs.git
-[submodule "src/gazebo-pkgs"]
-	path = src/gazebo-pkgs
+[submodule "src/external/gazebo-pkgs"]
+	path = src/external/gazebo-pkgs
 	url = https://github.com/JenniferBuehler/gazebo-pkgs.git
-[submodule "src/moveit-pkgs"]
-	path = src/moveit-pkgs
+[submodule "src/external/moveit-pkgs"]
+	path = src/external/moveit-pkgs
 	url = https://github.com/JenniferBuehler/moveit-pkgs.git
-[submodule "src/convenience-pkgs"]
-	path = src/convenience-pkgs
+[submodule "src/external/convenience-pkgs"]
+	path = src/external/convenience-pkgs
 	url = https://github.com/JenniferBuehler/convenience-pkgs.git
