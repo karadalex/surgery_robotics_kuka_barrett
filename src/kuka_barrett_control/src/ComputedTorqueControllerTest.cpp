@@ -259,16 +259,27 @@ namespace kuka_barrett_control
 				// Square wave
 				qd_ddot_(i) = 0;
 				qd_dot_(i) = 0;
-				float sint = sin(M_PI / 2 * t);
-				if (sint >= 0)
-				{
-				    qd_(i) = M_PI/4;
-				}
-				else
-				{
-				    qd_(i) = - M_PI/4;
-				}
+				float sint = sin(M_PI / 10 * t);
+				// if (sint >= 0)
+				// {
+				//     qd_(i) = M_PI/4;
+				// }
+				// else
+				// {
+				//     qd_(i) = 0;
+				// }
+				qd_(i) = sint;
 			}
+
+			// float sint = sin(M_PI / 10 * t);
+			// if (sint >= 0)
+			// {
+			// 	qd_(3) = M_PI/4;
+			// }
+			// else
+			// {
+			// 	qd_(3) = 0;
+			// }
 
 			// ********* 2. Motion Controller in Joint Space*********
 			// *** 2.1 Error Definition in Joint Space ***
@@ -282,7 +293,10 @@ namespace kuka_barrett_control
 			id_solver_->JntToGravity(q_, G_);
 
 			// *** 2.3 Apply Torque Command to Actuator ***
-			aux_d_.data = M_.data * (qd_ddot_.data + Kp_.data.cwiseProduct(e_.data) + Kd_.data.cwiseProduct(e_dot_.data));
+			// PD Controller
+			// aux_d_.data = M_.data * (qd_ddot_.data + Kp_.data.cwiseProduct(e_.data) + Kd_.data.cwiseProduct(e_dot_.data));
+			// PID Controller
+			aux_d_.data = M_.data * (qd_ddot_.data + Kp_.data.cwiseProduct(e_.data) + Ki_.data.cwiseProduct(e_int_.data) + Kd_.data.cwiseProduct(e_dot_.data));
 			comp_d_.data = C_.data + G_.data;
 			tau_d_.data = aux_d_.data + comp_d_.data;
 
