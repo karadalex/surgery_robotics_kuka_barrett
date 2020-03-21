@@ -67,6 +67,10 @@ roslaunch kuka_barrett_control computed_torque_controller_test.launch
 which will run gazebo with EffortJointInterface, the ComputedTorqueControl spawned in Controller Manager 
 and a rqt window with joint states plots.
 
+### Convenience scripts
+- `rosrun main iiwa_home.sh` move iiwa arm to home position
+- `rosrun main barrett_home.sh` move Barrett hand to home position
+
 
 ## Troubleshooting
 
