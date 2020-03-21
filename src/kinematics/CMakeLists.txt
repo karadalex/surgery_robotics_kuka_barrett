@@ -126,6 +126,7 @@ include_directories(
    src/Pose.cpp
    src/Iiwa14Inv.cpp
    src/Transformation.cpp
+   src/BarrettInv.cpp
 )
 
 ## Add cmake target dependencies of the library

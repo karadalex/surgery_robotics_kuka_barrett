@@ -15,26 +15,25 @@ int main(int argc, char **argv)
 	ros::Rate loop_rate(10);
 
 	// Barrett hand publishers
-//	vector<ros::Publisher> bh_fingers_publishers;
-//	bh_fingers_publishers.push_back(nh.advertise<std_msgs::Float64>("/bh_j11_position_controller/command",1000));
-//	bh_fingers_publishers.push_back(nh.advertise<std_msgs::Float64>("/bh_j12_position_controller/command",1000));
-//	bh_fingers_publishers.push_back(nh.advertise<std_msgs::Float64>("/bh_j13_position_controller/command",1000));
-//	bh_fingers_publishers.push_back(nh.advertise<std_msgs::Float64>("/bh_j21_position_controller/command",1000));
-//	bh_fingers_publishers.push_back(nh.advertise<std_msgs::Float64>("/bh_j22_position_controller/command",1000));
-//	bh_fingers_publishers.push_back(nh.advertise<std_msgs::Float64>("/bh_j23_position_controller/command",1000));
-//	bh_fingers_publishers.push_back(nh.advertise<std_msgs::Float64>("/bh_j31_position_controller/command",1000));
-//	bh_fingers_publishers.push_back(nh.advertise<std_msgs::Float64>("/bh_j32_position_controller/command",1000));
-//	bh_fingers_publishers.push_back(nh.advertise<std_msgs::Float64>("/bh_j33_position_controller/command",1000));
+	vector<ros::Publisher> bh_fingers_publishers;
+	bh_fingers_publishers.push_back(nh.advertise<std_msgs::Float64>("/bh_j11_position_controller/command",1000));
+	bh_fingers_publishers.push_back(nh.advertise<std_msgs::Float64>("/bh_j12_position_controller/command",1000));
+	bh_fingers_publishers.push_back(nh.advertise<std_msgs::Float64>("/bh_j13_position_controller/command",1000));
+	bh_fingers_publishers.push_back(nh.advertise<std_msgs::Float64>("/bh_j21_position_controller/command",1000));
+	bh_fingers_publishers.push_back(nh.advertise<std_msgs::Float64>("/bh_j22_position_controller/command",1000));
+	bh_fingers_publishers.push_back(nh.advertise<std_msgs::Float64>("/bh_j23_position_controller/command",1000));
+	bh_fingers_publishers.push_back(nh.advertise<std_msgs::Float64>("/bh_j32_position_controller/command",1000));
+	bh_fingers_publishers.push_back(nh.advertise<std_msgs::Float64>("/bh_j33_position_controller/command",1000));
 
 	// Barrett hand command values
-//	vector<std_msgs::Float64> bh_msgs;
-//	vector<float> bh_angles;
-//	bh_angles = {0.2f, 1.7f, 2.0f, 0.9f, 1.7f, 2.0f, 0.9f, 1.7f, 2.0f};
-//	bh_angles.resize(9, 0);
-//	for (int i = 0; i < 9; ++i) {
-//		std_msgs::Float64 msg; msg.data = bh_angles[i];
-//		bh_msgs.push_back(msg);
-//	}
+	vector<std_msgs::Float64> bh_msgs;
+	vector<float> bh_angles;
+	bh_angles = {0.2f, 1.7f, 2.0f, 0.9f, 1.7f, 2.0f, 1.7f, 2.0f};
+	bh_angles.resize(9, 0);
+	for (int i = 0; i < 8; ++i) {
+		std_msgs::Float64 msg; msg.data = bh_angles[i];
+		bh_msgs.push_back(msg);
+	}
 
 
 	// KUKA iiwa LBR 14 arm controller publisher
@@ -53,8 +52,14 @@ int main(int argc, char **argv)
 //	path.push_back(new Pose(0.2,-0.84,1.6,0,0,0));
 //	path.push_back(new Pose(0.2,-0.84,1.4,0,0,0));
 //	path.push_back(new Pose(0.2,-0.84,1.6,0,0,0));
-	path.push_back(new Pose(0,0,2.266,0,0,0));
-	path.push_back(new Pose(0,0,2.166,0,0,0));
+//	path.push_back(new Pose(0,0,2.266,0,0,0));
+//	path.push_back(new Pose(0,0,2.166,0,0,0));
+
+	path.push_back(new Pose(0, -0.68, 1.5, M_PI, 0, M_PI_2));
+	path.push_back(new Pose(0, -0.68, 1.19, M_PI, 0, M_PI_2));
+	path.push_back(new Pose(0, -0.68, 1.5, M_PI, 0, M_PI_2));
+//		path.push_back(new Pose(0,0,2.166,0,0,0));
+//	path.push_back(new Pose(0,0,2.266,0, 0, 0));
 
 	// Build iiwa arm joint trajectory message
 	trajectory_msgs::JointTrajectory kuka_msg;

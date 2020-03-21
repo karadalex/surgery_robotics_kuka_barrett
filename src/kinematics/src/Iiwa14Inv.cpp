@@ -41,7 +41,8 @@ void Iiwa14Inv::th1_sol() {
 }
 
 void Iiwa14Inv::th2_sol() {
-	float phi = acosf((d[2]*d[2] + p_1_5_len*p_1_5_len - d[3]*d[3])/ (2*d[2]*p_1_5_len));
+	// float phi = acosf((d[2]*d[2] + p_1_5_len*p_1_5_len - d[3]*d[3])/ (2*d[2]*p_1_5_len));
+	float phi = atan2(d[3]*s4, d[2]+d[3]*c4);
 	// Check for singularity
 	// If phi is not defined (fully extended) then phi = 0
 	if (isnan(phi)) phi = 0;
@@ -78,8 +79,8 @@ void Iiwa14Inv::th5_sol() {
 void Iiwa14Inv::th6_sol() {
 	s6 = sqrt(1-ky*ky);
 	if (isnan(s6)) s6 = 0;
-	th6.push_back(atan2(s6, ky));
-	th6.push_back(atan2(-s6, ky));
+	th6.push_back(atan2(s6, ky) - M_PI_2);
+	th6.push_back(atan2(-s6, ky) - M_PI_2);
 }
 
 void Iiwa14Inv::th7_sol() {
