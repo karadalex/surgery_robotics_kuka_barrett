@@ -3,5 +3,8 @@
 cmake-build-debug
 build
 devel
+install
 .catkin_tools
 *.pyc
+*.so
+*.asv
