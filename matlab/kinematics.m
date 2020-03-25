@@ -20,8 +20,8 @@ end
 
 %% Inverse Kinematics
 M_U_0 = pose(0,0,1,0,0,0);
-M_U_TCP = pose(0,-0.68,1.5,pi,0,pi/2);
-M_7_TCP = pose(0,0,0,0,0,0);
+M_U_TCP = pose(0,0.68,1.5,pi,0,pi/2);
+M_7_TCP = pose(0,0,0.245,0,0,0);
 M_0_7 = inv(M_U_0) * M_U_TCP * inv(M_7_TCP);
 px = M_0_7(1,4); py = M_0_7(2,4); pz = M_0_7(3,4);
 
