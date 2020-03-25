@@ -3,14 +3,14 @@ function [M_total, M_joints] = fwdKinSym(L, d, a)
     L = sym(L);
     d = sym(d);
     a = sym(a);
-    theta = sym('th', [1, 6]);
+    theta = sym('th', [1, 7]);
     
     % Initialize transformation matrices
-    M_joints = sym('M', [4 4 6]);
+    M_joints = sym('M', [4 4 7]);
     M_total = eye(4);
     M_total = sym(M_total);
     
-    for i = 1:1:6
+    for i = 1:1:7
       disp(i)
       M_joints(:,:,i) = [
         [cos(theta(i)), -sin(theta(i)), 0, L(i)],
