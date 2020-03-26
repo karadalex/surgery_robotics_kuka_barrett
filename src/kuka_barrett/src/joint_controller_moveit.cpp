@@ -38,35 +38,40 @@ int main(int argc, char** argv)
 
 	vector<vector<float>> path;
 	vector<vector<float>> grasps;
+	vector<float> gripper_open = {0.164, 0, 0.071, 0.164, 0, 0.071, 0.164, 0, 0.071};
+	vector<float> gripper_closed = {0, 0, 0.168, 0.013, 0, 0.148, 0.013, 0, 0.148};
 	// X Y Z Roll Pitch Yaw
+	// path.push_back({0, 0, 2.262, 0, 0, 0}); // For z >= 2.261 the robot reaches end of workspace, which is a signularity and cant be calculated from the numerical IK
+	path.push_back({0, 0, 2.26, 0, 0, 0}); // Home position
+	grasps.push_back(gripper_closed);
 	// Pick position 1
 	path.push_back({0, -0.68, 1.5, M_PI, 0, M_PI_2});
-	grasps.push_back({0, 0, 0, 0, 0, 0, 0, 0, 0});
+	grasps.push_back(gripper_open);
 	path.push_back({0, -0.68, 1.19, M_PI, 0, M_PI_2});
-	grasps.push_back({0.04, 0.04, 0.07, 0.04, 0.04, 0.07, 0.04, 0.04, 0.07});
+	grasps.push_back(gripper_open);
 	path.push_back({0, -0.68, 1.5, M_PI, 0, M_PI_2});
-	grasps.push_back({0.04, 0.04, 0.07, 0.04, 0.04, 0.07, 0.04, 0.04, 0.07});
+	grasps.push_back(gripper_open);
 	// Fulcrum position 1
 	path.push_back({-0.14, 0.68, 1.68, M_PI, -0.59, 0});
-	grasps.push_back({0.04, 0.04, 0.07, 0.04, 0.04, 0.07, 0.04, 0.04, 0.07});
+	grasps.push_back(gripper_closed);
 	path.push_back({0.06, 0.70, 1.38, M_PI, -0.59, 0});
-	grasps.push_back({0, 0, 0, 0, 0, 0, 0, 0, 0});
+	grasps.push_back(gripper_open);
 	path.push_back({-0.14, 0.68, 1.68, M_PI, -0.59, 0});
-	grasps.push_back({0, 0, 0, 0, 0, 0, 0, 0, 0});
+	grasps.push_back(gripper_open);
 	// Pick position 2
 	path.push_back({0.2, -0.68, 1.5, M_PI, 0, M_PI_2});
-	grasps.push_back({0, 0, 0, 0, 0, 0, 0, 0, 0});
+	grasps.push_back(gripper_open);
 	path.push_back({0.2, -0.68, 1.19, M_PI, 0, M_PI_2});
-	grasps.push_back({0.04, 0.04, 0.07, 0.04, 0.04, 0.07, 0.04, 0.04, 0.07});
+	grasps.push_back(gripper_closed);
 	path.push_back({0.2, -0.68, 1.5, M_PI, 0, M_PI_2});
-	grasps.push_back({0.04, 0.04, 0.07, 0.04, 0.04, 0.07, 0.04, 0.04, 0.07});
+	grasps.push_back(gripper_closed);
 	// Fulcrum position 2
 	path.push_back({-0.14, 0.68, 1.68, M_PI, -0.59, 0});
-	grasps.push_back({0.04, 0.04, 0.07, 0.04, 0.04, 0.07, 0.04, 0.04, 0.07});
+	grasps.push_back(gripper_closed);
 	path.push_back({0.06, 0.70, 1.38, M_PI, -0.59, 0});
-	grasps.push_back({0, 0, 0, 0, 0, 0, 0, 0, 0});
+	grasps.push_back(gripper_open);
 	path.push_back({-0.14, 0.68, 1.68, M_PI, -0.59, 0});
-	grasps.push_back({0, 0, 0, 0, 0, 0, 0, 0, 0});
+	grasps.push_back(gripper_open);
 
 	// Build Barrett Hand joint trajectory message
 	trajectory_msgs::JointTrajectory bh_msg;
@@ -113,7 +118,9 @@ int main(int argc, char** argv)
 		bh_angles = gripper->solutionSet[0]; // Select first solution of the solution set
 		// bh_angles = {0, 0.5f, 0.5f, 0, 0.5f, 0.5f, 0.5f, 0.5f};
 		// bh_angles = {0, 0, 0, 0, 0, 0, 0, 0};
-		cout << gripper->solutionSet[0][0] << " " << gripper->solutionSet[0][1] << " " << gripper->solutionSet[0][2] << endl;
+		cout << gripper->solutionSet[0][0] << " " << gripper->solutionSet[0][1] << " " << gripper->solutionSet[0][2];
+		cout << " " << gripper->solutionSet[0][3] << " " << gripper->solutionSet[0][4] << " " << gripper->solutionSet[0][5];
+		cout << " " << gripper->solutionSet[0][6] << " " << gripper->solutionSet[0][7] << endl;
 
 		bh_msg.points[i].positions.resize(8);
 		for (int joint = 0; joint < bh_msg.joint_names.size(); ++joint) {
