@@ -6,6 +6,7 @@ import rospy
 import cv2
 import numpy as np
 import math
+import time
 from std_msgs.msg import String
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge, CvBridgeError
@@ -25,6 +26,7 @@ class Detection:
 
     # Data to be available across every subscriber callback
     self.toolCenterOfMass = [0, 0]
+    self.prevFrameTime = time.time()
 
   def callback(self,data):
     try:
@@ -174,8 +176,8 @@ class Detection:
     # Draw tool detection message
     font                   = cv2.FONT_HERSHEY_SIMPLEX
     topLeftCorner = (50,50)
-    fontScale              = 1
-    lineType               = 2
+    fontScale              = 0.5
+    lineType               = 1
     cv2.putText(
       cv_image,
       toolDetectionMsg, 
@@ -187,7 +189,7 @@ class Detection:
     )
 
     # Draw trocar detection message
-    position = (50,85)
+    position = (50,70)
     cv2.putText(
       cv_image,
       trocarDetectionMsg, 
@@ -195,6 +197,23 @@ class Detection:
       font, 
       fontScale,
       greenColor,
+      lineType
+    )
+
+    # Calculate and display FPS
+    endOfFrameTime = time.time()
+    seconds = endOfFrameTime - self.prevFrameTime
+    self.prevFrameTime = endOfFrameTime
+    fps = round(1/seconds, 2)
+    fpsInfo = "FPS = {}".format(fps)
+    position = (cols-200,50)
+    cv2.putText(
+      cv_image,
+      fpsInfo, 
+      position, 
+      font, 
+      fontScale,
+      blueColor,
       lineType
     )
 
