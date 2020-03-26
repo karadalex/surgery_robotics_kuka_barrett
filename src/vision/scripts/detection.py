@@ -15,7 +15,7 @@ from helpers import getRectangularNeighborhood
 roslib.load_manifest('vision')
 
 
-class ToolDetection:
+class Detection:
 
   def __init__(self):
     self.image_pub = rospy.Publisher("/opencv/test_topic_1",Image)
@@ -35,27 +35,39 @@ class ToolDetection:
     (rows,cols,channels) = cv_image.shape
 
     blueColor = (255,0,0)
+    greenColor = (0,255,0)
 
     ###########################################################################################
-    #    COLOR DETECTION
+    #    COLOR DETECTION (B,G,R)
     ###########################################################################################
-    blueColor = (255,0,0)
     # Define color detection area
     detectionAreaXRange = (int(rows/3), int(2*rows/3))
     detectionAreaYRange = (int(cols/3), int(2*cols/3))
-    # Count blue pixels within detection area
+
+    # Count blue and/or green pixels within detection area
     numBluePixels = 0
+    numGreenPixels = 0
     for i in range(detectionAreaXRange[0], detectionAreaXRange[1], 3):
       for j in range(detectionAreaYRange[0], detectionAreaYRange[1], 3):
         if cv_image[i,j,0] >= 200:
           numBluePixels += 1
+        elif cv_image[i,j,1] >= 180:
+          numGreenPixels += 1
+
     # Decide if there are enough blue pixels to consider them a blue tool
     if numBluePixels >= 20:
-      detectionMsg = "Blue tool detected"
+      toolDetectionMsg = "Blue tool detected"
       blueToolDetected = True
     else:
-      detectionMsg = "No tool detected"
+      toolDetectionMsg = "No tool detected"
       blueToolDetected = False
+    # Decide if there are enough blue pixels to consider them a mounting dock containing a Trocar
+    if numGreenPixels >= 20:
+      trocarDetectionMsg = "Trocar detected"
+      trocarDetected = True
+    else:
+      trocarDetectionMsg = "No Trocar detected"
+      trocarDetected = False
 
 
     ###########################################################################################
@@ -76,10 +88,15 @@ class ToolDetection:
 
     # blur the image
     blur = cv2.blur(gray, (3, 3))
+    # thresholded image for blue color
     ret, thresh = cv2.threshold(blur, 50, 255, cv2.THRESH_BINARY)
+    # thresholded image for green color
+    ret, threshGreen = cv2.threshold(blur, 110, 255, cv2.THRESH_BINARY)
 
     # Finding contours for the thresholded image
     im2, contours, hierarchy = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+
+    im2, contoursGreen, hierarchy = cv2.findContours(threshGreen, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
     # create hull array for convex hull points
     hull = []
@@ -139,31 +156,45 @@ class ToolDetection:
     #    DRAW OPENCV IMAGE
     ###########################################################################################
     # draw contour and hull points of the biggest convex hull, 
-    # Draw if there was a blue tool detected
-    if len(hull) > 1 and blueToolDetected : # if there is only one hull, it means this is the while picture (default convex hull)
-      contour_color = (0, 0, 255)
-      convex_hull_color = (0, 255, 0)
-      # draw ith contour
-      # cv2.drawContours(img_detection_region, contours, maxHullIndex, contour_color, 2, 8, hierarchy)
-      # draw ith convex hull object
+    # Draw if there was a blue tool
+    contour_color = (0, 0, 255)
+    convex_hull_color = (0, 255, 0)
+    if len(hull) > 1 and blueToolDetected: # if there is only one hull, it means this is the while picture (default convex hull)
+      # draw max convex hull object
       cv2.drawContours(img_detection_region, hull, maxHullIndex, convex_hull_color, 2, 8)
       # draw center of mass of convex hull
       cmX = self.toolCenterOfMass[0]
       cmY = self.toolCenterOfMass[1]
       cv2.circle(img_detection_region,(cmX,cmY),5,(0,0,255),-1)
+    if trocarDetected:
+      for i in range(1, len(contoursGreen)):
+      # draw ith contour
+        cv2.drawContours(img_detection_region, contoursGreen, i, contour_color, 2, 8, hierarchy)
 
-    # Draw detection message
+    # Draw tool detection message
     font                   = cv2.FONT_HERSHEY_SIMPLEX
     topLeftCorner = (50,50)
     fontScale              = 1
     lineType               = 2
     cv2.putText(
       cv_image,
-      detectionMsg, 
+      toolDetectionMsg, 
       topLeftCorner, 
       font, 
       fontScale,
       blueColor,
+      lineType
+    )
+
+    # Draw trocar detection message
+    position = (50,85)
+    cv2.putText(
+      cv_image,
+      trocarDetectionMsg, 
+      position, 
+      font, 
+      fontScale,
+      greenColor,
       lineType
     )
 
@@ -179,7 +210,7 @@ class ToolDetection:
 
 
 def main(args):
-  ic = ToolDetection()
+  ic = Detection()
   rospy.init_node('opencv_image_view', anonymous=True)
   try:
     rospy.spin()
