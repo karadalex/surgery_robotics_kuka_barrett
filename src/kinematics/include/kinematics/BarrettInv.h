@@ -26,8 +26,8 @@ public:
 
 private:
 	float th1_sol(float* pos);
-	float th2_sol(float* pos, float th3);
-	vecf th3_sol(float* pos);
+	float th2_sol(float* pos, float th1, float th3);
+	vecf th3_sol(float* pos, float th1);
 
 };
 

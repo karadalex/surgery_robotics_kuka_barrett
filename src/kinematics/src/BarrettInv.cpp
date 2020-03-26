@@ -13,9 +13,9 @@ BarrettInv::BarrettInv(vector<float> target) {
 
 	// Create solutions for finger1
 	float f1_th1 = th1_sol(f1_pos);
-	vecf f1_th3 = th3_sol(f1_pos);
-	float f1_th2_1 = th2_sol(f1_pos, f1_th3[0]);
-	float f1_th2_2 = th2_sol(f1_pos, f1_th3[1]);
+	vecf f1_th3 = th3_sol(f1_pos, f1_th1);
+	float f1_th2_1 = th2_sol(f1_pos, f1_th1, f1_th3[0]);
+	float f1_th2_2 = th2_sol(f1_pos, f1_th1, f1_th3[1]);
 	finger1 = {
 		{f1_th1, f1_th2_1, f1_th3[0]},
 		{f1_th1, f1_th2_2, f1_th3[1]},
@@ -23,9 +23,9 @@ BarrettInv::BarrettInv(vector<float> target) {
 
 	// Create solutions for finger2
 	float f2_th1 = th1_sol(f2_pos);
-	vecf f2_th3 = th3_sol(f2_pos);
-	float f2_th2_1 = th2_sol(f2_pos, f2_th3[0]);
-	float f2_th2_2 = th2_sol(f2_pos, f2_th3[1]);
+	vecf f2_th3 = th3_sol(f2_pos, f2_th1);
+	float f2_th2_1 = th2_sol(f2_pos, f2_th1, f2_th3[0]);
+	float f2_th2_2 = th2_sol(f2_pos, f2_th1, f2_th3[1]);
 	finger1 = {
 		{f2_th1, f2_th2_1, f2_th3[0]},
 		{f2_th1, f2_th2_2, f2_th3[1]},
@@ -33,9 +33,9 @@ BarrettInv::BarrettInv(vector<float> target) {
 
 	// Create solutions for finger3
 	// Finger3 has only 2DoF
-	vecf f3_th3 = th3_sol(f3_pos);
-	float f3_th2_1 = th2_sol(f3_pos, f3_th3[0]);
-	float f3_th2_2 = th2_sol(f3_pos, f3_th3[1]);
+	vecf f3_th3 = th3_sol(f3_pos, 0);
+	float f3_th2_1 = th2_sol(f3_pos, 0, f3_th3[0]);
+	float f3_th2_2 = th2_sol(f3_pos, 0, f3_th3[1]);
 	finger1 = {
 		{f3_th2_1, f3_th3[0]},
 		{f3_th2_2, f3_th3[1]},
@@ -54,16 +54,16 @@ float BarrettInv::th1_sol(float* pos) {
 	float py = pos[1];
 
 	float sol = atan2(py, px);
-	sol = Scalar::normalise(sol, -M_PI, M_PI);
-	sol = Scalar::clamp(sol, 0, M_PI);
+//	sol = Scalar::normalise(sol, 0, 2*M_PI);
+//	sol = Scalar::clamp(sol, 0, M_PI);
 
 	return sol;
 }
 
 
-vecf BarrettInv::th3_sol(float* pos) {
-	float px = pos[0];
-	float py = pos[1];
+vecf BarrettInv::th3_sol(float* pos, float th1) {
+	float px = pos[0] - L[0]*cos(th1);
+	float py = pos[1] - L[0]*sin(th1);
 	float pz = pos[2];
 
 	float g = sqrt(px*px + py*py + pz*pz);
@@ -74,28 +74,28 @@ vecf BarrettInv::th3_sol(float* pos) {
 		c = 1;
 	}
 	float sol1 = atan2(s, c) - 2*M_PI/9;
-	float sol2 = atan2(s, c) - 2*M_PI/9;
+	float sol2 = atan2(-s, c) - 2*M_PI/9;
 
-	sol1 = Scalar::normalise(sol1, -M_PI, M_PI);
-	sol1 = Scalar::clamp(sol1, 0, 45 * M_PI/180);
-	sol2 = Scalar::normalise(sol2, -M_PI, M_PI);
-	sol2 = Scalar::clamp(sol2, 0, 45 * M_PI/180);
+//	sol1 = Scalar::normalise(sol1, 0, 2*M_PI);
+//	sol1 = Scalar::clamp(sol1, 0, 45 * M_PI/180);
+//	sol2 = Scalar::normalise(sol2, 0, 2*M_PI);
+//	sol2 = Scalar::clamp(sol2, 0, 45 * M_PI/180);
 	vecf sol = {sol1, sol2};
 
 	return sol;
 }
 
 
-float BarrettInv::th2_sol(float* pos, float th3) {
-	float px = pos[0];
-	float py = pos[1];
+float BarrettInv::th2_sol(float* pos, float th1, float th3) {
+	float px = pos[0] - L[0]*cos(th1);
+	float py = pos[1] - L[0]*sin(th1);
 	float pz = pos[2];
 
-	float term1 = atan2(L[2]*sin(th3 + 2*M_PI/9), L[1]+L[2]*cos(th3 + 2*M_PI/9));
-	float term2 = atan2(sqrt(px*px + py*py), pz);
+	float term1 = atan2(pz, sqrt(px*px + py*py));
+	float term2 = atan2(L[2]*sin(th3 + 2*M_PI/9), L[1]+L[2]*cos(th3 + 2*M_PI/9));
 	float sol = term1 - term2;
-	sol = Scalar::normalise(sol, -M_PI, M_PI);
-	sol = Scalar::clamp(sol, 0, 140 * M_PI/180);
+//	sol = Scalar::normalise(sol, 0, 2*M_PI);
+//	sol = Scalar::clamp(sol, 0, 140 * M_PI/180);
 
 	return sol;
 }
