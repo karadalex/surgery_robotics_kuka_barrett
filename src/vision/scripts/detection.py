@@ -11,6 +11,7 @@ from std_msgs.msg import String
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge, CvBridgeError
 from helpers import getRectangularNeighborhood
+import geometry
 
 
 roslib.load_manifest('vision')
@@ -27,6 +28,8 @@ class Detection:
     # Data to be available across every subscriber callback
     self.toolCenterOfMass = [0, 0]
     self.prevFrameTime = time.time()
+    self.toolOrientX = []
+    self.toolOrientY = []
 
   def callback(self,data):
     try:
@@ -38,6 +41,7 @@ class Detection:
 
     blueColor = (255,0,0)
     greenColor = (0,255,0)
+    redColor = (0,0,255)
 
     ###########################################################################################
     #    COLOR DETECTION (B,G,R)
@@ -49,12 +53,15 @@ class Detection:
     # Count blue and/or green pixels within detection area
     numBluePixels = 0
     numGreenPixels = 0
+    toolPixels = []
     for i in range(detectionAreaXRange[0], detectionAreaXRange[1], 3):
       for j in range(detectionAreaYRange[0], detectionAreaYRange[1], 3):
         if cv_image[i,j,0] >= 200:
           numBluePixels += 1
+          toolPixels.append(np.array([[i,j]]))
         elif cv_image[i,j,1] >= 180:
           numGreenPixels += 1
+    toolPixels = np.array(toolPixels)
 
     # Decide if there are enough blue pixels to consider them a blue tool
     if numBluePixels >= 20:
@@ -110,14 +117,7 @@ class Detection:
     # Calculate and store the center of mass of each contour
     contourCenterOfMass = []
     for i in range(len(contours)):
-      sumX = 0
-      sumY = 0
-      for point in contours[i]:
-        sumX += point[0][0]
-        sumY += point[0][1]
-      avgX = int(sumX/len(contours[i]))
-      avgY = int(sumY/len(contours[i]))
-      contourCenterOfMass.append([avgX, avgY])
+      contourCenterOfMass.append(geometry.centerOfMass(contours[i]))
 
     # For each convex hull, calculate mean distance of hull points from center of mass
     hullsMeanDistanceFromCenter = []
@@ -139,14 +139,28 @@ class Detection:
       if hullsMeanDistanceFromCenter[i] > hullsMeanDistanceFromCenter[maxHullIndex]:
         maxHullIndex = i
 
-    # Update toolCenterOfMass point variable only if there is a significant change in (x,y) values,
-    # in order to make the point stable at all times
+
+    ###########################################################################################
+    #    POSE DETECTION
+    ###########################################################################################
+    # Center of mass of tool
     maxHullCmX = contourCenterOfMass[maxHullIndex][0]
     maxHullCmY = contourCenterOfMass[maxHullIndex][1]
+
+    # Find orientation vectors of tool
+    a,b = geometry.orientationVectors(contours[maxHullIndex])
+    # attach vectors to center of mass point
+    a = a + [maxHullCmX, maxHullCmY]
+    b = b + [maxHullCmX, maxHullCmY]
+
+    # Update toolCenterOfMass point variable (and orientation) only if there is a significant change in (x,y) values,
+    # in order to make the point and orientation stable at all times
     cmChangeThreshold = 2
     if (abs(self.toolCenterOfMass[0] - maxHullCmX) > cmChangeThreshold) and (abs(self.toolCenterOfMass[1] - maxHullCmY) > cmChangeThreshold):
       self.toolCenterOfMass[0] = maxHullCmX
       self.toolCenterOfMass[1] = maxHullCmY
+      self.toolOrientX = a
+      self.toolOrientY = b
 
 
     ###########################################################################################
@@ -168,6 +182,11 @@ class Detection:
       cmX = self.toolCenterOfMass[0]
       cmY = self.toolCenterOfMass[1]
       cv2.circle(img_detection_region,(cmX,cmY),5,(0,0,255),-1)
+      # draw orientation vectors
+      a = self.toolOrientX
+      b = self.toolOrientY
+      cv2.arrowedLine(img_detection_region, (cmX,cmY), (a[0], a[1]), redColor, 2, 8, 0, 0.1)
+      cv2.arrowedLine(img_detection_region, (cmX,cmY), (b[0], b[1]), greenColor, 2, 8, 0, 0.1)
     if trocarDetected:
       for i in range(1, len(contoursGreen)):
       # draw ith contour
