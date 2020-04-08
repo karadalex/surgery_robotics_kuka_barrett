@@ -7,6 +7,7 @@
 
 #include <cmath>
 #include <vector>
+#include "Eigen/Dense"
 #include "custom_math/Matrix.h"
 #include "kinematics/Transformation.h"
 
@@ -14,7 +15,7 @@
 class Pose {
 	public:
 		Pose(float x, float y, float z, float roll, float pitch, float yaw);
-		matrixf pose;
+		Matrix4d pose;
 };
 
 

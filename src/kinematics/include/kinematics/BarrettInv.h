@@ -8,6 +8,7 @@
 #include "Pose.h"
 #include "kinematics/Transformation.h"
 #include "custom_math/Scalar.h"
+#include "Eigen/Dense"
 
 class BarrettInv {
 public:

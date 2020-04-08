@@ -7,21 +7,24 @@
 
 #include <cmath>
 #include <vector>
+#include "Eigen/Dense"
 #include "custom_math/Matrix.h"
 
+
+using namespace Eigen;
 
 class Transformation {
 public:
 	Transformation(float L, float d, float a, float th);
 	float L, d, a, th;
 
-	matrixf matrix;
-	matrixf inverse;
+	Matrix4d matrix;
+	Matrix4d inverse;
 
-	static matrixf Roll(float roll);
-	static matrixf Pitch(float pitch);
-	static matrixf Yaw(float yaw);
-	static matrixf Translation(vecf p);
+	static Matrix4d Roll(float roll);
+	static Matrix4d Pitch(float pitch);
+	static Matrix4d Yaw(float yaw);
+	static Matrix4d Translation(vecf p);
 
 	Transformation* update(float th);
 };

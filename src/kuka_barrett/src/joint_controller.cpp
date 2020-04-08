@@ -35,7 +35,6 @@ int main(int argc, char **argv)
 		bh_msgs.push_back(msg);
 	}
 
-
 	// KUKA iiwa LBR 14 arm controller publisher
 	ros::Publisher kuka_publisher = nh.advertise<trajectory_msgs::JointTrajectory > ("/arm_controller/command", 1000);
 
@@ -43,23 +42,13 @@ int main(int argc, char **argv)
 	vector<Pose*> path;
 	vector<Iiwa14Inv*> pathSolutions;
 
-//	path.push_back(new Pose(0,-0.84,1.6,0,0,0));
-//	path.push_back(new Pose(0,-0.84,1.35,0,0,0));
-//	path.push_back(new Pose(0,-0.84,1.6,0,0,0));
-//	path.push_back(new Pose(0,0.84,1.6,0,0,0));
-//	path.push_back(new Pose(0,0.84,1.4,0,0,0));
-//	path.push_back(new Pose(0,0.84,1.6,0,0,0));
-//	path.push_back(new Pose(0.2,-0.84,1.6,0,0,0));
-//	path.push_back(new Pose(0.2,-0.84,1.4,0,0,0));
-//	path.push_back(new Pose(0.2,-0.84,1.6,0,0,0));
-//	path.push_back(new Pose(0,0,2.266,0,0,0));
-//	path.push_back(new Pose(0,0,2.166,0,0,0));
-
-	path.push_back(new Pose(0, -0.68, 1.5, M_PI, 0, M_PI_2));
-	path.push_back(new Pose(0, -0.68, 1.19, M_PI, 0, M_PI_2));
-	path.push_back(new Pose(0, -0.68, 1.5, M_PI, 0, M_PI_2));
-//		path.push_back(new Pose(0,0,2.166,0,0,0));
-//	path.push_back(new Pose(0,0,2.266,0, 0, 0));
+	path.push_back(new Pose(0, 0.68, 1.7, M_PI, 0, M_PI_2));
+	path.push_back(new Pose(0, 0.68, 1.5, M_PI, 0, M_PI_2));
+//	path.push_back(new Pose(0, -0.68, 1.4, M_PI, 0, M_PI_2));
+//	path.push_back(new Pose(0, -0.68, 1.5, M_PI, 0, M_PI_2));
+//	path.push_back(new Pose(0.0001,0.01,2.066,0,0,0));
+//	path.push_back(new Pose(0.0001,0.01,2.166,0, 0, 0));
+//	path.push_back(new Pose(0.0001,0.0001,2.425,0.0001, 0.0001, 0.0001));
 
 	// Build iiwa arm joint trajectory message
 	trajectory_msgs::JointTrajectory kuka_msg;
@@ -84,11 +73,15 @@ int main(int argc, char **argv)
 		if (pathIndex < path.size()) {
 			// for (int i = 0; i < 9; ++i) bh_fingers_publishers.at(i).publish(bh_msgs.at(i));
 
-			pathSolutions.push_back(new Iiwa14Inv(path.at(pathIndex)));
+			Iiwa14Inv* pathSolution = new Iiwa14Inv(path.at(pathIndex));
+			// pathSolution->validateSolution();
+			pathSolutions.push_back(pathSolution);
 
 			kuka_msg.points[pathIndex].positions.resize(7);
+			vector<double> angles = pathSolutions.at(pathIndex)->solutionSet[5]; // Select first solution of the solution set
+			pathSolutions.at(pathIndex)->validateSolution(angles);
 			for (int i = 0; i < 7; ++i) {
-				vecf angles = pathSolutions.at(pathIndex)->solutionSet[3]; // Select first solution of the solution set
+				// vecf angles = {0, 0, 0, 0, 0, 0, 0};
 				kuka_msg.points[pathIndex].positions[i] = angles[i];
 			}
 
