@@ -5,9 +5,10 @@
 
     <joint name="camera_joint" type="fixed">
         <axis xyz="0 1 0" />
-        <origin xyz="0 0 ${camera_link}" rpy="0 -1.57 0"/>
+        <origin xyz="-${2*camera_link} 0 0" rpy="0 -1.57 0"/>
         <parent link="${parent}"/>
         <child link="camera_link"/>
+				<mimic joint="bh_base_joint" multiplier="1" offset="0"/>
     </joint>
 
     <link name="camera_link">

@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:macro name="surgical_tool" params="parent">
+
+    <joint name="tool_joint" type="fixed">
+        <axis xyz="0 1 0" />
+        <origin xyz="0.05 0 0.082" rpy="0 0 1.57"/>
+        <parent link="${parent}"/>
+        <child link="surgical_tool_link"/>
+    </joint>
+
+    <link name="surgical_tool_link">
+			<collision>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<geometry>
+          <mesh filename="package://kuka_barrett_gazebo/objects/surgical_tool/meshes/surgical_tool_collision.stl"/>
+        </geometry>
+			</collision>
+
+			<visual>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<geometry>
+          <mesh filename="package://kuka_barrett_gazebo/objects/surgical_tool/meshes/surgical_tool.stl"/>
+        </geometry>
+				<material name="red"/>
+			</visual>
+
+			<inertial>
+				<mass value="1e-5" />
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+			</inertial>
+
+			<kinematic>1</kinematic>
+    </link>
+
+    <gazebo reference="surgical_tool_link">
+			<material>Gazebo/Blue</material>
+			<turnGravityOff>false</turnGravityOff>
+		</gazebo>
+  </xacro:macro>
+
+</robot>
+

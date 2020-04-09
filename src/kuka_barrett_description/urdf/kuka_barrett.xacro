@@ -15,9 +15,12 @@
   <!-- Import camera component -->
   <xacro:include filename="$(find kuka_barrett_description)/urdf/hand_camera.xacro"/>
   <xacro:include filename="$(find kuka_barrett_description)/urdf/hand_camera.gazebo"/>
-
   <xacro:hand_camera parent="iiwa_link_ee" camera_link="0.05" />
   <xacro:hand_camera_gazebo/>
+
+  <!-- Attach surgical tool for testing purposes (Instead of picking it with gripper) -->
+  <xacro:include filename="$(find kuka_barrett_description)/urdf/surgical_tool.xacro"/>
+  <xacro:surgical_tool parent="bh_base_link" />
 
   <gazebo>
     <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
