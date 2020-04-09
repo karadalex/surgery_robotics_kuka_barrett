@@ -74,8 +74,9 @@ and a rqt window with joint states plots.
 
 ## Troubleshooting
 
-- _UnicodeDecodeError: 'ascii' codec can't decode byte 0xce in position 33: ordinal not in range(128)_ : Make sure the project path doesn't contain any greek characters
-- _Eigen/Geometry: No such file or directory_: `sudo apt-get install libeigen3-dev` if that does not work either `sudo ln -s /usr/include/eigen3/Eigen /usr/include/Eigen`
+- **UnicodeDecodeError: 'ascii' codec can't decode byte 0xce in position 33: ordinal not in range(128)** : Make sure the project path doesn't contain any greek characters
+- **Eigen/Geometry: No such file or directory**: `sudo apt-get install libeigen3-dev` if that does not work either `sudo ln -s /usr/include/eigen3/Eigen /usr/include/Eigen`
+- **gzclient: /build/ogre-1.9-B6QkmW/ogre-1.9-1.9.0+dfsg1/OgreMain/include/OgreAxisAlignedBox.h:252: void Ogre::AxisAlignedBox::setExtents(const Ogre::Vector3&, const Ogre::Vector3&): Assertion `(min.x <= max.x && min.y <= max.y && min.z <= max.z) && "The minimum corner of the box must be less than or equal to maximum corner"' failed.** Make sure to upgrade gazebo (ros-melodic-gazebo-ros-pkgs) to the latest version
 
 ## References
 
