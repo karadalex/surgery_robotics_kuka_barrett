@@ -45,33 +45,39 @@ int main(int argc, char** argv)
 	path.push_back({0, 0, 2.26, 0, 0, 0}); // Home position
 	grasps.push_back(gripper_closed);
 	// Pick position 1
-	path.push_back({0, -0.68, 1.5, M_PI, 0, M_PI_2});
+	path.push_back({0, -0.68, 1.5, M_PI, 0, -M_PI_2});
 	grasps.push_back(gripper_open);
-	path.push_back({0, -0.68, 1.19, M_PI, 0, M_PI_2});
+	path.push_back({0, -0.68, 1.38, M_PI, 0, -M_PI_2});
 	grasps.push_back(gripper_open);
-	path.push_back({0, -0.68, 1.5, M_PI, 0, M_PI_2});
+	path.push_back({0, -0.68, 1.5, M_PI, 0, -M_PI_2});
 	grasps.push_back(gripper_open);
 	// Fulcrum position 1
-	path.push_back({-0.14, 0.68, 1.68, M_PI, -0.59, 0});
-	grasps.push_back(gripper_closed);
-	path.push_back({0.06, 0.70, 1.38, M_PI, -0.59, 0});
+	path.push_back({-0.33, 0.6739, 1.58, 0.02, 0.711, 0.072});
+	// grasps.push_back(gripper_closed);
 	grasps.push_back(gripper_open);
-	path.push_back({-0.14, 0.68, 1.68, M_PI, -0.59, 0});
+	// path.push_back({0.06, 0.70, 1.38, M_PI, -0.59, 0});
+	path.push_back({-0.214, 0.682, 1.468, 0.019, 0.711, 0.072});
 	grasps.push_back(gripper_open);
+	path.push_back({-0.33, 0.6739, 1.58, 0.02, 0.711, 0.072});
+	grasps.push_back(gripper_open);
+
 	// Pick position 2
-	path.push_back({0.2, -0.68, 1.5, M_PI, 0, M_PI_2});
-	grasps.push_back(gripper_open);
-	path.push_back({0.2, -0.68, 1.19, M_PI, 0, M_PI_2});
-	grasps.push_back(gripper_closed);
-	path.push_back({0.2, -0.68, 1.5, M_PI, 0, M_PI_2});
-	grasps.push_back(gripper_closed);
-	// Fulcrum position 2
-	path.push_back({-0.14, 0.68, 1.68, M_PI, -0.59, 0});
-	grasps.push_back(gripper_closed);
-	path.push_back({0.06, 0.70, 1.38, M_PI, -0.59, 0});
-	grasps.push_back(gripper_open);
-	path.push_back({-0.14, 0.68, 1.68, M_PI, -0.59, 0});
-	grasps.push_back(gripper_open);
+//	path.push_back({0.2, -0.68, 1.5, M_PI, 0, M_PI_2});
+//	grasps.push_back(gripper_open);
+//	path.push_back({0.2, -0.68, 1.19, M_PI, 0, M_PI_2});
+//	// grasps.push_back(gripper_closed);
+//	grasps.push_back(gripper_open);
+//	path.push_back({0.2, -0.68, 1.5, M_PI, 0, M_PI_2});
+//	// grasps.push_back(gripper_closed);
+//	grasps.push_back(gripper_open);
+//	// Fulcrum position 2
+//	path.push_back({-0.14, 0.68, 1.68, M_PI, -0.59, 0});
+//	// grasps.push_back(gripper_closed);
+//	grasps.push_back(gripper_open);
+//	path.push_back({0.06, 0.70, 1.38, M_PI, -0.59, 0});
+//	grasps.push_back(gripper_open);
+//	path.push_back({-0.14, 0.68, 1.68, M_PI, -0.59, 0});
+//	grasps.push_back(gripper_open);
 
 	// Build Barrett Hand joint trajectory message
 	trajectory_msgs::JointTrajectory bh_msg;
@@ -138,7 +144,7 @@ int main(int argc, char** argv)
 		// To be reached 1 second after starting along the trajectory
 		bh_msg.points[i].time_from_start = ros::Duration(i+1);
 
-		bh_publisher.publish(bh_msg);
+//		bh_publisher.publish(bh_msg);
 	}
 
 

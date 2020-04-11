@@ -1,16 +1,14 @@
 <launch>
     <!-- Load Gazebo with RViz and MoveIt -->
+    <!-- <include file="$(find moveit_config)/launch/demo.launch"/> -->
     <include file="$(find moveit_config)/launch/iiwa_planning_execution.launch"/>
 
-    <!-- Load gazebo world models to RViz
-    using Gazebo Fake object recognition service -->
-    <!-- <node name="table1" pkg="gazebo_test_tools" type="fake_object_recognizer_cmd" args="table1 1" />
+    <!-- Load gazebo world models to RViz using Gazebo Fake object recognition service -->
+    <node name="table1" pkg="gazebo_test_tools" type="fake_object_recognizer_cmd" args="table1 1" />
     <node name="table2" pkg="gazebo_test_tools" type="fake_object_recognizer_cmd" args="table2 1" />
-    <node name="surgical_tool1" pkg="gazebo_test_tools" type="fake_object_recognizer_cmd" args="surgical_tool1 1" />
-    <node name="surgical_tool2" pkg="gazebo_test_tools" type="fake_object_recognizer_cmd" args="surgical_tool2 1" />
-    <node name="surgical_tool3" pkg="gazebo_test_tools" type="fake_object_recognizer_cmd" args="surgical_tool3 1" />
-    <node name="surgical_tool4" pkg="gazebo_test_tools" type="fake_object_recognizer_cmd" args="surgical_tool4 1" />
-    <node name="mounting_dock" pkg="gazebo_test_tools" type="fake_object_recognizer_cmd" args="mounting_dock 0" /> -->
+
+    <!-- Load more complicated collision objects via scene_objects node -->
+    <node name="scene_objects" pkg="kuka_barrett" type="scene_objects"/>
 
     <!-- OpenCV - Computer Vision -->
     <!-- <node name="image_view" pkg="image_view" type="image_view" args="image:=/barrett/camera1/image_raw" /> -->
