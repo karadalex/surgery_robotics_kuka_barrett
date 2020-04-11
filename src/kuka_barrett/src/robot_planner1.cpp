@@ -25,7 +25,7 @@ int main(int argc, char** argv)
 	// The package MoveItVisualTools provides many capabilties for visualizing objects, robots,
 	// and trajectories in RViz as well as debugging tools such as step-by-step introspection of a script
 	namespace rvt = rviz_visual_tools;
-	moveit_visual_tools::MoveItVisualTools visual_tools("iiwa_link_0");
+	moveit_visual_tools::MoveItVisualTools visual_tools("world");
 	visual_tools.deleteAllMarkers();
 	// Remote control is an introspection tool that allows users to step through a high level script
 	// via buttons and keyboard shortcuts in RViz
@@ -78,15 +78,15 @@ int main(int argc, char** argv)
 
 		bool success = (move_group.plan(my_plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
 		ROS_INFO_NAMED("iiwa_planning", "Visualizing plan %d (pose goal) %s", i, success ? "SUCCESS" : "FAILED");
-		std::string nextButtonMsg = "Press 'next' in the RvizVisualToolsGui window to execute plan";
-		visual_tools.prompt(nextButtonMsg);
-
 		// Visualize plan
 		ROS_INFO_NAMED("tutorial", "Visualizing plan %d as trajectory line", i);
 		visual_tools.publishAxisLabeled(target_pose, "pose");
 		visual_tools.publishText(text_pose, "Pose Goal", rvt::WHITE, rvt::XLARGE);
 		visual_tools.publishTrajectoryLine(my_plan.trajectory_, joint_model_group);
 		visual_tools.trigger();
+		
+		std::string nextButtonMsg = "Press 'next' in the RvizVisualToolsGui window to execute plan";
+		visual_tools.prompt(nextButtonMsg);
 
 		move_group.move();
 	}
