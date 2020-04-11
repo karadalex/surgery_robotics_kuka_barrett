@@ -209,11 +209,11 @@ include_directories(
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
 
-add_executable(joint_controller src/joint_controller.cpp)
-target_link_libraries(joint_controller ${catkin_LIBRARIES})
+add_executable(robot_planner_custom src/robot_planner_custom.cpp)
+target_link_libraries(robot_planner_custom ${catkin_LIBRARIES})
 
-add_executable(joint_controller_moveit src/joint_controller_moveit.cpp)
-target_link_libraries(joint_controller_moveit ${catkin_LIBRARIES} ${Boost_LIBRARIES})
+add_executable(robot_planner1 src/robot_planner1.cpp)
+target_link_libraries(robot_planner1 ${catkin_LIBRARIES} ${Boost_LIBRARIES})
 
 add_executable(scene_objects src/scene_objects.cpp)
 target_link_libraries(scene_objects ${catkin_LIBRARIES})

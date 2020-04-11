@@ -10,7 +10,7 @@ using namespace std;
 int main(int argc, char **argv)
 {
 	// Set up ROS.
-	ros::init(argc, argv, "joint_controller");
+	ros::init(argc, argv, "robot_planner_custom");
 	ros::NodeHandle nh;
 	ros::Rate loop_rate(10);
 
