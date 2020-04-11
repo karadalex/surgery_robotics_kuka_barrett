@@ -54,10 +54,13 @@ class Detection:
     numBluePixels = 0
     numGreenPixels = 0
     toolPixels = []
-    for i in range(detectionAreaXRange[0], detectionAreaXRange[1], 3):
-      for j in range(detectionAreaYRange[0], detectionAreaYRange[1], 3):
+    # for i in range(detectionAreaXRange[0], detectionAreaXRange[1], 3):
+    for i in range(0, rows, 10):
+      # for j in range(0, cols, 10):
+      for j in range(detectionAreaYRange[0], detectionAreaYRange[1], 10):
         if cv_image[i,j,0] >= 200:
           numBluePixels += 1
+          cv_image[i,j] = [0,255,0]
           toolPixels.append(np.array([[i,j]]))
         elif cv_image[i,j,1] >= 180:
           numGreenPixels += 1
@@ -83,8 +86,8 @@ class Detection:
     #    SHAPE DETECTION
     ###########################################################################################
     # Restrict detection in the center columns
-    img_detection_region = cv_image[0:rows, int(cols/3):int(2*cols/3)]
-    # img_detection_region = cv_image
+    # img_detection_region = cv_image[0:rows, int(cols/3):int(2*cols/3)]
+    img_detection_region = cv_image
 
     # convert to grayscale
     gray = cv2.cvtColor(img_detection_region, cv2.COLOR_BGR2GRAY)
@@ -143,12 +146,13 @@ class Detection:
     ###########################################################################################
     #    POSE DETECTION
     ###########################################################################################
-    # Center of mass of tool
-    maxHullCmX = contourCenterOfMass[maxHullIndex][0]
-    maxHullCmY = contourCenterOfMass[maxHullIndex][1]
+    # Center of mass of tool (weighted average of cm computed from contour and cm computed from toolPixels)
+    toolPixelsCM = geometry.centerOfMass(toolPixels) # toolPixelsCM coordinates are (Y,X) (??)
+    maxHullCmX = (2*contourCenterOfMass[maxHullIndex][0] + 4*toolPixelsCM[1]) / 6
+    maxHullCmY = (2*contourCenterOfMass[maxHullIndex][1] + 4*toolPixelsCM[0]) / 6
 
     # Find orientation vectors of tool
-    a,b = geometry.orientationVectors(contours[maxHullIndex])
+    a,b = geometry.orientationVectors(toolPixels)
     # attach vectors to center of mass point
     a = a + [maxHullCmX, maxHullCmY]
     b = b + [maxHullCmX, maxHullCmY]
@@ -191,6 +195,7 @@ class Detection:
       for i in range(1, len(contoursGreen)):
       # draw ith contour
         cv2.drawContours(img_detection_region, contoursGreen, i, contour_color, 2, 8, hierarchy)
+    cmb = geometry.centerOfMass(toolPixels)
 
     # Draw tool detection message
     font                   = cv2.FONT_HERSHEY_SIMPLEX

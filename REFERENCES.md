@@ -27,3 +27,4 @@ References
 ### Miscellaneous
 
 - [Include a Cpp header from another package](https://roboticsbackend.com/ros-include-cpp-header-from-another-package/)
+- [UNderstanding the covariance matrix](https://datascienceplus.com/understanding-the-covariance-matrix/)
