@@ -1,6 +1,14 @@
 Surgery Robotics with KUKA LBR iiwa and Barrett
 ================================================
 
+## Table of contents
+
+- [Requirements](#Requirements)
+- [Instructions](#Instructions)
+- [Usage](#Usage)
+- [Troubleshooting](#Troubleshooting)
+- [References](#References)
+
 ## Requirements
 
 - This project is developed and tested in Ubuntu 18.04 (LTS) with ROS Melodic installed. ROS melodic (full installation) [https://wiki.ros.org/melodic/Installation/Ubuntu]()
