@@ -52,7 +52,7 @@ int main(int argc, char** argv)
 	path.push_back({0, -0.68, 1.5, M_PI, 0, -M_PI_2});
 
 	// Fulcrum position 1
-	path.push_back({-0.33, 0.6739, 1.58, 0.02, 0.711, 0.072});
+	path.push_back({-0.33, 0.6739, 1.58, 0.019, 0.711, 0.072});
 
 	geometry_msgs::Pose target_pose;
 	tf2::Quaternion quaternion;
@@ -111,16 +111,16 @@ int main(int argc, char** argv)
 	// The approaching motion needs to be slower.
 	// We reduce the speed of the robot arm via a scaling factor
 	// of the maxiumum speed of each joint. Note this is not the speed of the end effector point.
-	move_group.setMaxVelocityScalingFactor(0.1);
+	move_group.setMaxVelocityScalingFactor(0.05);
 
-	// We want the Cartesian path to be interpolated at a resolution of 1 cm
+	// We want the Cartesian path to be interpolated at a resolution of 1 mm
 	// which is why we will specify 0.01 as the max step in Cartesian
 	// translation.  We will specify the jump threshold as 0.0, effectively disabling it.
 	// WARNING - disabling the jump threshold while operating real hardware can cause
 	// large unpredictable motions of redundant joints and could be a safety issue
 	moveit_msgs::RobotTrajectory trajectory;
 	const double jump_threshold = 0.0;
-	const double eef_step = 0.01;
+	const double eef_step = 0.001;
 	double fraction = move_group.computeCartesianPath(waypoints, eef_step, jump_threshold, trajectory);
 	ROS_INFO_NAMED("robot_planner1", "Visualizing plan for insertion movement (Cartesian path) (%.2f%% achieved)", fraction * 100.0);
 
@@ -132,6 +132,12 @@ int main(int argc, char** argv)
 		visual_tools.publishAxisLabeled(waypoints[i], "pt" + std::to_string(i), rvt::SMALL);
 	visual_tools.trigger();
 	visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to continue the demo");
+
+	moveit::planning_interface::MoveGroupInterface::Plan insertion_plan;
+	bool success = (move_group.plan(insertion_plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
+	insertion_plan.trajectory_ = trajectory;
+	move_group.execute(insertion_plan);
+	ROS_INFO_NAMED("robot_planner1", "Executing insertion motion plan %s", success ? "SUCCESS" : "FAILED");
 
   ros::shutdown();
   return 0;
