@@ -215,5 +215,8 @@ target_link_libraries(robot_planner_custom ${catkin_LIBRARIES})
 add_executable(robot_planner1 src/robot_planner1.cpp)
 target_link_libraries(robot_planner1 ${catkin_LIBRARIES} ${Boost_LIBRARIES})
 
+add_executable(robot_planner2 src/robot_planner2.cpp)
+target_link_libraries(robot_planner2 ${catkin_LIBRARIES} ${Boost_LIBRARIES})
+
 add_executable(scene_objects src/scene_objects.cpp)
 target_link_libraries(scene_objects ${catkin_LIBRARIES})

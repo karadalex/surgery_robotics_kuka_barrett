@@ -53,19 +53,18 @@ While running make sure to check in the terminal that the plugin is loaded succe
 
 ## Usage
 
-- To run main program run in a sourced terminal 
+List of available programs (launch files) to run:
+1) `main program1.launch` : Testing some simple trajectories with the tool already attached to robot.
+2) `main program2.launch` : Simple pick and place example program
+3) (Discontinued) ~~kuka_barrett_control computed_torque_controller_test.launch~~
+
+To run program 1, run in a sourced terminal 
 ```
 roslaunch main program1.launch
 ```
 This will run a gazebo simulator with robot, tables and tools, RViz with Moveit plugins and camera 
 views and an OpenCV Node.
 
-- To run the **Computed Torque Controller** test run 
-```
-roslaunch kuka_barrett_control computed_torque_controller_test.launch
-```
-which will run gazebo with EffortJointInterface, the ComputedTorqueControl spawned in Controller Manager 
-and a rqt window with joint states plots.
 
 ### Convenience scripts
 - `rosrun main iiwa_home.sh` move iiwa arm to home position
