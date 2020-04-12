@@ -86,7 +86,7 @@ int main(int argc, char** argv)
 		std::string nextButtonMsg = "Press 'next' in the RvizVisualToolsGui window to execute plan";
 		visual_tools.prompt(nextButtonMsg);
 
-		move_group.move();
+		move_group.execute(my_plan);
 	}
 
 
