@@ -48,12 +48,10 @@ int main(int argc, char** argv)
 
 	// Pick position 1
 	path.push_back({0, -0.68, 1.5, M_PI, 0, -M_PI_2});
-	path.push_back({0, -0.68, 1.38, M_PI, 0, -M_PI_2});
+	path.push_back({0, -0.68, 1.30, M_PI, 0, -M_PI_2});
 	path.push_back({0, -0.68, 1.5, M_PI, 0, -M_PI_2});
 
 	// Fulcrum position 1
-	path.push_back({-0.33, 0.6739, 1.58, 0.02, 0.711, 0.072});
-	path.push_back({-0.214, 0.682, 1.468, 0.019, 0.711, 0.072});
 	path.push_back({-0.33, 0.6739, 1.58, 0.02, 0.711, 0.072});
 
 	geometry_msgs::Pose target_pose;
@@ -77,9 +75,9 @@ int main(int argc, char** argv)
 		move_group.setPoseTarget(target_pose);
 
 		bool success = (move_group.plan(my_plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
-		ROS_INFO_NAMED("iiwa_planning", "Visualizing plan %d (pose goal) %s", i, success ? "SUCCESS" : "FAILED");
+		ROS_INFO_NAMED("robot_planner1", "Visualizing plan %d (pose goal) %s", i, success ? "SUCCESS" : "FAILED");
 		// Visualize plan
-		ROS_INFO_NAMED("tutorial", "Visualizing plan %d as trajectory line", i);
+		ROS_INFO_NAMED("robot_planner1", "Visualizing plan %d as trajectory line", i);
 		visual_tools.publishAxisLabeled(target_pose, "pose");
 		visual_tools.publishText(text_pose, "Pose Goal", rvt::WHITE, rvt::XLARGE);
 		visual_tools.publishTrajectoryLine(my_plan.trajectory_, joint_model_group);
@@ -91,6 +89,49 @@ int main(int argc, char** argv)
 		move_group.move();
 	}
 
+
+	// Approaching Fulcrum point - Insertion motion Cartesian path
+	// Move in a line segment while approaching fulcrum point and entering body
+	geometry_msgs::Pose start_pose = target_pose;
+	std::vector<geometry_msgs::Pose> waypoints;
+	waypoints.push_back(start_pose);
+
+	vector<float> poseValues = {-0.214, 0.682, 1.468, 0.019, 0.711, 0.072};
+	path.push_back(poseValues);
+	target_pose.position.x = poseValues[0];
+	target_pose.position.y = poseValues[1];
+	target_pose.position.z = poseValues[2];
+	quaternion.setRPY(poseValues[3], poseValues[4], poseValues[5]);
+	target_pose.orientation.w = quaternion.getW();
+	target_pose.orientation.x = quaternion.getX();
+	target_pose.orientation.y = quaternion.getY();
+	target_pose.orientation.z = quaternion.getZ();
+	waypoints.push_back(target_pose);
+
+	// The approaching motion needs to be slower.
+	// We reduce the speed of the robot arm via a scaling factor
+	// of the maxiumum speed of each joint. Note this is not the speed of the end effector point.
+	move_group.setMaxVelocityScalingFactor(0.1);
+
+	// We want the Cartesian path to be interpolated at a resolution of 1 cm
+	// which is why we will specify 0.01 as the max step in Cartesian
+	// translation.  We will specify the jump threshold as 0.0, effectively disabling it.
+	// WARNING - disabling the jump threshold while operating real hardware can cause
+	// large unpredictable motions of redundant joints and could be a safety issue
+	moveit_msgs::RobotTrajectory trajectory;
+	const double jump_threshold = 0.0;
+	const double eef_step = 0.01;
+	double fraction = move_group.computeCartesianPath(waypoints, eef_step, jump_threshold, trajectory);
+	ROS_INFO_NAMED("robot_planner1", "Visualizing plan for insertion movement (Cartesian path) (%.2f%% achieved)", fraction * 100.0);
+
+	// Visualize the plan in RViz
+	visual_tools.deleteAllMarkers();
+	visual_tools.publishText(text_pose, "Joint Space Goal", rvt::WHITE, rvt::XLARGE);
+	visual_tools.publishPath(waypoints, rvt::LIME_GREEN, rvt::SMALL);
+	for (std::size_t i = 0; i < waypoints.size(); ++i)
+		visual_tools.publishAxisLabeled(waypoints[i], "pt" + std::to_string(i), rvt::SMALL);
+	visual_tools.trigger();
+	visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to continue the demo");
 
   ros::shutdown();
   return 0;
