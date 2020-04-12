@@ -1,4 +1,6 @@
 <launch>
+    <arg name="world" default="or_world1.world" />
+    <arg name="attach_surgical_tool" default="false" />
 
     <!-- Load gazebo_state_plugins ROS parameters -->
     <include file="$(find gazebo_test_tools)/launch/gazebo_fake_object_recognition.launch"/>
@@ -7,7 +9,10 @@
         <arg name="config_file" value="$(find moveit_object_handling)/config/CollisionObjectsGenerator.yaml"/>
     </include>
 
-    <include file="$(find kuka_barrett_control)/launch/kuka_barrett_control.launch"/>
+    <include file="$(find kuka_barrett_control)/launch/kuka_barrett_control.launch">
+        <arg name="world" value="$(arg world)" />
+        <arg name="attach_surgical_tool" value="$(arg attach_surgical_tool)" />
+    </include>
     
     <rosparam command="load" file="$(find moveit_config)/config/joint_names.yaml"/>
     <rosparam command="load" file="$(find moveit_config)/config/ros_controllers.yaml"/>

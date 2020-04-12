@@ -8,6 +8,8 @@
   <arg name="headless" default="false"/>
   <arg name="debug" default="false"/>
   <arg name="hardware_interface" default="PositionJointInterface"/>
+  <arg name="attach_surgical_tool" default="false"/>
+  <arg name="world" default="or_world1.world" />
 
   <!-- load the world plugin loader (in package gazebo_world_plugin_loader) which launches several
   world plugins according to the specification in the ROS parameters. Note that you will
@@ -16,7 +18,7 @@
 
   <!-- run an empty world in gazebo -->
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
-    <arg name="world_name" value="$(find kuka_barrett_gazebo)/worlds/or_world1.world"/>
+    <arg name="world_name" value="$(find kuka_barrett_gazebo)/worlds/$(arg world)"/>
     <arg name="debug" value="$(arg debug)" />
     <arg name="gui" value="$(arg gui)" />
     <arg name="paused" value="$(arg paused)"/>
@@ -25,13 +27,14 @@
     <arg if="$(arg load_world_plugins)" name="extra_gazebo_args" value="-s libgazebo_world_plugin_loader.so"/>
   </include>
 
-<!-- <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
-<node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" /> -->
+  <!-- <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" /> -->
 
-<!-- Load the URDF into the ROS Parameter Server  -->
+  <!-- Load the URDF into the ROS Parameter Server  -->
   <param name="robot_description"
     command="$(find xacro)/xacro $(find kuka_barrett_description)/urdf/kuka_barrett.xacro 
-    hardware_interface:=$(arg hardware_interface)" />
+    hardware_interface:=$(arg hardware_interface) 
+    attach_surgical_tool:=$(arg attach_surgical_tool)" />
 
   <!-- Spawn the URDF. Run a python script to the send a service call to gazebo_ros to spawn a URDF robot -->
   <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"

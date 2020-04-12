@@ -1,23 +1,27 @@
 <?xml version="1.0"?>
 <launch>
+
+  <arg name="world" default="or_world1.world" />
+  <arg name="attach_surgical_tool" default="false" />
  
-<!-- Launch Gazebo -->
-<include file="$(find kuka_barrett_gazebo)/launch/kuka_barrett_gazebo.launch" />
+  <!-- Launch Gazebo -->
+  <include file="$(find kuka_barrett_gazebo)/launch/kuka_barrett_gazebo.launch">
+    <arg name="world" value="$(arg world)" />
+    <arg name="attach_surgical_tool" value="$(arg attach_surgical_tool)" />
+  </include>
 
-<!-- Load joint controller CONFIGURATIONS from YAML file to parameter server -->
-<rosparam file="$(find kuka_barrett_control)/config/barrett_control.yaml" command="load"/>
+  <!-- Load joint controller CONFIGURATIONS from YAML file to parameter server -->
+  <rosparam file="$(find kuka_barrett_control)/config/barrett_control.yaml" command="load"/>
 
-<rosparam file="$(find kuka_barrett_control)/config/kuka_control.yaml" command="load"/>
- <node name="kuka_controller_spawner" pkg="controller_manager" type="spawner" args="arm_controller" />
- <node name="barrett_controller_spawner" pkg="controller_manager" type="spawner" args="gripper_controller" />
+  <rosparam file="$(find kuka_barrett_control)/config/kuka_control.yaml" command="load"/>
+  <node name="kuka_controller_spawner" pkg="controller_manager" type="spawner" args="arm_controller" />
+  <node name="barrett_controller_spawner" pkg="controller_manager" type="spawner" args="gripper_controller" />
 
-
-<!-- Robot state publisher -->
+  <!-- Robot state publisher -->
   <!-- <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher">
     <param name="publish_frequency" type="double" value="50.0" />
     <param name="tf_prefix" type="string" value="" />
   </node> -->
   <node name="joint_state_controller_spawner" pkg="controller_manager" type="controller_manager" args="spawn joint_state_controller" respawn="false" output="screen"/>
-
 
 </launch>
