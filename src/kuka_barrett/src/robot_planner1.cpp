@@ -37,6 +37,22 @@ int main(int argc, char** argv)
 	// Batch publishing is used to reduce the number of messages being sent to RViz for large visualizations
 	visual_tools.trigger();
 
+	// Fulcrum Frame 1 pose
+	geometry_msgs::Pose fulcrum1_pose;
+	fulcrum1_pose.position.x = 0.126597;
+	fulcrum1_pose.position.y = 0.700751;
+	fulcrum1_pose.position.z = 1.293635;
+	tf2::Quaternion fulcrum1_rpy_quaternion;
+	fulcrum1_rpy_quaternion.setRPY(0.0, -0.591161, 0.0);
+	fulcrum1_pose.orientation.w = fulcrum1_rpy_quaternion.getW();
+	fulcrum1_pose.orientation.x = fulcrum1_rpy_quaternion.getX();
+	fulcrum1_pose.orientation.y = fulcrum1_rpy_quaternion.getY();
+	fulcrum1_pose.orientation.z = fulcrum1_rpy_quaternion.getZ();
+	// Publish Fulcrum 1 Reference Frame in RViz
+	visual_tools.publishAxisLabeled(fulcrum1_pose, "Fulcrum Frame 1", rvt::MEDIUM);
+	// Publish fulcrum pose in Fulcrum ROS Topic
+	// TODO
+
 	// Raw pointers are frequently used to refer to the planning group for improved performance.
 	const robot_state::JointModelGroup* joint_model_group = move_group.getCurrentState()->getJointModelGroup(PLANNING_GROUP);
 
@@ -51,7 +67,7 @@ int main(int argc, char** argv)
 	path.push_back({0, -0.68, 1.30, M_PI, 0, -M_PI_2});
 	path.push_back({0, -0.68, 1.5, M_PI, 0, -M_PI_2});
 
-	// Fulcrum position 1
+	// TCP position for fulcrum 1
 	path.push_back({-0.349826, 0.673821, 1.572205, 0.018372, 0.735106, 0.072819});
 
 	geometry_msgs::Pose target_pose;
@@ -138,6 +154,19 @@ int main(int argc, char** argv)
 	insertion_plan.trajectory_ = trajectory;
 	move_group.execute(insertion_plan);
 	ROS_INFO_NAMED("robot_planner1", "Executing insertion motion plan %s", success ? "SUCCESS" : "FAILED");
+
+	// Reverse the insertion motion
+	std::vector<geometry_msgs::Pose> reverse_waypoints;
+	reverse_waypoints.push_back(target_pose);
+	reverse_waypoints.push_back(start_pose);
+	moveit_msgs::RobotTrajectory reverse_trajectory;
+	fraction = move_group.computeCartesianPath(reverse_waypoints, eef_step, jump_threshold, reverse_trajectory);
+	ROS_INFO_NAMED("robot_planner1", "Visualizing plan for reverse insertion movement (Cartesian path) (%.2f%% achieved)", fraction * 100.0);
+	moveit::planning_interface::MoveGroupInterface::Plan reverse_insertion_plan;
+	success = (move_group.plan(reverse_insertion_plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
+	reverse_insertion_plan.trajectory_ = reverse_trajectory;
+	move_group.execute(reverse_insertion_plan);
+	ROS_INFO_NAMED("robot_planner1", "Executing reverse insertion motion plan %s", success ? "SUCCESS" : "FAILED");
 
   ros::shutdown();
   return 0;
