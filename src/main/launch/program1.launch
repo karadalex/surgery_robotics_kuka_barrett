@@ -2,11 +2,15 @@
     <arg name="world" default="or_world1.world" />
     <arg name="attach_surgical_tool" default="true"/>
 
+    <!-- specify the planning pipeline -->
+    <arg name="pipeline" default="ompl" />
+
     <!-- Load Gazebo with RViz and MoveIt -->
     <!-- <include file="$(find moveit_config)/launch/demo.launch"/> -->
     <include file="$(find moveit_config)/launch/iiwa_planning_execution.launch">
         <arg name="world" value="$(arg world)" />
         <arg name="attach_surgical_tool" value="$(arg attach_surgical_tool)" />
+        <arg name="pipeline" value="$(arg pipeline)"/>
     </include>
 
     <!-- Load gazebo world models to RViz using Gazebo Fake object recognition service -->

@@ -2,6 +2,9 @@
     <arg name="world" default="or_world1.world" />
     <arg name="attach_surgical_tool" default="false" />
 
+    <!-- specify the planning pipeline -->
+    <arg name="pipeline" default="ompl" />
+
     <!-- Load gazebo_state_plugins ROS parameters -->
     <include file="$(find gazebo_test_tools)/launch/gazebo_fake_object_recognition.launch"/>
     <!-- Load MoveIt! collision object generator -->
@@ -20,14 +23,21 @@
     <include file="$(find moveit_config)/launch/planning_context.launch" >
         <arg name="load_robot_description" value="false" />
     </include>
+
+    <!-- If needed, broadcast static tf for robot root -->
+    <node pkg="tf2_ros" type="static_transform_publisher" name="virtual_joint_broadcaster_1" args="0 0 0 0 0 0 world iiwa_link_0" />
     
     <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
         <param name="/use_gui" value="false"/>
         <rosparam param="/source_list">[/joint_states]</rosparam>
     </node>
+
+    <!-- Given the published joint states, publish tf for the robot links -->
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="true" output="screen" />
     
     <include file="$(find moveit_config)/launch/move_group.launch">
         <arg name="publish_monitored_planning_scene" value="true" />
+        <arg name="pipeline" value="$(arg pipeline)"/>
     </include>
     
     <include file="$(find moveit_config)/launch/moveit_rviz.launch">
