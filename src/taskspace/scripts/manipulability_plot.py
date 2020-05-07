@@ -2,8 +2,9 @@
 from __future__ import print_function
 import sys
 import rospy
-import matplotlib.pyplot as plt
 import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib as mpl
 from matplotlib import cm
 from matplotlib.ticker import LinearLocator
 from mpl_toolkits.mplot3d import Axes3D
@@ -17,6 +18,7 @@ qi_max = [3.14 for i in range(7)]
 x = []
 y = []
 z = []
+cs = []
 
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
@@ -25,7 +27,8 @@ ax = fig.add_subplot(111, projection='3d')
 def callback(data):
   manipulability = manipulability_measure(data.data)
   Lq = joint_limit_measure()
-  manipulability_plot()
+  manipulability_plot(manipulability)
+  print(manipulability)
 
 
 def manipulability_measure(array):
@@ -39,24 +42,27 @@ def joint_limit_measure():
   return 1
 
 
-def manipulability_plot():
+def manipulability_plot(manipulability):
   # Make data.
   x.append(rand.gauss(0, 1))
   y.append(rand.gauss(0, 1))
   z.append(rand.gauss(0, 1))
+  cs.append(manipulability)
+
+  cmap = mpl.cm.coolwarm
+  norm = mpl.colors.Normalize(vmin=5, vmax=10)
 
   # Plot the points
   ax.clear()
-  ax.scatter(x, y, z)
+  points = ax.scatter(x, y, z, c=cs, cmap=cm.coolwarm)
+  # fig.colorbar(points)
   fig.canvas.draw()
-
 
 def main(args):
   rospy.init_node('manipulability_plot', anonymous=True)
 
   subscriber = rospy.Subscriber("/jacobian_state", Float64MultiArray, callback, queue_size=1)
 
-  manipulability_plot()
   plt.show()
 
   try:
