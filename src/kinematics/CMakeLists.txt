@@ -207,3 +207,6 @@ install(
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
+
+add_executable(jacobian_node src/jacobian_node.cpp)
+target_link_libraries(jacobian_node ${catkin_LIBRARIES})
