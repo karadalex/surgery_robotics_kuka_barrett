@@ -68,8 +68,7 @@ int main(int argc, char** argv)
 	path.push_back({0, -0.68, 1.30, M_PI, 0, -M_PI_2});
 	path.push_back({0, -0.68, 1.5, M_PI, 0, -M_PI_2});
 
-	// TCP position for fulcrum 1
-	// path.push_back({-0.349826, 0.673821, 1.572205, 0.018372, 0.735106, 0.072819});
+	// TCP position for point above fulcrum 1
 	path.push_back({-0.320971, 0.681543, 1.656761, 0.019169, 0.783348, 0.073975});
 
 	geometry_msgs::Pose target_pose;
@@ -111,9 +110,7 @@ int main(int argc, char** argv)
 	std::vector<geometry_msgs::Pose> waypoints;
 	waypoints.push_back(start_pose);
 
-	// vector<float> poseValues = {-0.133848, 0.684161, 1.376295, 0.018485, 0.735344, 0.072922};
-	// vector<float> poseValues = {-0.192705, 0.684161, 1.429469, 0.018485, 0.735344, 0.072922};
-	vector<float> poseValues = {-0.195960, 0.681543, 1.532168, 0.019169, 0.783348, 0.073975};
+	vector<float> poseValues = {-0.113231, 0.681543, 1.449251, 0.019169, 0.783348, 0.073975};
 	path.push_back(poseValues);
 	target_pose.position.x = poseValues[0];
 	target_pose.position.y = poseValues[1];
