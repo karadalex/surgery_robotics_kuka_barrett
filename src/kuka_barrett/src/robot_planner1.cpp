@@ -17,10 +17,11 @@ int main(int argc, char** argv)
 	// Setup Move group
   static const std::string PLANNING_GROUP = "iiwa_arm";
   moveit::planning_interface::MoveGroupInterface move_group(PLANNING_GROUP);
-	move_group.setGoalPositionTolerance(0.00005);
-	move_group.setGoalOrientationTolerance(0.00005);
-	move_group.setPlanningTime(10);
+	// move_group.setGoalPositionTolerance(0.000005);
+	// move_group.setGoalOrientationTolerance(0.000005);
+	move_group.setPlanningTime(5);
 	move_group.allowReplanning(true);
+	move_group.setNumPlanningAttempts(6);
 
 	// The package MoveItVisualTools provides many capabilties for visualizing objects, robots,
 	// and trajectories in RViz as well as debugging tools such as step-by-step introspection of a script
@@ -68,7 +69,8 @@ int main(int argc, char** argv)
 	path.push_back({0, -0.68, 1.5, M_PI, 0, -M_PI_2});
 
 	// TCP position for fulcrum 1
-	path.push_back({-0.349826, 0.673821, 1.572205, 0.018372, 0.735106, 0.072819});
+	// path.push_back({-0.349826, 0.673821, 1.572205, 0.018372, 0.735106, 0.072819});
+	path.push_back({-0.320971, 0.681543, 1.656761, 0.019169, 0.783348, 0.073975});
 
 	geometry_msgs::Pose target_pose;
 	tf2::Quaternion quaternion;
@@ -98,9 +100,6 @@ int main(int argc, char** argv)
 		visual_tools.publishText(text_pose, "Pose Goal", rvt::WHITE, rvt::XLARGE);
 		visual_tools.publishTrajectoryLine(my_plan.trajectory_, joint_model_group);
 		visual_tools.trigger();
-		
-		std::string nextButtonMsg = "Press 'next' in the RvizVisualToolsGui window to execute plan";
-		visual_tools.prompt(nextButtonMsg);
 
 		move_group.execute(my_plan);
 	}
@@ -112,7 +111,9 @@ int main(int argc, char** argv)
 	std::vector<geometry_msgs::Pose> waypoints;
 	waypoints.push_back(start_pose);
 
-	vector<float> poseValues = {-0.133848, 0.689599, 1.376295, 0.018485, 0.735344, 0.072922};
+	// vector<float> poseValues = {-0.133848, 0.684161, 1.376295, 0.018485, 0.735344, 0.072922};
+	// vector<float> poseValues = {-0.192705, 0.684161, 1.429469, 0.018485, 0.735344, 0.072922};
+	vector<float> poseValues = {-0.195960, 0.681543, 1.532168, 0.019169, 0.783348, 0.073975};
 	path.push_back(poseValues);
 	target_pose.position.x = poseValues[0];
 	target_pose.position.y = poseValues[1];
@@ -127,7 +128,7 @@ int main(int argc, char** argv)
 	// The approaching motion needs to be slower.
 	// We reduce the speed of the robot arm via a scaling factor
 	// of the maxiumum speed of each joint. Note this is not the speed of the end effector point.
-	move_group.setMaxVelocityScalingFactor(0.05);
+	move_group.setMaxVelocityScalingFactor(0.5);
 
 	// We want the Cartesian path to be interpolated at a resolution of 1 mm
 	// which is why we will specify 0.01 as the max step in Cartesian
@@ -147,15 +148,58 @@ int main(int argc, char** argv)
 	for (std::size_t i = 0; i < waypoints.size(); ++i)
 		visual_tools.publishAxisLabeled(waypoints[i], "pt" + std::to_string(i), rvt::SMALL);
 	visual_tools.trigger();
-	visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to continue the demo");
 
 	moveit::planning_interface::MoveGroupInterface::Plan insertion_plan;
 	bool success = (move_group.plan(insertion_plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
-	insertion_plan.trajectory_ = trajectory;
-	move_group.execute(insertion_plan);
+	if (success) {
+		insertion_plan.trajectory_ = trajectory;
+		// move_group.execute(insertion_plan);
+	}
 	ROS_INFO_NAMED("robot_planner1", "Executing insertion motion plan %s", success ? "SUCCESS" : "FAILED");
 
-	// Reverse the insertion motion
+	// std::string nextButtonMsg = "Press 'next' in the RvizVisualToolsGui window to continue with pivoting motion";
+	// visual_tools.prompt(nextButtonMsg);
+
+	// Pivoting Trajectory
+	// std::vector<geometry_msgs::Pose> pivot_traj1_waypts;
+	// vector<vector<float>> pivot_path1;
+	// pivot_path1.push_back({-0.185241, 0.756977, 1.419682, -0.176089, 0.717969, -0.218691});
+	// pivot_path1.push_back({-0.232891, 0.750714, 1.336278, -0.145829, 0.435512, -0.164146});
+	// pivot_path1.push_back({-0.201695, 0.603255, 1.333467, 0.063977, 0.453583, 0.315894});
+	// for (int i = 0; i < pivot_path1.size(); ++i) {
+	// 	vector<float> pose = path.at(i);
+	// 	geometry_msgs::Pose pivot_pose;
+	// 	pivot_pose.position.x = pose[0];
+	// 	pivot_pose.position.y = pose[1];
+	// 	pivot_pose.position.z = pose[2];
+	// 	quaternion.setRPY(pose[3], pose[4], pose[5]);
+	// 	pivot_pose.orientation.w = quaternion.getW();
+	// 	pivot_pose.orientation.x = quaternion.getX();
+	// 	pivot_pose.orientation.y = quaternion.getY();
+	// 	pivot_pose.orientation.z = quaternion.getZ();
+	// 	pivot_traj1_waypts.push_back(pivot_pose);
+	// }
+	// // reverse_waypoints.push_back(start_pose);
+	// moveit_msgs::RobotTrajectory pivot_traj1;
+	// fraction = move_group.computeCartesianPath(pivot_traj1_waypts, eef_step, jump_threshold, pivot_traj1);
+	// ROS_INFO_NAMED("robot_planner1", "Pivoting motion trajectory (Cartesian path) (%.2f%% achieved)", fraction * 100.0);
+	//
+	// visual_tools.publishText(text_pose, "Pivot motion", rvt::WHITE, rvt::XLARGE);
+	// visual_tools.publishPath(pivot_traj1_waypts, rvt::LIME_GREEN, rvt::SMALL);
+	// for (std::size_t i = 0; i < waypoints.size(); ++i)
+	// 	visual_tools.publishAxisLabeled(pivot_traj1_waypts[i], "pt" + std::to_string(i), rvt::SMALL);
+	// visual_tools.trigger();
+	//
+	// moveit::planning_interface::MoveGroupInterface::Plan pivot_plan;
+	// success = (move_group.plan(pivot_plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
+	// if (success) {
+	// 	pivot_plan.trajectory_ = pivot_traj1;
+	// 	move_group.execute(pivot_plan);
+	// }
+	// ROS_INFO_NAMED("robot_planner1", "Executing Pivoting motion motion plan %s", success ? "SUCCESS" : "FAILED");
+
+
+	// Reverse insertion movement - Remove tool from trocar
 	std::vector<geometry_msgs::Pose> reverse_waypoints;
 	reverse_waypoints.push_back(target_pose);
 	reverse_waypoints.push_back(start_pose);
@@ -171,3 +215,5 @@ int main(int argc, char** argv)
   ros::shutdown();
   return 0;
 }
+
+

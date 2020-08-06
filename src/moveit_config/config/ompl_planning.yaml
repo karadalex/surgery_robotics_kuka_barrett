@@ -122,6 +122,7 @@ planner_configs:
     max_failures: 5000  # maximum consecutive failure limit. default: 5000
 iiwa_arm:
   default_planner_config: None
+  longest_valid_segment_fraction: 0.005
   planner_configs:
     - SBL
     - EST
