@@ -14,6 +14,10 @@ find_package(catkin REQUIRED COMPONENTS
   custom_math
   moveit_core
   moveit_ros_planning_interface
+  moveit_ros_planning
+  moveit_visual_tools
+  actionlib
+  actionlib_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -129,6 +133,7 @@ include_directories(
    src/Iiwa14Inv.cpp
    src/Transformation.cpp
    src/BarrettInv.cpp
+   src/TrajectoryExecution.cpp
 )
 
 ## Add cmake target dependencies of the library
