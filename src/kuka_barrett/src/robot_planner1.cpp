@@ -1,7 +1,5 @@
-#include <moveit/move_group_interface/move_group_interface.h>
 #include <moveit/planning_scene_interface/planning_scene_interface.h>
 #include <moveit_msgs/CollisionObject.h>
-#include <moveit_visual_tools/moveit_visual_tools.h>
 #include <tf2/LinearMath/Quaternion.h>
 #include <std_msgs/Float64.h>
 #include "kinematics/TrajectoryExecution.h"
@@ -61,11 +59,21 @@ int main(int argc, char** argv)
 	path5.push_back(target_pose);
 	traj1.executeCartesianPath(path5, "insertion movement");
 
-	// Reverse insertion movement - Remove tool from trocar
+	// Pivot movements
 	std::vector<geometry_msgs::Pose> path6;
 	path6.push_back(target_pose);
-	path6.push_back(start_pose);
-	traj1.executeCartesianPath(path6, "reverse insertion movement");
+	path6.push_back(getPoseFromPathPoint({0.075750, 0.690837, 1.606422, 2.913734, 1.511037, 2.974559}));
+	traj1.executeCartesianPath(path6, "pivot motion 1");
+	std::vector<geometry_msgs::Pose> path7;
+	path7.push_back(getPoseFromPathPoint({0.075750, 0.690837, 1.606422, 2.913734, 1.511037, 2.974559}));
+	path7.push_back(target_pose);
+	traj1.executeCartesianPath(path7, "reverse pivot motion 1");
+
+	// Reverse insertion movement - Remove tool from trocar
+	std::vector<geometry_msgs::Pose> path8;
+	path8.push_back(target_pose);
+	path8.push_back(start_pose);
+	traj1.executeCartesianPath(path8, "reverse insertion movement");
 
   ros::shutdown();
   return 0;
