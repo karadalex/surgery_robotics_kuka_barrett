@@ -7,6 +7,25 @@
 
 using namespace std;
 
+
+geometry_msgs::Pose getPoseFromPathPoint(vector<float> pathPoint) {
+	geometry_msgs::Pose target_pose;
+	tf2::Quaternion quaternion;
+
+	target_pose.position.x = pathPoint[0];
+	target_pose.position.y = pathPoint[1];
+	target_pose.position.z = pathPoint[2];
+
+	quaternion.setRPY(pathPoint[3], pathPoint[4], pathPoint[5]);
+	target_pose.orientation.w = quaternion.getW();
+	target_pose.orientation.x = quaternion.getX();
+	target_pose.orientation.y = quaternion.getY();
+	target_pose.orientation.z = quaternion.getZ();
+
+	return target_pose;
+}
+
+
 int main(int argc, char** argv)
 {
   ros::init(argc, argv, "robot_planner1");
@@ -17,8 +36,8 @@ int main(int argc, char** argv)
 	// Setup Move group
   static const std::string PLANNING_GROUP = "iiwa_arm";
   moveit::planning_interface::MoveGroupInterface move_group(PLANNING_GROUP);
-	// move_group.setGoalPositionTolerance(0.000005);
-	// move_group.setGoalOrientationTolerance(0.000005);
+	move_group.setGoalPositionTolerance(0.000005);
+	move_group.setGoalOrientationTolerance(0.000005);
 	move_group.setPlanningTime(5);
 	move_group.allowReplanning(true);
 	move_group.setNumPlanningAttempts(6);
@@ -38,22 +57,6 @@ int main(int argc, char** argv)
 	// Batch publishing is used to reduce the number of messages being sent to RViz for large visualizations
 	visual_tools.trigger();
 
-	// Fulcrum Frame 1 pose
-	geometry_msgs::Pose fulcrum1_pose;
-	fulcrum1_pose.position.x = 0.126597;
-	fulcrum1_pose.position.y = 0.700751;
-	fulcrum1_pose.position.z = 1.293635;
-	tf2::Quaternion fulcrum1_rpy_quaternion;
-	fulcrum1_rpy_quaternion.setRPY(0.0, -0.591161, 0.0);
-	fulcrum1_pose.orientation.w = fulcrum1_rpy_quaternion.getW();
-	fulcrum1_pose.orientation.x = fulcrum1_rpy_quaternion.getX();
-	fulcrum1_pose.orientation.y = fulcrum1_rpy_quaternion.getY();
-	fulcrum1_pose.orientation.z = fulcrum1_rpy_quaternion.getZ();
-	// Publish Fulcrum 1 Reference Frame in RViz
-	visual_tools.publishAxisLabeled(fulcrum1_pose, "Fulcrum Frame 1", rvt::MEDIUM);
-	// Publish fulcrum pose in Fulcrum ROS Topic
-	// TODO
-
 	// Raw pointers are frequently used to refer to the planning group for improved performance.
 	const robot_state::JointModelGroup* joint_model_group = move_group.getCurrentState()->getJointModelGroup(PLANNING_GROUP);
 
@@ -72,22 +75,13 @@ int main(int argc, char** argv)
 	path.push_back({-0.320971, 0.681543, 1.656761, 0.019169, 0.783348, 0.073975});
 
 	geometry_msgs::Pose target_pose;
-	tf2::Quaternion quaternion;
 	moveit::planning_interface::MoveGroupInterface::Plan my_plan;
 
 	for (int i = 0; i < path.size(); ++i) {
 		// Arm Kinematics (KUKA iiwa)
-		vector<float> pose = path.at(i);
+		vector<float> pathPoint = path.at(i);
 
-		target_pose.position.x = pose[0];
-		target_pose.position.y = pose[1];
-		target_pose.position.z = pose[2];
-
-		quaternion.setRPY(pose[3], pose[4], pose[5]);
-		target_pose.orientation.w = quaternion.getW();
-		target_pose.orientation.x = quaternion.getX();
-		target_pose.orientation.y = quaternion.getY();
-		target_pose.orientation.z = quaternion.getZ();
+		target_pose = getPoseFromPathPoint(pathPoint);
 
 		move_group.setPoseTarget(target_pose);
 
@@ -106,20 +100,13 @@ int main(int argc, char** argv)
 
 	// Approaching Fulcrum point - Insertion motion Cartesian path
 	// Move in a line segment while approaching fulcrum point and entering body
-	geometry_msgs::Pose start_pose = target_pose;
+	geometry_msgs::Pose start_pose = getPoseFromPathPoint(path.at(path.size()-1)); // Start insertion trajectory from last target point of previous trajectory
 	std::vector<geometry_msgs::Pose> waypoints;
 	waypoints.push_back(start_pose);
 
-	vector<float> poseValues = {-0.113231, 0.681543, 1.449251, 0.019169, 0.783348, 0.073975};
-	path.push_back(poseValues);
-	target_pose.position.x = poseValues[0];
-	target_pose.position.y = poseValues[1];
-	target_pose.position.z = poseValues[2];
-	quaternion.setRPY(poseValues[3], poseValues[4], poseValues[5]);
-	target_pose.orientation.w = quaternion.getW();
-	target_pose.orientation.x = quaternion.getX();
-	target_pose.orientation.y = quaternion.getY();
-	target_pose.orientation.z = quaternion.getZ();
+	vector<float> insertedPoseAtFulcrum = {-0.113231, 0.681543, 1.449251, 0.019169, 0.783348, 0.073975};
+	path.push_back(insertedPoseAtFulcrum);
+	target_pose = getPoseFromPathPoint(insertedPoseAtFulcrum);
 	waypoints.push_back(target_pose);
 
 	// The approaching motion needs to be slower.
@@ -140,7 +127,7 @@ int main(int argc, char** argv)
 
 	// Visualize the plan in RViz
 	visual_tools.deleteAllMarkers();
-	visual_tools.publishText(text_pose, "Joint Space Goal", rvt::WHITE, rvt::XLARGE);
+	visual_tools.publishText(target_pose, "Joint Space Goal", rvt::WHITE, rvt::XLARGE);
 	visual_tools.publishPath(waypoints, rvt::LIME_GREEN, rvt::SMALL);
 	for (std::size_t i = 0; i < waypoints.size(); ++i)
 		visual_tools.publishAxisLabeled(waypoints[i], "pt" + std::to_string(i), rvt::SMALL);
@@ -153,47 +140,6 @@ int main(int argc, char** argv)
 		// move_group.execute(insertion_plan);
 	}
 	ROS_INFO_NAMED("robot_planner1", "Executing insertion motion plan %s", success ? "SUCCESS" : "FAILED");
-
-	// std::string nextButtonMsg = "Press 'next' in the RvizVisualToolsGui window to continue with pivoting motion";
-	// visual_tools.prompt(nextButtonMsg);
-
-	// Pivoting Trajectory
-	// std::vector<geometry_msgs::Pose> pivot_traj1_waypts;
-	// vector<vector<float>> pivot_path1;
-	// pivot_path1.push_back({-0.185241, 0.756977, 1.419682, -0.176089, 0.717969, -0.218691});
-	// pivot_path1.push_back({-0.232891, 0.750714, 1.336278, -0.145829, 0.435512, -0.164146});
-	// pivot_path1.push_back({-0.201695, 0.603255, 1.333467, 0.063977, 0.453583, 0.315894});
-	// for (int i = 0; i < pivot_path1.size(); ++i) {
-	// 	vector<float> pose = path.at(i);
-	// 	geometry_msgs::Pose pivot_pose;
-	// 	pivot_pose.position.x = pose[0];
-	// 	pivot_pose.position.y = pose[1];
-	// 	pivot_pose.position.z = pose[2];
-	// 	quaternion.setRPY(pose[3], pose[4], pose[5]);
-	// 	pivot_pose.orientation.w = quaternion.getW();
-	// 	pivot_pose.orientation.x = quaternion.getX();
-	// 	pivot_pose.orientation.y = quaternion.getY();
-	// 	pivot_pose.orientation.z = quaternion.getZ();
-	// 	pivot_traj1_waypts.push_back(pivot_pose);
-	// }
-	// // reverse_waypoints.push_back(start_pose);
-	// moveit_msgs::RobotTrajectory pivot_traj1;
-	// fraction = move_group.computeCartesianPath(pivot_traj1_waypts, eef_step, jump_threshold, pivot_traj1);
-	// ROS_INFO_NAMED("robot_planner1", "Pivoting motion trajectory (Cartesian path) (%.2f%% achieved)", fraction * 100.0);
-	//
-	// visual_tools.publishText(text_pose, "Pivot motion", rvt::WHITE, rvt::XLARGE);
-	// visual_tools.publishPath(pivot_traj1_waypts, rvt::LIME_GREEN, rvt::SMALL);
-	// for (std::size_t i = 0; i < waypoints.size(); ++i)
-	// 	visual_tools.publishAxisLabeled(pivot_traj1_waypts[i], "pt" + std::to_string(i), rvt::SMALL);
-	// visual_tools.trigger();
-	//
-	// moveit::planning_interface::MoveGroupInterface::Plan pivot_plan;
-	// success = (move_group.plan(pivot_plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
-	// if (success) {
-	// 	pivot_plan.trajectory_ = pivot_traj1;
-	// 	move_group.execute(pivot_plan);
-	// }
-	// ROS_INFO_NAMED("robot_planner1", "Executing Pivoting motion motion plan %s", success ? "SUCCESS" : "FAILED");
 
 
 	// Reverse insertion movement - Remove tool from trocar
