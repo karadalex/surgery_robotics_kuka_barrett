@@ -115,7 +115,7 @@ include_directories(${Eigen3_INCLUDE_DIRS})
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES kuka_barrett
-#  CATKIN_DEPENDS roscpp
+  CATKIN_DEPENDS roscpp kinematics
 #  DEPENDS system_lib
 )
 
