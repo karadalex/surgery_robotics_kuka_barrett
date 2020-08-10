@@ -20,7 +20,7 @@
     <!-- Load more complicated collision objects via scene_objects node -->
     <node name="scene_objects" pkg="kuka_barrett" type="scene_objects"/>
 
-    <node name="robot_planner1" pkg="kuka_barrett" type="robot_planner1"/>
+    <!-- <node name="robot_planner1" pkg="kuka_barrett" type="robot_planner1"/> -->
 
     <!-- OpenCV - Computer Vision -->
     <!-- <node name="image_view" pkg="image_view" type="image_view" args="image:=/barrett/camera1/image_raw" /> -->
