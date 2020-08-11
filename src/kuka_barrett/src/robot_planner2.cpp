@@ -1,6 +1,5 @@
 #include <moveit/planning_scene_interface/planning_scene_interface.h>
 #include <moveit_msgs/CollisionObject.h>
-#include <tf2/LinearMath/Quaternion.h>
 #include <std_msgs/Float64.h>
 #include "kinematics/TrajectoryExecution.h"
 
@@ -10,7 +9,7 @@ using namespace std;
 
 int main(int argc, char** argv)
 {
-	ros::init(argc, argv, "robot_planner1");
+	ros::init(argc, argv, "robot_planner2");
 	ros::NodeHandle node_handle;
 	ros::AsyncSpinner spinner(1);
 	spinner.start();
