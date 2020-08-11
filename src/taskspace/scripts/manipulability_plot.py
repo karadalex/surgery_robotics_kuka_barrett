@@ -8,9 +8,8 @@ import matplotlib as mpl
 from matplotlib import cm
 from matplotlib.ticker import LinearLocator
 from mpl_toolkits.mplot3d import Axes3D
-from std_msgs.msg import Float64MultiArray
 import math
-import random as rand # TO BE REMOVED later
+from kinematics.msg import KinematicState
 
 
 qi_min = [-3.14 for i in range(7)]
@@ -22,12 +21,16 @@ cs = []
 
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
+isColorbarShown = False
+cmap = mpl.cm.coolwarm_r
+norm = mpl.colors.Normalize(vmin=0, vmax=1)
+points = ax.scatter(x, y, z, c=cs, cmap=cmap)
 
 
 def callback(data):
-  manipulability = manipulability_measure(data.data)
+  manipulability = manipulability_measure(data.jacobian.data)
   Lq = joint_limit_measure()
-  manipulability_plot(manipulability)
+  manipulability_plot(data.transform.transform.translation, manipulability)
   print(manipulability)
 
 
@@ -42,27 +45,29 @@ def joint_limit_measure():
   return 1
 
 
-def manipulability_plot(manipulability):
+def manipulability_plot(position, manipulability):
   # Make data.
-  x.append(rand.gauss(0, 1))
-  y.append(rand.gauss(0, 1))
-  z.append(rand.gauss(0, 1))
+  x.append(position.x)
+  y.append(position.y)
+  z.append(position.z)
   cs.append(manipulability)
-
-  cmap = mpl.cm.coolwarm
-  norm = mpl.colors.Normalize(vmin=5, vmax=10)
 
   # Plot the points
   ax.clear()
-  points = ax.scatter(x, y, z, c=cs, cmap=cm.coolwarm)
-  # fig.colorbar(points)
+  points = ax.scatter(x, y, z, c=cs, cmap=cmap, norm=norm)
+
+  global isColorbarShown
+  if not isColorbarShown:
+    fig.colorbar(points)
+    isColorbarShown = True
   fig.canvas.draw()
 
 def main(args):
   rospy.init_node('manipulability_plot', anonymous=True)
 
-  subscriber = rospy.Subscriber("/jacobian_state", Float64MultiArray, callback, queue_size=1)
+  subscriber = rospy.Subscriber("/kinematic_state", KinematicState, callback, queue_size=1)
 
+  # fig.colorbar(points)
   plt.show()
 
   try:
