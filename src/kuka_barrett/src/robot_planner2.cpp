@@ -74,6 +74,36 @@ int main(int argc, char** argv)
 	path6.push_back(fulcrumAbovePose2);
 	traj1.executeCartesianPath(path6, "reverse insertion movement");
 
+	// Go above fulcrum point 3
+	std::vector<geometry_msgs::Pose> path7;
+	path7.push_back(fulcrumAbovePose2);
+	vector<float> fulcrumAbovePoseFloat3 = {0.160094, 0.682022, 1.844775, 0.031093, 1.162609, 0.087358};
+	geometry_msgs::Pose fulcrumAbovePose3 = getPoseFromPathPoint(fulcrumAbovePoseFloat3);
+	path7.push_back(fulcrumAbovePose3);
+	traj1.executeCartesianPath(path7, "movement towards above fulcrum point 3");
+
+	// Approaching Fulcrum point 3 - Insertion motion Cartesian path
+	// Move in a line segment while approaching fulcrum point and entering body
+	std::vector<geometry_msgs::Pose> path8;
+	path8.push_back(fulcrumAbovePose3);
+	vector<float> fulcrumInsertedPoseFloat3Intermediary = {0.205306, 0.685986, 1.739838, 0.030799, 1.162898, 0.086868};
+	geometry_msgs::Pose fulcrumInsertedPose3Intermediary = getPoseFromPathPoint(fulcrumInsertedPoseFloat3Intermediary);
+	path8.push_back(fulcrumInsertedPose3Intermediary);
+	vector<float> fulcrumInsertedPoseFloat3Intermediary2 = {0.274535, 0.689496, 1.783499, 0.055889, 1.351853, 0.0113223};
+	geometry_msgs::Pose fulcrumInsertedPose3Intermediary2 = getPoseFromPathPoint(fulcrumInsertedPoseFloat3Intermediary2);
+	path8.push_back(fulcrumInsertedPose3Intermediary2);
+	vector<float> fulcrumInsertedPoseFloat3 = {0.301965, 0.692619, 1.659563, 0.055821, 1.351665, 0.113147};
+	geometry_msgs::Pose fulcrumInsertedPose3 = getPoseFromPathPoint(fulcrumInsertedPoseFloat3);
+	path8.push_back(fulcrumInsertedPose3);
+	traj1.executeCartesianPath(path8, "insertion movement");
+	// Reverse insertion movement - Remove tool from trocar2
+	std::vector<geometry_msgs::Pose> path9;
+	path9.push_back(fulcrumInsertedPose3);
+	path9.push_back(fulcrumInsertedPose3Intermediary2);
+	path9.push_back(fulcrumInsertedPose3Intermediary);
+	path9.push_back(fulcrumAbovePose3);
+	traj1.executeCartesianPath(path9, "reverse insertion movement");
+
 	ros::shutdown();
 	return 0;
 }
