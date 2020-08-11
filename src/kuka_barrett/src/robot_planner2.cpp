@@ -1,94 +1,81 @@
-#include <moveit/move_group_interface/move_group_interface.h>
 #include <moveit/planning_scene_interface/planning_scene_interface.h>
 #include <moveit_msgs/CollisionObject.h>
-#include <moveit_visual_tools/moveit_visual_tools.h>
 #include <tf2/LinearMath/Quaternion.h>
 #include <std_msgs/Float64.h>
+#include "kinematics/TrajectoryExecution.h"
+
 
 using namespace std;
 
+
 int main(int argc, char** argv)
 {
-  ros::init(argc, argv, "robot_planner2");
-  ros::NodeHandle node_handle;
-  ros::AsyncSpinner spinner(1);
-  spinner.start();
+	ros::init(argc, argv, "robot_planner1");
+	ros::NodeHandle node_handle;
+	ros::AsyncSpinner spinner(1);
+	spinner.start();
 
 	// Setup Move group
-  static const std::string PLANNING_GROUP = "iiwa_arm";
-  moveit::planning_interface::MoveGroupInterface move_group(PLANNING_GROUP);
-	move_group.setGoalPositionTolerance(0.00005);
-	move_group.setGoalOrientationTolerance(0.00005);
-	move_group.setPlanningTime(10);
-	move_group.allowReplanning(true);
-
-	// The package MoveItVisualTools provides many capabilties for visualizing objects, robots,
-	// and trajectories in RViz as well as debugging tools such as step-by-step introspection of a script
-	namespace rvt = rviz_visual_tools;
-	moveit_visual_tools::MoveItVisualTools visual_tools("world");
-	visual_tools.deleteAllMarkers();
-	// Remote control is an introspection tool that allows users to step through a high level script
-	// via buttons and keyboard shortcuts in RViz
-	visual_tools.loadRemoteControl();
-	// RViz provides many types of markers, in this demo we will use text, cylinders, and spheres
-	Eigen::Isometry3d text_pose = Eigen::Isometry3d::Identity();
-	text_pose.translation().z() = 1.75;
-	visual_tools.publishText(text_pose, "MoveGroupInterface Demo", rvt::WHITE, rvt::XLARGE);
-	// Batch publishing is used to reduce the number of messages being sent to RViz for large visualizations
-	visual_tools.trigger();
-
-	// Raw pointers are frequently used to refer to the planning group for improved performance.
-	const robot_state::JointModelGroup* joint_model_group = move_group.getCurrentState()->getJointModelGroup(PLANNING_GROUP);
-
-	vector<vector<float>> path;
+	static const std::string PLANNING_GROUP = "iiwa_arm";
+	double pos_tolerance = 0.000005;
+	double orient_tolerance = 0.000005;
+	int plan_time_sec = 5;
+	bool replanning = true;
+	int plan_attempts = 6;
+	const string base_frame = "world";
+	TrajectoryExecution traj1 = TrajectoryExecution(PLANNING_GROUP, pos_tolerance, orient_tolerance, plan_time_sec, replanning, plan_attempts, base_frame);
 
 	// X Y Z Roll Pitch Yaw
+	vector<vector<float>> path1;
 	// path.push_back({0, 0, 2.262, 0, 0, 0}); // For z >= 2.261 the robot reaches end of workspace, which is a signularity and cant be calculated from the numerical IK
-	path.push_back({0, 0, 2.26, 0, 0, 0}); // Home position
+	path1.push_back({0, 0, 2.26, 0, 0, 0}); // Home position
+	// TCP position for point above fulcrum 1
+	path1.push_back({-0.320971, 0.681543, 1.656761, 0.019169, 0.783348, 0.073975});
+	traj1.executePath(path1);
 
-	// Pick position 1
-	path.push_back({0, -0.7236, 1.5, M_PI, 0, -M_PI_2});
-	path.push_back({0, -0.7236, 1.21, M_PI, 0, -M_PI_2});
-	path.push_back({0, -0.7236, 1.5, M_PI, 0, -M_PI_2});
+	// Approaching Fulcrum point 1 - Insertion motion Cartesian path
+	// Move in a line segment while approaching fulcrum point and entering body
+	geometry_msgs::Pose fulcrumAbovePose1 = getPoseFromPathPoint(path1.at(path1.size()-1)); // Start insertion trajectory from last target point of previous trajectory
+	std::vector<geometry_msgs::Pose> path2;
+	path2.push_back(fulcrumAbovePose1);
+	vector<float> fulcrumInsertedPoseFloat1 = {-0.113231, 0.681543, 1.449251, 0.019169, 0.783348, 0.073975};
+	geometry_msgs::Pose fulcrumInsertedPose1 = getPoseFromPathPoint(fulcrumInsertedPoseFloat1);
+	path2.push_back(fulcrumInsertedPose1);
+	traj1.executeCartesianPath(path2, "insertion movement");
+	// Reverse insertion movement - Remove tool from trocar1
+	std::vector<geometry_msgs::Pose> path3;
+	path3.push_back(fulcrumInsertedPose1);
+	path3.push_back(fulcrumAbovePose1);
+	traj1.executeCartesianPath(path3, "reverse insertion movement");
 
-	// Place position 1
-	path.push_back({-0.33, 0.6739, 1.58, 0.019, 0.711, 0.072});
+	// Go above fulcrum point 2
+	std::vector<geometry_msgs::Pose> path4;
+	path4.push_back(fulcrumAbovePose1);
+	vector<float> fulcrumAbovePoseFloat2 = {0.039294, 0.683934, 1.844547, 0.040475, 1.222129, 0.098161};
+	geometry_msgs::Pose fulcrumAbovePose2 = getPoseFromPathPoint(fulcrumAbovePoseFloat2);
+	path4.push_back(fulcrumAbovePose2);
+	traj1.executeCartesianPath(path4, "movement towards above fulcrum point 2");
 
-	geometry_msgs::Pose target_pose;
-	tf2::Quaternion quaternion;
-	moveit::planning_interface::MoveGroupInterface::Plan my_plan;
+	// Approaching Fulcrum point 2 - Insertion motion Cartesian path
+	// Move in a line segment while approaching fulcrum point and entering body
+	std::vector<geometry_msgs::Pose> path5;
+	path5.push_back(fulcrumAbovePose2);
+	vector<float> fulcrumInsertedPoseFloat2Intermediary = {0.123900, 0.689796, 1.787654, 0.067338, 1.367060, 0.125863};
+	geometry_msgs::Pose fulcrumInsertedPose2Intermediary = getPoseFromPathPoint(fulcrumInsertedPoseFloat2Intermediary);
+	path5.push_back(fulcrumInsertedPose2Intermediary);
+	vector<float> fulcrumInsertedPoseFloat2 = {0.149236, 0.693004, 1.664076, 0.067349, 1.367062, 0.125869};
+	geometry_msgs::Pose fulcrumInsertedPose2 = getPoseFromPathPoint(fulcrumInsertedPoseFloat2);
+	path5.push_back(fulcrumInsertedPose2);
+	traj1.executeCartesianPath(path5, "insertion movement");
+	// Reverse insertion movement - Remove tool from trocar2
+	std::vector<geometry_msgs::Pose> path6;
+	path6.push_back(fulcrumInsertedPose2);
+	path6.push_back(fulcrumInsertedPose2Intermediary);
+	path6.push_back(fulcrumAbovePose2);
+	traj1.executeCartesianPath(path6, "reverse insertion movement");
 
-	for (int i = 0; i < path.size(); ++i) {
-		// Arm Kinematics (KUKA iiwa)
-		vector<float> pose = path.at(i);
-
-		target_pose.position.x = pose[0];
-		target_pose.position.y = pose[1];
-		target_pose.position.z = pose[2];
-
-		quaternion.setRPY(pose[3], pose[4], pose[5]);
-		target_pose.orientation.w = quaternion.getW();
-		target_pose.orientation.x = quaternion.getX();
-		target_pose.orientation.y = quaternion.getY();
-		target_pose.orientation.z = quaternion.getZ();
-
-		move_group.setPoseTarget(target_pose);
-
-		bool success = (move_group.plan(my_plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
-		ROS_INFO_NAMED("robot_planner2", "Visualizing plan %d (pose goal) %s", i, success ? "SUCCESS" : "FAILED");
-		// Visualize plan
-		ROS_INFO_NAMED("robot_planner2", "Visualizing plan %d as trajectory line", i);
-		visual_tools.publishAxisLabeled(target_pose, "pose");
-		visual_tools.publishText(text_pose, "Pose Goal", rvt::WHITE, rvt::XLARGE);
-		visual_tools.publishTrajectoryLine(my_plan.trajectory_, joint_model_group);
-		visual_tools.trigger();
-		
-		std::string nextButtonMsg = "Press 'next' in the RvizVisualToolsGui window to execute plan";
-		visual_tools.prompt(nextButtonMsg);
-
-		move_group.execute(my_plan);
-	}
-
-  ros::shutdown();
-  return 0;
+	ros::shutdown();
+	return 0;
 }
+
+
