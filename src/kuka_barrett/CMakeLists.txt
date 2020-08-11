@@ -18,6 +18,7 @@ find_package(catkin REQUIRED COMPONENTS
     actionlib_msgs
     kinematics
     custom_math
+    trajectory
 )
 
 ## System dependencies are found with CMake's conventions
@@ -115,7 +116,7 @@ include_directories(${Eigen3_INCLUDE_DIRS})
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES kuka_barrett
-  CATKIN_DEPENDS roscpp kinematics
+  CATKIN_DEPENDS roscpp kinematics trajectory
 #  DEPENDS system_lib
 )
 
@@ -217,6 +218,9 @@ target_link_libraries(robot_planner1 ${catkin_LIBRARIES} ${Boost_LIBRARIES})
 
 add_executable(robot_planner2 src/robot_planner2.cpp)
 target_link_libraries(robot_planner2 ${catkin_LIBRARIES} ${Boost_LIBRARIES})
+
+add_executable(robot_planner3 src/robot_planner3.cpp)
+target_link_libraries(robot_planner3 ${catkin_LIBRARIES} ${Boost_LIBRARIES})
 
 add_executable(scene_objects src/scene_objects.cpp)
 target_link_libraries(scene_objects ${catkin_LIBRARIES})
