@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Surgery Robotics with KUKA iiwa and Barrett hand’s documentation! &mdash; Surgery Robotics with KUKA iiwa and Barrett hand  documentation</title>
+  <title>Troubleshooting &mdash; Surgery Robotics with KUKA iiwa and Barrett hand  documentation</title>
   
 
   
@@ -36,7 +36,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Requirements" href="requirements.html" /> 
+    <link rel="next" title="References" href="references.html" />
+    <link rel="prev" title="Running the simulation" href="usage.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -50,7 +51,7 @@
           
 
           
-            <a href="#" class="icon icon-home" alt="Documentation Home"> Surgery Robotics with KUKA iiwa and Barrett hand
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Surgery Robotics with KUKA iiwa and Barrett hand
           
 
           
@@ -88,8 +89,8 @@
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Running the simulation</a></li>
 </ul>
 <p class="caption"><span class="caption-text">TROUBLESHOOTING</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Troubleshooting</a></li>
 </ul>
 <p class="caption"><span class="caption-text">REFERENCES</span></p>
 <ul>
@@ -109,7 +110,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="#">Surgery Robotics with KUKA iiwa and Barrett hand</a>
+          <a href="index.html">Surgery Robotics with KUKA iiwa and Barrett hand</a>
         
       </nav>
 
@@ -138,15 +139,15 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="#" class="icon icon-home"></a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li>Surgery Robotics with KUKA iiwa and Barrett hand’s documentation!</li>
+      <li>Troubleshooting</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/troubleshooting.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -159,48 +160,27 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="surgery-robotics-with-kuka-iiwa-and-barrett-hand-s-documentation">
-<h1>Surgery Robotics with KUKA iiwa and Barrett hand’s documentation!<a class="headerlink" href="#surgery-robotics-with-kuka-iiwa-and-barrett-hand-s-documentation" title="Permalink to this headline">¶</a></h1>
-<div class="toctree-wrapper compound">
-<p class="caption"><span class="caption-text">GETTING STARTED</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="requirements.html">Requirements</a></li>
-<li class="toctree-l1"><a class="reference internal" href="install-instructions.html">Installation Instructions</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="install-instructions.html#setup">Setup</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install-instructions.html#optional-instructions">Optional Instructions</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="usage.html">Running the simulation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="usage.html#usage">Usage</a></li>
-<li class="toctree-l2"><a class="reference internal" href="usage.html#convenience-scripts">Convenience scripts</a></li>
-</ul>
-</li>
-</ul>
+  <div class="section" id="troubleshooting">
+<h1>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permalink to this headline">¶</a></h1>
+<div class="admonition error">
+<p class="admonition-title">Error</p>
+<p>UnicodeDecodeError: ‘ascii’ codec can’t decode byte 0xce in position 33: ordinal not in range(128)</p>
 </div>
-<div class="toctree-wrapper compound">
-<p class="caption"><span class="caption-text">TROUBLESHOOTING</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
-</ul>
+<p>Make sure the project path doesn’t contain any greek characters</p>
+<div class="admonition error">
+<p class="admonition-title">Error</p>
+<p>Eigen/Geometry: No such file or directory</p>
 </div>
-<div class="toctree-wrapper compound">
-<p class="caption"><span class="caption-text">REFERENCES</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="references.html">References</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="references.html#repositories">Repositories</a></li>
-<li class="toctree-l2"><a class="reference internal" href="references.html#useful-websites-documentation">Useful websites &amp; documentation</a></li>
-</ul>
-</li>
-</ul>
+<p>Try one of the following commands</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ sudo apt-get install libeigen3-dev
+$ sudo ln -s /usr/include/eigen3/Eigen /usr/include/Eigen <span class="c1"># if the above does not work either</span>
+</pre></div>
 </div>
+<div class="admonition error">
+<p class="admonition-title">Error</p>
+<p>gzclient: /build/ogre-1.9-B6QkmW/ogre-1.9-1.9.0+dfsg1/OgreMain/include/OgreAxisAlignedBox.h:252: void Ogre::AxisAlignedBox::setExtents(const Ogre::Vector3&amp;, const Ogre::Vector3&amp;): Assertion <a href="#id1"><span class="problematic" id="id2">`</span></a>(min.x &lt;= max.x &amp;&amp; min.y &lt;= max.y &amp;&amp; min.z &lt;= max.z) &amp;&amp; “The minimum corner of the box must be less than or equal to maximum corner”’ failed.</p>
 </div>
-<div class="section" id="indices-and-tables">
-<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
-<ul class="simple">
-<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
-<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
-<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
-</ul>
+<p>Make sure to upgrade gazebo (ros-melodic-gazebo-ros-pkgs) to the latest version</p>
 </div>
 
 
@@ -211,8 +191,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="requirements.html" class="btn btn-neutral float-right" title="Requirements" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="references.html" class="btn btn-neutral float-right" title="References" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
+      
+        <a href="usage.html" class="btn btn-neutral float-left" title="Running the simulation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

@@ -3,12 +3,30 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to Surgery Robotics with KUKA iiwa and Barrett hand's documentation!
-============================================================================
+Surgery Robotics with KUKA iiwa and Barrett hand's documentation!
+=================================================================
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: GETTING STARTED
+
+   /requirements
+   /install-instructions
+   /usage
+
+
+.. toctree::
+   :maxdepth: 2
+   :caption: TROUBLESHOOTING
+
+   /troubleshooting
+
+
+.. toctree::
+   :maxdepth: 2
+   :caption: REFERENCES
+
+   /references
 
 
 

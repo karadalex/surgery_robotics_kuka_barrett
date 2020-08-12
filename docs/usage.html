@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Surgery Robotics with KUKA iiwa and Barrett hand’s documentation! &mdash; Surgery Robotics with KUKA iiwa and Barrett hand  documentation</title>
+  <title>Running the simulation &mdash; Surgery Robotics with KUKA iiwa and Barrett hand  documentation</title>
   
 
   
@@ -36,7 +36,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Requirements" href="requirements.html" /> 
+    <link rel="next" title="Troubleshooting" href="troubleshooting.html" />
+    <link rel="prev" title="Installation Instructions" href="install-instructions.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -50,7 +51,7 @@
           
 
           
-            <a href="#" class="icon icon-home" alt="Documentation Home"> Surgery Robotics with KUKA iiwa and Barrett hand
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Surgery Robotics with KUKA iiwa and Barrett hand
           
 
           
@@ -82,10 +83,14 @@
             
             
               <p class="caption"><span class="caption-text">GETTING STARTED</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="requirements.html">Requirements</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install-instructions.html">Installation Instructions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage.html">Running the simulation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Running the simulation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#usage">Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#convenience-scripts">Convenience scripts</a></li>
+</ul>
+</li>
 </ul>
 <p class="caption"><span class="caption-text">TROUBLESHOOTING</span></p>
 <ul>
@@ -109,7 +114,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="#">Surgery Robotics with KUKA iiwa and Barrett hand</a>
+          <a href="index.html">Surgery Robotics with KUKA iiwa and Barrett hand</a>
         
       </nav>
 
@@ -138,15 +143,15 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="#" class="icon icon-home"></a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li>Surgery Robotics with KUKA iiwa and Barrett hand’s documentation!</li>
+      <li>Running the simulation</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/usage.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -159,48 +164,34 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="surgery-robotics-with-kuka-iiwa-and-barrett-hand-s-documentation">
-<h1>Surgery Robotics with KUKA iiwa and Barrett hand’s documentation!<a class="headerlink" href="#surgery-robotics-with-kuka-iiwa-and-barrett-hand-s-documentation" title="Permalink to this headline">¶</a></h1>
-<div class="toctree-wrapper compound">
-<p class="caption"><span class="caption-text">GETTING STARTED</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="requirements.html">Requirements</a></li>
-<li class="toctree-l1"><a class="reference internal" href="install-instructions.html">Installation Instructions</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="install-instructions.html#setup">Setup</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install-instructions.html#optional-instructions">Optional Instructions</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="usage.html">Running the simulation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="usage.html#usage">Usage</a></li>
-<li class="toctree-l2"><a class="reference internal" href="usage.html#convenience-scripts">Convenience scripts</a></li>
-</ul>
-</li>
-</ul>
+  <div class="section" id="running-the-simulation">
+<h1>Running the simulation<a class="headerlink" href="#running-the-simulation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<p>List of available programs (launch files) to run:</p>
+<ol class="arabic simple">
+<li><p>Testing some simple trajectories with the tool already attached to robot.</p></li>
+</ol>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ roslaunch main program1.launch
+$ rosrun kuka_barrett robot_planner1
+</pre></div>
 </div>
-<div class="toctree-wrapper compound">
-<p class="caption"><span class="caption-text">TROUBLESHOOTING</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
-</ul>
+</div></blockquote>
+<ol class="arabic simple" start="2">
+<li><p><cite>main program2.launch</cite> : Simple pick and place example program</p></li>
+<li><p>(Discontinued) <code class="docutils literal notranslate"><span class="pre">roslaunch</span> <span class="pre">kuka_barrett_control</span> <span class="pre">computed_torque_controller_test.launch</span></code></p></li>
+</ol>
+<p>To run program 1, run in a sourced terminal <code class="docutils literal notranslate"><span class="pre">roslaunch</span> <span class="pre">main</span> <span class="pre">program1.launch</span></code> This will run a gazebo simulator with robot, tables and tools, RViz with Moveit plugins and camera
+views and an OpenCV Node.</p>
 </div>
-<div class="toctree-wrapper compound">
-<p class="caption"><span class="caption-text">REFERENCES</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="references.html">References</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="references.html#repositories">Repositories</a></li>
-<li class="toctree-l2"><a class="reference internal" href="references.html#useful-websites-documentation">Useful websites &amp; documentation</a></li>
-</ul>
-</li>
-</ul>
-</div>
-</div>
-<div class="section" id="indices-and-tables">
-<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="convenience-scripts">
+<h2>Convenience scripts<a class="headerlink" href="#convenience-scripts" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
-<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
-<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rosrun</span> <span class="pre">main</span> <span class="pre">iiwa_home.sh</span></code> move iiwa arm to home position</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rosrun</span> <span class="pre">main</span> <span class="pre">barrett_home.sh</span></code> move Barrett hand to home position</p></li>
 </ul>
+</div>
 </div>
 
 
@@ -211,8 +202,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="requirements.html" class="btn btn-neutral float-right" title="Requirements" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="troubleshooting.html" class="btn btn-neutral float-right" title="Troubleshooting" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
+      
+        <a href="install-instructions.html" class="btn btn-neutral float-left" title="Installation Instructions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
