@@ -47,10 +47,19 @@ int main(int argc, char** argv)
 	path2.push_back(fulcrumInsertedPose1);
 	traj1.executeCartesianPath(path2, "insertion movement");
 	// Reverse insertion movement - Remove tool from trocar1
-	std::vector<geometry_msgs::Pose> path3;
-	path3.push_back(fulcrumInsertedPose1);
-	path3.push_back(fulcrumAbovePose1);
-	traj1.executeCartesianPath(path3, "reverse insertion movement");
+	// std::vector<geometry_msgs::Pose> path3;
+	// path3.push_back(fulcrumInsertedPose1);
+	// path3.push_back(fulcrumAbovePose1);
+	// traj1.executeCartesianPath(path3, "reverse insertion movement");
+
+	Eigen::Vector3f circleTrajCenter;
+	// Initialize vector with known values https://eigen.tuxfamily.org/dox/group__TutorialAdvancedInitialization.html
+	// values are given in x, y, z order
+	circleTrajCenter << 0.259807, 0.689203, 1.174661;
+	CircleTrajectory* circleTrajectory = new CircleTrajectory(circleTrajCenter, 0.05);
+	vector<geometry_msgs::Pose> circle_waypoints = circleTrajectory->getCartesianWaypoints(30);
+	traj1.executeCartesianPath(circle_waypoints, "Circular Trajectory");
+
 
 	ros::shutdown();
 	return 0;
