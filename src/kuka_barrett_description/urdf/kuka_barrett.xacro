@@ -17,7 +17,7 @@
   <!-- Import camera component -->
   <xacro:include filename="$(find kuka_barrett_description)/urdf/hand_camera.xacro"/>
   <xacro:include filename="$(find kuka_barrett_description)/urdf/hand_camera.gazebo"/>
-  <xacro:hand_camera parent="iiwa_link_ee" camera_link="0.05" />
+  <xacro:hand_camera parent="iiwa_link_ee" camera_size="0.04" />
   <xacro:hand_camera_gazebo/>
 
   <!-- Attach surgical tool for testing purposes (Instead of picking it with gripper)

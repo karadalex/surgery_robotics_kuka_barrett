@@ -128,7 +128,8 @@
     <disable_collisions link1="bh_base_link" link2="bh_finger_31_link" reason="Adjacent" />
     <disable_collisions link1="bh_base_link" link2="bh_finger_32_link" reason="Never" />
     <disable_collisions link1="bh_base_link" link2="bh_finger_33_link" reason="Never" />
-    <disable_collisions link1="bh_base_link" link2="camera_link" reason="User" />
+    <disable_collisions link1="bh_base_link" link2="camera_link1" reason="User" />
+    <disable_collisions link1="bh_base_link" link2="camera_link2" reason="User" />
     <disable_collisions link1="bh_base_link" link2="iiwa_link_1" reason="Never" />
     <disable_collisions link1="bh_base_link" link2="iiwa_link_2" reason="Never" />
     <disable_collisions link1="bh_base_link" link2="iiwa_link_3" reason="Never" />
@@ -144,7 +145,8 @@
     <disable_collisions link1="bh_finger_11_link" link2="bh_finger_31_link" reason="Never" />
     <disable_collisions link1="bh_finger_11_link" link2="bh_finger_32_link" reason="Never" />
     <disable_collisions link1="bh_finger_11_link" link2="bh_finger_33_link" reason="Never" />
-    <disable_collisions link1="bh_finger_11_link" link2="camera_link" reason="User" />
+    <disable_collisions link1="bh_finger_11_link" link2="camera_link1" reason="User" />
+    <disable_collisions link1="bh_finger_11_link" link2="camera_link2" reason="User" />
     <disable_collisions link1="bh_finger_11_link" link2="iiwa_link_1" reason="Never" />
     <disable_collisions link1="bh_finger_11_link" link2="iiwa_link_2" reason="Never" />
     <disable_collisions link1="bh_finger_11_link" link2="iiwa_link_3" reason="Never" />
@@ -157,7 +159,8 @@
     <disable_collisions link1="bh_finger_12_link" link2="bh_finger_22_link" reason="Never" />
     <disable_collisions link1="bh_finger_12_link" link2="bh_finger_31_link" reason="Never" />
     <disable_collisions link1="bh_finger_12_link" link2="bh_finger_32_link" reason="Never" />
-    <disable_collisions link1="bh_finger_12_link" link2="camera_link" reason="User" />
+    <disable_collisions link1="bh_finger_12_link" link2="camera_link1" reason="User" />
+    <disable_collisions link1="bh_finger_12_link" link2="camera_link2" reason="User" />
     <disable_collisions link1="bh_finger_12_link" link2="iiwa_link_2" reason="Never" />
     <disable_collisions link1="bh_finger_12_link" link2="iiwa_link_3" reason="Never" />
     <disable_collisions link1="bh_finger_12_link" link2="iiwa_link_4" reason="Never" />
@@ -165,7 +168,8 @@
     <disable_collisions link1="bh_finger_12_link" link2="iiwa_link_6" reason="Never" />
     <disable_collisions link1="bh_finger_12_link" link2="iiwa_link_7" reason="Never" />
     <disable_collisions link1="bh_finger_13_link" link2="bh_finger_21_link" reason="Never" />
-    <disable_collisions link1="bh_finger_13_link" link2="camera_link" reason="User" />
+    <disable_collisions link1="bh_finger_13_link" link2="camera_link1" reason="User" />
+    <disable_collisions link1="bh_finger_13_link" link2="camera_link2" reason="User" />
     <disable_collisions link1="bh_finger_13_link" link2="iiwa_link_2" reason="Never" />
     <disable_collisions link1="bh_finger_13_link" link2="iiwa_link_3" reason="Never" />
     <disable_collisions link1="bh_finger_13_link" link2="iiwa_link_4" reason="Never" />
@@ -177,7 +181,8 @@
     <disable_collisions link1="bh_finger_21_link" link2="bh_finger_31_link" reason="Never" />
     <disable_collisions link1="bh_finger_21_link" link2="bh_finger_32_link" reason="Never" />
     <disable_collisions link1="bh_finger_21_link" link2="bh_finger_33_link" reason="Never" />
-    <disable_collisions link1="bh_finger_21_link" link2="camera_link" reason="User" />
+    <disable_collisions link1="bh_finger_21_link" link2="camera_link1" reason="User" />
+    <disable_collisions link1="bh_finger_21_link" link2="camera_link2" reason="User" />
     <disable_collisions link1="bh_finger_21_link" link2="iiwa_link_1" reason="Never" />
     <disable_collisions link1="bh_finger_21_link" link2="iiwa_link_2" reason="Never" />
     <disable_collisions link1="bh_finger_21_link" link2="iiwa_link_3" reason="Never" />
@@ -188,14 +193,16 @@
     <disable_collisions link1="bh_finger_22_link" link2="bh_finger_23_link" reason="Adjacent" />
     <disable_collisions link1="bh_finger_22_link" link2="bh_finger_31_link" reason="Never" />
     <disable_collisions link1="bh_finger_22_link" link2="bh_finger_32_link" reason="Never" />
-    <disable_collisions link1="bh_finger_22_link" link2="camera_link" reason="User" />
+    <disable_collisions link1="bh_finger_22_link" link2="camera_link1" reason="User" />
+    <disable_collisions link1="bh_finger_22_link" link2="camera_link2" reason="User" />
     <disable_collisions link1="bh_finger_22_link" link2="iiwa_link_2" reason="Never" />
     <disable_collisions link1="bh_finger_22_link" link2="iiwa_link_3" reason="Never" />
     <disable_collisions link1="bh_finger_22_link" link2="iiwa_link_4" reason="Never" />
     <disable_collisions link1="bh_finger_22_link" link2="iiwa_link_5" reason="Never" />
     <disable_collisions link1="bh_finger_22_link" link2="iiwa_link_6" reason="Never" />
     <disable_collisions link1="bh_finger_22_link" link2="iiwa_link_7" reason="Never" />
-    <disable_collisions link1="bh_finger_23_link" link2="camera_link" reason="User" />
+    <disable_collisions link1="bh_finger_23_link" link2="camera_link1" reason="User" />
+    <disable_collisions link1="bh_finger_23_link" link2="camera_link2" reason="User" />
     <disable_collisions link1="bh_finger_23_link" link2="iiwa_link_2" reason="Never" />
     <disable_collisions link1="bh_finger_23_link" link2="iiwa_link_3" reason="Never" />
     <disable_collisions link1="bh_finger_23_link" link2="iiwa_link_4" reason="Never" />
@@ -204,7 +211,8 @@
     <disable_collisions link1="bh_finger_23_link" link2="iiwa_link_7" reason="Never" />
     <disable_collisions link1="bh_finger_31_link" link2="bh_finger_32_link" reason="Adjacent" />
     <disable_collisions link1="bh_finger_31_link" link2="bh_finger_33_link" reason="Never" />
-    <disable_collisions link1="bh_finger_31_link" link2="camera_link" reason="User" />
+    <disable_collisions link1="bh_finger_31_link" link2="camera_link1" reason="User" />
+    <disable_collisions link1="bh_finger_31_link" link2="camera_link2" reason="User" />
     <disable_collisions link1="bh_finger_31_link" link2="iiwa_link_1" reason="Never" />
     <disable_collisions link1="bh_finger_31_link" link2="iiwa_link_2" reason="Never" />
     <disable_collisions link1="bh_finger_31_link" link2="iiwa_link_3" reason="Never" />
@@ -213,7 +221,8 @@
     <disable_collisions link1="bh_finger_31_link" link2="iiwa_link_6" reason="Never" />
     <disable_collisions link1="bh_finger_31_link" link2="iiwa_link_7" reason="Never" />
     <disable_collisions link1="bh_finger_32_link" link2="bh_finger_33_link" reason="Adjacent" />
-    <disable_collisions link1="bh_finger_32_link" link2="camera_link" reason="User" />
+    <disable_collisions link1="bh_finger_32_link" link2="camera_link1" reason="User" />
+    <disable_collisions link1="bh_finger_32_link" link2="camera_link2" reason="User" />
     <disable_collisions link1="bh_finger_32_link" link2="iiwa_link_1" reason="Never" />
     <disable_collisions link1="bh_finger_32_link" link2="iiwa_link_2" reason="Never" />
     <disable_collisions link1="bh_finger_32_link" link2="iiwa_link_3" reason="Never" />
@@ -221,22 +230,33 @@
     <disable_collisions link1="bh_finger_32_link" link2="iiwa_link_5" reason="Never" />
     <disable_collisions link1="bh_finger_32_link" link2="iiwa_link_6" reason="Never" />
     <disable_collisions link1="bh_finger_32_link" link2="iiwa_link_7" reason="Never" />
-    <disable_collisions link1="bh_finger_33_link" link2="camera_link" reason="User" />
+    <disable_collisions link1="bh_finger_33_link" link2="camera_link1" reason="User" />
+    <disable_collisions link1="bh_finger_33_link" link2="camera_link2" reason="User" />
     <disable_collisions link1="bh_finger_33_link" link2="iiwa_link_2" reason="Never" />
     <disable_collisions link1="bh_finger_33_link" link2="iiwa_link_3" reason="Never" />
     <disable_collisions link1="bh_finger_33_link" link2="iiwa_link_4" reason="Never" />
     <disable_collisions link1="bh_finger_33_link" link2="iiwa_link_5" reason="Never" />
     <disable_collisions link1="bh_finger_33_link" link2="iiwa_link_6" reason="Never" />
     <disable_collisions link1="bh_finger_33_link" link2="iiwa_link_7" reason="Never" />
-    <disable_collisions link1="camera_link" link2="custom_base" reason="User" />
-    <disable_collisions link1="camera_link" link2="iiwa_link_0" reason="User" />
-    <disable_collisions link1="camera_link" link2="iiwa_link_1" reason="User" />
-    <disable_collisions link1="camera_link" link2="iiwa_link_2" reason="User" />
-    <disable_collisions link1="camera_link" link2="iiwa_link_3" reason="User" />
-    <disable_collisions link1="camera_link" link2="iiwa_link_4" reason="User" />
-    <disable_collisions link1="camera_link" link2="iiwa_link_5" reason="User" />
-    <disable_collisions link1="camera_link" link2="iiwa_link_6" reason="User" />
-    <disable_collisions link1="camera_link" link2="iiwa_link_7" reason="User" />
+    <disable_collisions link1="camera_link1" link2="custom_base" reason="User" />
+    <disable_collisions link1="camera_link2" link2="custom_base" reason="User" />
+    <disable_collisions link1="camera_link1" link2="iiwa_link_0" reason="User" />
+    <disable_collisions link1="camera_link2" link2="iiwa_link_0" reason="User" />
+    <disable_collisions link1="camera_link1" link2="iiwa_link_1" reason="User" />
+    <disable_collisions link1="camera_link2" link2="iiwa_link_1" reason="User" />
+    <disable_collisions link1="camera_link1" link2="iiwa_link_2" reason="User" />
+    <disable_collisions link1="camera_link2" link2="iiwa_link_2" reason="User" />
+    <disable_collisions link1="camera_link1" link2="iiwa_link_3" reason="User" />
+    <disable_collisions link1="camera_link2" link2="iiwa_link_3" reason="User" />
+    <disable_collisions link1="camera_link1" link2="iiwa_link_4" reason="User" />
+    <disable_collisions link1="camera_link2" link2="iiwa_link_4" reason="User" />
+    <disable_collisions link1="camera_link1" link2="iiwa_link_5" reason="User" />
+    <disable_collisions link1="camera_link2" link2="iiwa_link_5" reason="User" />
+    <disable_collisions link1="camera_link1" link2="iiwa_link_6" reason="User" />
+    <disable_collisions link1="camera_link2" link2="iiwa_link_6" reason="User" />
+    <disable_collisions link1="camera_link1" link2="iiwa_link_7" reason="User" />
+    <disable_collisions link1="camera_link2" link2="iiwa_link_7" reason="User" />
+    <disable_collisions link1="camera_link1" link2="camera_link2" reason="User" />
     <disable_collisions link1="custom_base" link2="iiwa_link_0" reason="User" />
     <disable_collisions link1="custom_base" link2="iiwa_link_1" reason="User" />
     <disable_collisions link1="iiwa_link_0" link2="iiwa_link_1" reason="Adjacent" />

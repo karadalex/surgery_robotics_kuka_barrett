@@ -125,7 +125,12 @@ Visualization Manager:
             Show Axes: false
             Show Trail: false
             Value: true
-          camera_link:
+          camera_link1:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          camera_link2:
             Alpha: 1
             Show Axes: false
             Show Trail: false
@@ -283,7 +288,12 @@ Visualization Manager:
             Show Axes: false
             Show Trail: false
             Value: true
-          camera_link:
+          camera_link1:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          camera_link2:
             Alpha: 1
             Show Axes: false
             Show Trail: false

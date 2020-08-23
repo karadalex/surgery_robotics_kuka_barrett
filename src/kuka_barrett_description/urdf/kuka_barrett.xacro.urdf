@@ -45,30 +45,30 @@
       <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100"/>
     </inertial>
     <visual>
-      <origin rpy="0 0 0" xyz="0 0 0.4110095"/>
+      <origin rpy="0 0 0" xyz="0 0 0.5"/>
       <geometry>
-        <box size="0.483711 0.509896 0.822019"/>
+        <box size="0.5 0.5 1"/>
       </geometry>
       <material name="Cyan">
         <color rgba="0 1.0 1.0 1.0"/>
       </material>
     </visual>
     <collision>
-      <origin rpy="0 0 0" xyz="0 0 0.4110095"/>
+      <origin rpy="0 0 0" xyz="0 0 0.5"/>
       <geometry>
-        <box size="0.483711 0.509896 0.822019"/>
+        <box size="0.5 0.5 1"/>
       </geometry>
     </collision>
   </link>
   <!--joint between base and link_0-->
   <joint name="custom_base_iiwa_joint" type="fixed">
-    <origin rpy="0 0 0" xyz="0 0 0.822019"/>
+    <origin rpy="0 0 0" xyz="0 0 1"/>
     <parent link="custom_base"/>
     <child link="iiwa_link_0"/>
   </joint>
   <link name="iiwa_link_0">
     <inertial>
-      <origin rpy="0 0 0" xyz="-0.1 0 0.07"/>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
       <mass value="5"/>
       <inertia ixx="0.05" ixy="0" ixz="0" iyy="0.06" iyz="0" izz="0.03"/>
     </inertial>
@@ -313,7 +313,7 @@
   <joint name="iiwa_joint_ee" type="fixed">
     <parent link="iiwa_link_7"/>
     <child link="iiwa_link_ee"/>
-    <origin rpy="0 0 0" xyz="0 0 0.045"/>
+    <origin rpy="0 0 0" xyz="0 0 0"/>
   </joint>
   <link name="iiwa_link_ee">
     </link>
@@ -995,23 +995,25 @@
     <material>Gazebo/Grey</material>
     <turnGravityOff>false</turnGravityOff>
   </gazebo>
-  <joint name="camera_joint" type="fixed">
+  <!-- Left camera -->
+  <joint name="camera_joint1" type="fixed">
     <axis xyz="0 1 0"/>
-    <origin rpy="0.785 0 0" xyz="0 0 0.1"/>
+    <origin rpy="0 -1.57 0" xyz="-0.08 -0.02 0"/>
     <parent link="iiwa_link_ee"/>
-    <child link="camera_link"/>
+    <child link="camera_link1"/>
+    <mimic joint="bh_base_joint" multiplier="1" offset="0"/>
   </joint>
-  <link name="camera_link">
+  <link name="camera_link1">
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <box size="0.025 0.05 0.05"/>
+        <box size="0.02 0.04 0.04"/>
       </geometry>
     </collision>
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <box size="0.025 0.05 0.05"/>
+        <box size="0.02 0.04 0.04"/>
       </geometry>
       <material name="red"/>
     </visual>
@@ -1022,7 +1024,36 @@
     </inertial>
     <kinematic>1</kinematic>
   </link>
-  <gazebo reference="camera_link">
+  <!-- Right camera -->
+  <joint name="camera_joint2" type="fixed">
+    <axis xyz="0 1 0"/>
+    <origin rpy="0 -1.57 0" xyz="-0.08 0.02 0"/>
+    <parent link="iiwa_link_ee"/>
+    <child link="camera_link2"/>
+    <mimic joint="bh_base_joint" multiplier="1" offset="0"/>
+  </joint>
+  <link name="camera_link2">
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <box size="0.02 0.04 0.04"/>
+      </geometry>
+    </collision>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <box size="0.02 0.04 0.04"/>
+      </geometry>
+      <material name="blue"/>
+    </visual>
+    <inertial>
+      <mass value="1e-5"/>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6"/>
+    </inertial>
+    <kinematic>1</kinematic>
+  </link>
+  <gazebo reference="camera_link1">
     <material>Gazebo/Red</material>
     <sensor name="camera1" type="camera">
       <update_rate>30.0</update_rate>
@@ -1052,7 +1083,48 @@
         <cameraName>barrett/camera1</cameraName>
         <imageTopicName>image_raw</imageTopicName>
         <cameraInfoTopicName>camera_info</cameraInfoTopicName>
-        <frameName>camera_link</frameName>
+        <frameName>camera_link1</frameName>
+        <hackBaseline>0.07</hackBaseline>
+        <distortionK1>0.0</distortionK1>
+        <distortionK2>0.0</distortionK2>
+        <distortionK3>0.0</distortionK3>
+        <distortionT1>0.0</distortionT1>
+        <distortionT2>0.0</distortionT2>
+        <robotNamespace>/</robotNamespace>
+      </plugin>
+    </sensor>
+  </gazebo>
+  <gazebo reference="camera_link2">
+    <material>Gazebo/Blue</material>
+    <sensor name="camera2" type="camera">
+      <update_rate>30.0</update_rate>
+      <camera name="head">
+        <horizontal_fov>1.3962634</horizontal_fov>
+        <image>
+          <width>1280</width>
+          <height>720</height>
+          <format>R8G8B8</format>
+        </image>
+        <clip>
+          <near>0.02</near>
+          <far>300</far>
+        </clip>
+        <noise>
+          <type>gaussian</type>
+          <!-- Noise is sampled independently per pixel on each frame.
+                    That pixel's noise value is added to each of its color
+                    channels, which at that point lie in the range [0,1]. -->
+          <mean>0.0</mean>
+          <stddev>0.007</stddev>
+        </noise>
+      </camera>
+      <plugin filename="libgazebo_ros_camera.so" name="camera_controller">
+        <alwaysOn>true</alwaysOn>
+        <updateRate>0.0</updateRate>
+        <cameraName>barrett/camera2</cameraName>
+        <imageTopicName>image_raw</imageTopicName>
+        <cameraInfoTopicName>camera_info</cameraInfoTopicName>
+        <frameName>camera_link2</frameName>
         <hackBaseline>0.07</hackBaseline>
         <distortionK1>0.0</distortionK1>
         <distortionK2>0.0</distortionK2>

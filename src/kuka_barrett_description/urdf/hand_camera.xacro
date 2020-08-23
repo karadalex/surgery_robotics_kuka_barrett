@@ -1,30 +1,63 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-  <xacro:macro name="hand_camera" params="parent camera_link">
+  <xacro:macro name="hand_camera" params="parent camera_size">
 
-    <joint name="camera_joint" type="fixed">
+		<!-- Left camera -->
+    <joint name="camera_joint1" type="fixed">
         <axis xyz="0 1 0" />
-        <origin xyz="-${2*camera_link} 0 0" rpy="0 -1.57 0"/>
+        <origin xyz="-${2*camera_size} -${camera_size/2} 0" rpy="0 -1.57 0"/>
         <parent link="${parent}"/>
-        <child link="camera_link"/>
+        <child link="camera_link1"/>
 				<mimic joint="bh_base_joint" multiplier="1" offset="0"/>
     </joint>
-
-    <link name="camera_link">
+    <link name="camera_link1">
 			<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>
-					<box size="${camera_link/2} ${camera_link} ${camera_link}"/>
+					<box size="${camera_size/2} ${camera_size} ${camera_size}"/>
 				</geometry>
 			</collision>
 
 			<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>
-					<box size="${camera_link/2} ${camera_link} ${camera_link}"/>
+					<box size="${camera_size/2} ${camera_size} ${camera_size}"/>
 				</geometry>
 				<material name="red"/>
+			</visual>
+
+			<inertial>
+				<mass value="1e-5" />
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+			</inertial>
+
+			<kinematic>1</kinematic>
+    </link>
+
+		<!-- Right camera -->
+    <joint name="camera_joint2" type="fixed">
+        <axis xyz="0 1 0" />
+        <origin xyz="-${2*camera_size} ${camera_size/2} 0" rpy="0 -1.57 0"/>
+        <parent link="${parent}"/>
+        <child link="camera_link2"/>
+				<mimic joint="bh_base_joint" multiplier="1" offset="0"/>
+    </joint>
+    <link name="camera_link2">
+			<collision>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<geometry>
+					<box size="${camera_size/2} ${camera_size} ${camera_size}"/>
+				</geometry>
+			</collision>
+
+			<visual>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<geometry>
+					<box size="${camera_size/2} ${camera_size} ${camera_size}"/>
+				</geometry>
+				<material name="blue"/>
 			</visual>
 
 			<inertial>
