@@ -81,6 +81,31 @@ void TrajectoryExecution::executePath(vector<vector<float>> path) {
 }
 
 
+void TrajectoryExecution::executePath(vector<geometry_msgs::Pose> path) {
+	namespace rvt = rviz_visual_tools;
+
+	geometry_msgs::Pose target_pose;
+	moveit::planning_interface::MoveGroupInterface::Plan my_plan;
+
+	for (int i = 0; i < path.size(); ++i) {
+		target_pose = path.at(i);
+
+		move_group.setPoseTarget(target_pose);
+
+		bool success = (move_group.plan(my_plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
+		ROS_INFO_NAMED("robot_planner1", "Visualizing plan %d (pose goal) %s", i, success ? "SUCCESS" : "FAILED");
+		// Visualize plan
+		ROS_INFO_NAMED("robot_planner1", "Visualizing plan %d as trajectory line", i);
+		visual_tools.publishAxisLabeled(target_pose, "pose");
+		visual_tools.publishText(text_pose, "Pose Goal", rvt::WHITE, rvt::XLARGE);
+		visual_tools.publishTrajectoryLine(my_plan.trajectory_, joint_model_group);
+		visual_tools.trigger();
+
+		move_group.execute(my_plan);
+	}
+}
+
+
 void TrajectoryExecution::executeCartesianPath(vector<geometry_msgs::Pose> waypoints, const char* traj_name) {
 	namespace rvt = rviz_visual_tools;
 
@@ -101,7 +126,7 @@ void TrajectoryExecution::executeCartesianPath(vector<geometry_msgs::Pose> waypo
 	ROS_INFO_NAMED("robot_planner1", "Visualizing plan for %s (Cartesian path) (%.2f%% achieved)", traj_name, fraction * 100.0);
 
 	// Visualize the plan in RViz
-	visual_tools.deleteAllMarkers();
+	// visual_tools.deleteAllMarkers();
 	visual_tools.publishText(text_pose, "Joint Space Goal", rvt::WHITE, rvt::XLARGE);
 	visual_tools.publishPath(waypoints, rvt::LIME_GREEN, rvt::SMALL);
 	for (std::size_t i = 0; i < waypoints.size(); ++i)

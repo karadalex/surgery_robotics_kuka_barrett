@@ -44,6 +44,8 @@ public:
  	 */
 	void executePath(vector<vector<float>> path);
 
+	void executePath(vector<geometry_msgs::Pose> path);
+
 	/**
 	 * Calculate and execute a cartesian trajectory between the given waypoints
 	 * @param waypoints
