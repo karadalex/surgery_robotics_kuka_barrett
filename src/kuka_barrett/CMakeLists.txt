@@ -224,3 +224,6 @@ target_link_libraries(robot_planner3 ${catkin_LIBRARIES} ${Boost_LIBRARIES})
 
 add_executable(scene_objects src/scene_objects.cpp)
 target_link_libraries(scene_objects ${catkin_LIBRARIES})
+
+add_executable(simple_circular_traj src/simple_circular_traj.cpp)
+target_link_libraries(simple_circular_traj ${catkin_LIBRARIES})
