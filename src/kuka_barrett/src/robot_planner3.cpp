@@ -7,6 +7,7 @@
 #include <std_msgs/Float64.h>
 #include "kinematics/TrajectoryExecution.h"
 #include "trajectory/CircleTrajectory.h"
+#include "kinematics/Pose.h"
 
 
 using namespace std;
@@ -52,13 +53,28 @@ int main(int argc, char** argv)
 	// path3.push_back(fulcrumAbovePose1);
 	// traj1.executeCartesianPath(path3, "reverse insertion movement");
 
+	// Get transformation matrix of reference frame {F} (Fulcrum reference frame) w.r.t. to the universal reference frame {U}
+	Pose* FPose = new Pose(0.155652, 0.697198, 1.347693, -0.018658, -0.594264, 0.009121);
+	Eigen::Matrix4d U_T_F = FPose->pose;
+
+
 	Eigen::Vector3f circleTrajCenter;
 	// Initialize vector with known values https://eigen.tuxfamily.org/dox/group__TutorialAdvancedInitialization.html
 	// values are given in x, y, z order
-	circleTrajCenter << 0.259807, 0.689203, 1.174661;
-	CircleTrajectory* circleTrajectory = new CircleTrajectory(circleTrajCenter, 0.05);
-	vector<geometry_msgs::Pose> circle_waypoints = circleTrajectory->getCartesianWaypoints(30);
+	// circleTrajCenter << 0.259807, 0.689203, 1.174661;
+	circleTrajCenter << 0, 0, 0.2; // Coordinates of desired circle w.r.t. to {F} reference frame
+	CircleTrajectory* circleTrajectory = new CircleTrajectory(circleTrajCenter, 0.1);
+	vector<geometry_msgs::Pose> circle_waypoints = circleTrajectory->getCartesianWaypoints(20, U_T_F);
+
+	// Path to circle
+	std::vector<geometry_msgs::Pose> path3;
+	path3.push_back(fulcrumInsertedPose1);
+	path3.push_back(circle_waypoints.at(0));
+	traj1.executeCartesianPath(path3, "Path to circle");
+
 	traj1.executeCartesianPath(circle_waypoints, "Circular Trajectory");
+
+	traj1.executeCartesianPath(path3, "Path to circle");
 
 
 	ros::shutdown();
