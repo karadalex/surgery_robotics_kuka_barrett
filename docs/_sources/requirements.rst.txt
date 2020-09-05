@@ -36,6 +36,12 @@ Requirements
 
     $ sudo apt-get install ros-melodic-ros-controllers
 
+  * Other dependencies
+
+  .. code-block:: bash
+
+  $ sudo apt-get install ros-melodic-cv-camera  
+
   * Catkin tools (optional)
   
   .. code-block:: bash

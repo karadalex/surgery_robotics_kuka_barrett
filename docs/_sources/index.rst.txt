@@ -14,6 +14,25 @@ Surgery Robotics with KUKA iiwa and Barrett hand's documentation!
    /install-instructions
    /usage
 
+.. toctree::
+   :maxdepth: 2
+   :caption: KINEMATICS
+
+   /kinematics/moveit
+   /kinematics/trajectories
+
+.. toctree::
+   :maxdepth: 2
+   :caption: SIMULATION
+
+   /gazebo/getting-started
+
+.. toctree::
+   :maxdepth: 2
+   :caption: VISION
+
+   /vision/getting-started
+
 
 .. toctree::
    :maxdepth: 2
