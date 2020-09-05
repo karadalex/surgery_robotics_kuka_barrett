@@ -23,7 +23,7 @@ class Detection:
     self.image_pub = rospy.Publisher("/opencv/test_topic_1",Image)
 
     self.bridge = CvBridge()
-    self.image_sub = rospy.Subscriber("/barrett/camera1/image_raw",Image,self.callback)
+    self.image_sub = rospy.Subscriber("/stereo/left/image_raw",Image,self.callback)
 
     # Data to be available across every subscriber callback
     self.toolCenterOfMass = [0, 0]

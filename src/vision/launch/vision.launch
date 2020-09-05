@@ -1,4 +1,36 @@
 <launch>
     <!-- <node name="image_view" pkg="image_view" type="image_view" args="image:=/barrett/camera1/image_raw" /> -->
-    <node name="opencv_image_view" pkg="vision" type="detection.py"/>
+    <!-- <node name="opencv_image_view" pkg="vision" type="detection.py"/> -->
+
+    <!-- Setting up Stereo Image Processing
+    see more at https://wiki.ros.org/stereo_image_proc/Tutorials/Using%20OpenCV%20for%20Image%20Processing#Stereo_Image_Processing -->
+    <!-- Argument for device id -->
+    <arg name="cam1" value="0" />
+    <arg name="cam2" value="1" />
+    <!-- Publisher node -->
+    <!-- Uncomment the 2 nodes below to use actual cameras, otherwise gazebo simulation
+    cameras will be used -->
+    <!-- <node
+        pkg="cv_camera"
+        type="cv_camera_node"
+        name="left" 
+        args="$(arg cam1)" >
+    </node>
+    <node
+        pkg="cv_camera"
+        type="cv_camera_node"
+        name="right" 
+        args="$(arg cam2)" >
+    </node> -->
+    <!-- Subscriber node -->
+    <node
+        pkg="stereo_image_proc"
+        type="stereo_image_proc"
+        name="stereo_image_proc"
+        ns="stereo"
+    />
+
+    <!-- View stereo images and disparity -->
+    <!-- https://wiki.ros.org/image_view -->
+    <node name="stereo_view" pkg="image_view" type="stereo_view" args="stereo:=/stereo image:=image_rect_color" />
 </launch>
