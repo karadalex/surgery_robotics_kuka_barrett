@@ -30,6 +30,9 @@
         ns="stereo"
     />
 
+    <node pkg="tf" type="static_transform_publisher" name="left_camera_broadcaster" args="0 0 -0.12 -1.57 0 0 iiwa_link_ee camera_link1 100" />
+    <node pkg="tf" type="static_transform_publisher" name="right_camera_broadcaster" args="0 0 -0.12 -1.57 0 0 iiwa_link_ee camera_link2 100" />
+
     <!-- View stereo images and disparity -->
     <!-- https://wiki.ros.org/image_view -->
     <node name="stereo_view" pkg="image_view" type="stereo_view" args="stereo:=/stereo image:=image_rect_color" />
