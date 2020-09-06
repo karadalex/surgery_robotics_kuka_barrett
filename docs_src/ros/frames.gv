@@ -1,0 +1,31 @@
+digraph G {
+"world" -> "table1"[label="Broadcaster: /object_tf_broadcaster\nAverage rate: 100.202 Hz\nMost recent transform: 2380.379 ( 0.007 sec old)\nBuffer length: 4.960 sec\n"];
+"world" -> "table2"[label="Broadcaster: /object_tf_broadcaster\nAverage rate: 100.202 Hz\nMost recent transform: 2380.379 ( 0.007 sec old)\nBuffer length: 4.960 sec\n"];
+"custom_base" -> "iiwa_link_0"[label="Broadcaster: /robot_state_publisher\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 2380.386 sec old)\nBuffer length: 0.000 sec\n"];
+"iiwa_link_ee" -> "bh_base_link"[label="Broadcaster: /robot_state_publisher\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 2380.386 sec old)\nBuffer length: 0.000 sec\n"];
+"iiwa_link_7" -> "iiwa_link_ee"[label="Broadcaster: /robot_state_publisher\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 2380.386 sec old)\nBuffer length: 0.000 sec\n"];
+"bh_base_link" -> "bh_finger_31_link"[label="Broadcaster: /robot_state_publisher\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 2380.386 sec old)\nBuffer length: 0.000 sec\n"];
+"iiwa_link_ee" -> "camera_link1"[label="Broadcaster: /robot_state_publisher\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 2380.386 sec old)\nBuffer length: 0.000 sec\n"];
+"iiwa_link_ee" -> "camera_link2"[label="Broadcaster: /robot_state_publisher\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 2380.386 sec old)\nBuffer length: 0.000 sec\n"];
+"world" -> "custom_base"[label="Broadcaster: /robot_state_publisher\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 2380.386 sec old)\nBuffer length: 0.000 sec\n"];
+"iiwa_link_6" -> "iiwa_link_7"[label="Broadcaster: /robot_state_publisher\nAverage rate: 50.000 Hz\nMost recent transform: 2380.373 ( 0.013 sec old)\nBuffer length: 4.940 sec\n"];
+"bh_base_link" -> "surgical_tool_link"[label="Broadcaster: /robot_state_publisher\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 2380.386 sec old)\nBuffer length: 0.000 sec\n"];
+"bh_base_link" -> "bh_finger_11_link"[label="Broadcaster: /robot_state_publisher\nAverage rate: 50.000 Hz\nMost recent transform: 2380.373 ( 0.013 sec old)\nBuffer length: 4.940 sec\n"];
+"bh_finger_11_link" -> "bh_finger_12_link"[label="Broadcaster: /robot_state_publisher\nAverage rate: 50.000 Hz\nMost recent transform: 2380.373 ( 0.013 sec old)\nBuffer length: 4.940 sec\n"];
+"bh_finger_12_link" -> "bh_finger_13_link"[label="Broadcaster: /robot_state_publisher\nAverage rate: 50.000 Hz\nMost recent transform: 2380.373 ( 0.013 sec old)\nBuffer length: 4.940 sec\n"];
+"bh_base_link" -> "bh_finger_21_link"[label="Broadcaster: /robot_state_publisher\nAverage rate: 50.000 Hz\nMost recent transform: 2380.373 ( 0.013 sec old)\nBuffer length: 4.940 sec\n"];
+"bh_finger_21_link" -> "bh_finger_22_link"[label="Broadcaster: /robot_state_publisher\nAverage rate: 50.000 Hz\nMost recent transform: 2380.373 ( 0.013 sec old)\nBuffer length: 4.940 sec\n"];
+"bh_finger_22_link" -> "bh_finger_23_link"[label="Broadcaster: /robot_state_publisher\nAverage rate: 50.000 Hz\nMost recent transform: 2380.373 ( 0.013 sec old)\nBuffer length: 4.940 sec\n"];
+"bh_finger_31_link" -> "bh_finger_32_link"[label="Broadcaster: /robot_state_publisher\nAverage rate: 50.000 Hz\nMost recent transform: 2380.373 ( 0.013 sec old)\nBuffer length: 4.940 sec\n"];
+"bh_finger_32_link" -> "bh_finger_33_link"[label="Broadcaster: /robot_state_publisher\nAverage rate: 50.000 Hz\nMost recent transform: 2380.373 ( 0.013 sec old)\nBuffer length: 4.940 sec\n"];
+"iiwa_link_0" -> "iiwa_link_1"[label="Broadcaster: /robot_state_publisher\nAverage rate: 50.000 Hz\nMost recent transform: 2380.373 ( 0.013 sec old)\nBuffer length: 4.940 sec\n"];
+"iiwa_link_1" -> "iiwa_link_2"[label="Broadcaster: /robot_state_publisher\nAverage rate: 50.000 Hz\nMost recent transform: 2380.373 ( 0.013 sec old)\nBuffer length: 4.940 sec\n"];
+"iiwa_link_2" -> "iiwa_link_3"[label="Broadcaster: /robot_state_publisher\nAverage rate: 50.000 Hz\nMost recent transform: 2380.373 ( 0.013 sec old)\nBuffer length: 4.940 sec\n"];
+"iiwa_link_3" -> "iiwa_link_4"[label="Broadcaster: /robot_state_publisher\nAverage rate: 50.000 Hz\nMost recent transform: 2380.373 ( 0.013 sec old)\nBuffer length: 4.940 sec\n"];
+"iiwa_link_4" -> "iiwa_link_5"[label="Broadcaster: /robot_state_publisher\nAverage rate: 50.000 Hz\nMost recent transform: 2380.373 ( 0.013 sec old)\nBuffer length: 4.940 sec\n"];
+"iiwa_link_5" -> "iiwa_link_6"[label="Broadcaster: /robot_state_publisher\nAverage rate: 50.000 Hz\nMost recent transform: 2380.373 ( 0.013 sec old)\nBuffer length: 4.940 sec\n"];
+edge [style=invis];
+ subgraph cluster_legend { style=bold; color=black; label ="view_frames Result";
+"Recorded at time: 2380.386"[ shape=plaintext ] ;
+ }->"world";
+}

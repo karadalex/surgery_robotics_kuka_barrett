@@ -1,0 +1,286 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Transformations &mdash; Surgery Robotics with KUKA iiwa and Barrett hand  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Topics" href="topics.html" />
+    <link rel="prev" title="Node Architecture" href="nodes.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> Surgery Robotics with KUKA iiwa and Barrett hand
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../requirements.html">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install-instructions.html">Installation Instructions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Running the simulation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">ROS</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="nodes.html">Node Architecture</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Transformations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#robot-transformations">Robot Transformations</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="topics.html">Topics</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Kinematics</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../kinematics/moveit.html">Moveit Framework</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../kinematics/trajectories.html">Trajectory Planning</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Simulation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../simulation/getting-started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../simulation/robot.html">Robot Description</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Vision</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../vision/getting-started.html">Getting Started</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Troubleshooting</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
+</ul>
+<p class="caption"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../references.html">References</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Surgery Robotics with KUKA iiwa and Barrett hand</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Transformations</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/ros/tf.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="transformations">
+<h1>Transformations<a class="headerlink" href="#transformations" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="robot-transformations">
+<h2>Robot Transformations<a class="headerlink" href="#robot-transformations" title="Permalink to this headline">¶</a></h2>
+<p>Generate transformations tree:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ rosrun tf view_frames
+$ evince frames.pdf
+</pre></div>
+</div>
+<div class="graphviz"><img src="../_images/graphviz-521d617bd67a3692453903ca6b508c44f0a55117.png" alt="digraph G {
+&quot;world&quot; -&gt; &quot;table1&quot;[label=&quot;Broadcaster: /object_tf_broadcaster\nAverage rate: 100.202 Hz\nMost recent transform: 2380.379 ( 0.007 sec old)\nBuffer length: 4.960 sec\n&quot;];
+&quot;world&quot; -&gt; &quot;table2&quot;[label=&quot;Broadcaster: /object_tf_broadcaster\nAverage rate: 100.202 Hz\nMost recent transform: 2380.379 ( 0.007 sec old)\nBuffer length: 4.960 sec\n&quot;];
+&quot;custom_base&quot; -&gt; &quot;iiwa_link_0&quot;[label=&quot;Broadcaster: /robot_state_publisher\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 2380.386 sec old)\nBuffer length: 0.000 sec\n&quot;];
+&quot;iiwa_link_ee&quot; -&gt; &quot;bh_base_link&quot;[label=&quot;Broadcaster: /robot_state_publisher\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 2380.386 sec old)\nBuffer length: 0.000 sec\n&quot;];
+&quot;iiwa_link_7&quot; -&gt; &quot;iiwa_link_ee&quot;[label=&quot;Broadcaster: /robot_state_publisher\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 2380.386 sec old)\nBuffer length: 0.000 sec\n&quot;];
+&quot;bh_base_link&quot; -&gt; &quot;bh_finger_31_link&quot;[label=&quot;Broadcaster: /robot_state_publisher\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 2380.386 sec old)\nBuffer length: 0.000 sec\n&quot;];
+&quot;iiwa_link_ee&quot; -&gt; &quot;camera_link1&quot;[label=&quot;Broadcaster: /robot_state_publisher\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 2380.386 sec old)\nBuffer length: 0.000 sec\n&quot;];
+&quot;iiwa_link_ee&quot; -&gt; &quot;camera_link2&quot;[label=&quot;Broadcaster: /robot_state_publisher\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 2380.386 sec old)\nBuffer length: 0.000 sec\n&quot;];
+&quot;world&quot; -&gt; &quot;custom_base&quot;[label=&quot;Broadcaster: /robot_state_publisher\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 2380.386 sec old)\nBuffer length: 0.000 sec\n&quot;];
+&quot;iiwa_link_6&quot; -&gt; &quot;iiwa_link_7&quot;[label=&quot;Broadcaster: /robot_state_publisher\nAverage rate: 50.000 Hz\nMost recent transform: 2380.373 ( 0.013 sec old)\nBuffer length: 4.940 sec\n&quot;];
+&quot;bh_base_link&quot; -&gt; &quot;surgical_tool_link&quot;[label=&quot;Broadcaster: /robot_state_publisher\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 2380.386 sec old)\nBuffer length: 0.000 sec\n&quot;];
+&quot;bh_base_link&quot; -&gt; &quot;bh_finger_11_link&quot;[label=&quot;Broadcaster: /robot_state_publisher\nAverage rate: 50.000 Hz\nMost recent transform: 2380.373 ( 0.013 sec old)\nBuffer length: 4.940 sec\n&quot;];
+&quot;bh_finger_11_link&quot; -&gt; &quot;bh_finger_12_link&quot;[label=&quot;Broadcaster: /robot_state_publisher\nAverage rate: 50.000 Hz\nMost recent transform: 2380.373 ( 0.013 sec old)\nBuffer length: 4.940 sec\n&quot;];
+&quot;bh_finger_12_link&quot; -&gt; &quot;bh_finger_13_link&quot;[label=&quot;Broadcaster: /robot_state_publisher\nAverage rate: 50.000 Hz\nMost recent transform: 2380.373 ( 0.013 sec old)\nBuffer length: 4.940 sec\n&quot;];
+&quot;bh_base_link&quot; -&gt; &quot;bh_finger_21_link&quot;[label=&quot;Broadcaster: /robot_state_publisher\nAverage rate: 50.000 Hz\nMost recent transform: 2380.373 ( 0.013 sec old)\nBuffer length: 4.940 sec\n&quot;];
+&quot;bh_finger_21_link&quot; -&gt; &quot;bh_finger_22_link&quot;[label=&quot;Broadcaster: /robot_state_publisher\nAverage rate: 50.000 Hz\nMost recent transform: 2380.373 ( 0.013 sec old)\nBuffer length: 4.940 sec\n&quot;];
+&quot;bh_finger_22_link&quot; -&gt; &quot;bh_finger_23_link&quot;[label=&quot;Broadcaster: /robot_state_publisher\nAverage rate: 50.000 Hz\nMost recent transform: 2380.373 ( 0.013 sec old)\nBuffer length: 4.940 sec\n&quot;];
+&quot;bh_finger_31_link&quot; -&gt; &quot;bh_finger_32_link&quot;[label=&quot;Broadcaster: /robot_state_publisher\nAverage rate: 50.000 Hz\nMost recent transform: 2380.373 ( 0.013 sec old)\nBuffer length: 4.940 sec\n&quot;];
+&quot;bh_finger_32_link&quot; -&gt; &quot;bh_finger_33_link&quot;[label=&quot;Broadcaster: /robot_state_publisher\nAverage rate: 50.000 Hz\nMost recent transform: 2380.373 ( 0.013 sec old)\nBuffer length: 4.940 sec\n&quot;];
+&quot;iiwa_link_0&quot; -&gt; &quot;iiwa_link_1&quot;[label=&quot;Broadcaster: /robot_state_publisher\nAverage rate: 50.000 Hz\nMost recent transform: 2380.373 ( 0.013 sec old)\nBuffer length: 4.940 sec\n&quot;];
+&quot;iiwa_link_1&quot; -&gt; &quot;iiwa_link_2&quot;[label=&quot;Broadcaster: /robot_state_publisher\nAverage rate: 50.000 Hz\nMost recent transform: 2380.373 ( 0.013 sec old)\nBuffer length: 4.940 sec\n&quot;];
+&quot;iiwa_link_2&quot; -&gt; &quot;iiwa_link_3&quot;[label=&quot;Broadcaster: /robot_state_publisher\nAverage rate: 50.000 Hz\nMost recent transform: 2380.373 ( 0.013 sec old)\nBuffer length: 4.940 sec\n&quot;];
+&quot;iiwa_link_3&quot; -&gt; &quot;iiwa_link_4&quot;[label=&quot;Broadcaster: /robot_state_publisher\nAverage rate: 50.000 Hz\nMost recent transform: 2380.373 ( 0.013 sec old)\nBuffer length: 4.940 sec\n&quot;];
+&quot;iiwa_link_4&quot; -&gt; &quot;iiwa_link_5&quot;[label=&quot;Broadcaster: /robot_state_publisher\nAverage rate: 50.000 Hz\nMost recent transform: 2380.373 ( 0.013 sec old)\nBuffer length: 4.940 sec\n&quot;];
+&quot;iiwa_link_5&quot; -&gt; &quot;iiwa_link_6&quot;[label=&quot;Broadcaster: /robot_state_publisher\nAverage rate: 50.000 Hz\nMost recent transform: 2380.373 ( 0.013 sec old)\nBuffer length: 4.940 sec\n&quot;];
+edge [style=invis];
+ subgraph cluster_legend { style=bold; color=black; label =&quot;view_frames Result&quot;;
+&quot;Recorded at time: 2380.386&quot;[ shape=plaintext ] ;
+ }-&gt;&quot;world&quot;;
+}" class="graphviz" /></div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="topics.html" class="btn btn-neutral float-right" title="Topics" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="nodes.html" class="btn btn-neutral float-left" title="Node Architecture" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Alexios Karadimos
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

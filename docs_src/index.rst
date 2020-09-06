@@ -8,7 +8,7 @@ Surgery Robotics with KUKA iiwa and Barrett hand's documentation!
 
 .. toctree::
    :maxdepth: 2
-   :caption: GETTING STARTED
+   :caption: Getting Started
 
    /requirements
    /install-instructions
@@ -16,34 +16,43 @@ Surgery Robotics with KUKA iiwa and Barrett hand's documentation!
 
 .. toctree::
    :maxdepth: 2
-   :caption: KINEMATICS
+   :caption: ROS
+
+   /ros/nodes
+   /ros/tf
+   /ros/topics
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Kinematics
 
    /kinematics/moveit
    /kinematics/trajectories
 
 .. toctree::
    :maxdepth: 2
-   :caption: SIMULATION
+   :caption: Simulation
 
-   /gazebo/getting-started
+   /simulation/getting-started
+   /simulation/robot
 
 .. toctree::
    :maxdepth: 2
-   :caption: VISION
+   :caption: Vision
 
    /vision/getting-started
-
+   /vision/detection
 
 .. toctree::
    :maxdepth: 2
-   :caption: TROUBLESHOOTING
+   :caption: Troubleshooting
 
    /troubleshooting
 
 
 .. toctree::
    :maxdepth: 2
-   :caption: REFERENCES
+   :caption: References
 
    /references
 

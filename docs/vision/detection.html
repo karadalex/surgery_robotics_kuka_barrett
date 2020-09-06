@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Moveit Framework &mdash; Surgery Robotics with KUKA iiwa and Barrett hand  documentation</title>
+  <title>Surgical Tool Detection &mdash; Surgery Robotics with KUKA iiwa and Barrett hand  documentation</title>
   
 
   
@@ -37,8 +37,8 @@
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Trajectory Planning" href="trajectories.html" />
-    <link rel="prev" title="Topics" href="../ros/topics.html" /> 
+    <link rel="next" title="Troubleshooting" href="../troubleshooting.html" />
+    <link rel="prev" title="Getting Started" href="getting-started.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -96,9 +96,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../ros/topics.html">Topics</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Kinematics</span></p>
-<ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Moveit Framework</a></li>
-<li class="toctree-l1"><a class="reference internal" href="trajectories.html">Trajectory Planning</a></li>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../kinematics/moveit.html">Moveit Framework</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../kinematics/trajectories.html">Trajectory Planning</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Simulation</span></p>
 <ul>
@@ -106,8 +106,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../simulation/robot.html">Robot Description</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Vision</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../vision/getting-started.html">Getting Started</a></li>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting-started.html">Getting Started</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Surgical Tool Detection</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#python-script">Python Script</a></li>
+</ul>
+</li>
 </ul>
 <p class="caption"><span class="caption-text">Troubleshooting</span></p>
 <ul>
@@ -162,13 +166,13 @@
     
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li>Moveit Framework</li>
+      <li>Surgical Tool Detection</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/kinematics/moveit.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/vision/detection.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -181,8 +185,15 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="moveit-framework">
-<h1>Moveit Framework<a class="headerlink" href="#moveit-framework" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="surgical-tool-detection">
+<h1>Surgical Tool Detection<a class="headerlink" href="#surgical-tool-detection" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="python-script">
+<h2>Python Script<a class="headerlink" href="#python-script" title="Permalink to this headline">¶</a></h2>
+<p>To execute the surgical tool detection script run the following:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ rosrun vision detection.py
+</pre></div>
+</div>
+</div>
 </div>
 
 
@@ -193,10 +204,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="trajectories.html" class="btn btn-neutral float-right" title="Trajectory Planning" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../troubleshooting.html" class="btn btn-neutral float-right" title="Troubleshooting" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../ros/topics.html" class="btn btn-neutral float-left" title="Topics" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="getting-started.html" class="btn btn-neutral float-left" title="Getting Started" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
