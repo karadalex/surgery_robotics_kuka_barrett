@@ -6,7 +6,7 @@
 		<!-- Left camera -->
     <joint name="camera_joint1" type="fixed">
         <axis xyz="0 1 0" />
-        <origin xyz="-${2*camera_size} -${camera_size/2} 0" rpy="0 -1.57 0"/>
+        <origin xyz="-${3*camera_size} -${camera_size/2} 0" rpy="0 -1.57 0"/>
         <parent link="${parent}"/>
         <child link="camera_link1"/>
 				<mimic joint="bh_base_joint" multiplier="1" offset="0"/>
@@ -39,7 +39,7 @@
 		<!-- Right camera -->
     <joint name="camera_joint2" type="fixed">
         <axis xyz="0 1 0" />
-        <origin xyz="-${2*camera_size} ${camera_size/2} 0" rpy="0 -1.57 0"/>
+        <origin xyz="-${3*camera_size} ${camera_size/2} 0" rpy="0 -1.57 0"/>
         <parent link="${parent}"/>
         <child link="camera_link2"/>
 				<mimic joint="bh_base_joint" multiplier="1" offset="0"/>
