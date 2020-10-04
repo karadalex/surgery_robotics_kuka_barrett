@@ -10,7 +10,7 @@ import time
 from std_msgs.msg import String
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge, CvBridgeError
-from helpers import getRectangularNeighborhood
+from helpers import *
 import geometry
 
 
@@ -47,17 +47,23 @@ class Detection:
     #    COLOR DETECTION (B,G,R)
     ###########################################################################################
     # Define color detection area
-    detectionAreaXRange = (int(rows/3), int(2*rows/3))
-    detectionAreaYRange = (int(cols/3), int(2*cols/3))
+    detectionAreaYRange = (int(rows/3), int(2*rows/3))
+    detectionAreaXRange = (int(cols/3), int(2*cols/3))
+    colorROI = np.array([
+      [detectionAreaXRange[0], 0],
+      [detectionAreaXRange[1], 0],
+      [detectionAreaXRange[1], rows],
+      [detectionAreaXRange[0], rows]
+    ])
 
     # Count blue and/or green pixels within detection area
     numBluePixels = 0
     numGreenPixels = 0
     toolPixels = []
-    # for i in range(detectionAreaXRange[0], detectionAreaXRange[1], 3):
+    # for i in range(detectionAreaYRange[0], detectionAreaYRange[1], 3):
     for i in range(0, rows, 10):
       # for j in range(0, cols, 10):
-      for j in range(detectionAreaYRange[0], detectionAreaYRange[1], 10):
+      for j in range(detectionAreaXRange[0], detectionAreaXRange[1], 10):
         if cv_image[i,j,0] >= 200:
           numBluePixels += 1
           cv_image[i,j] = [0,255,0]
@@ -140,7 +146,9 @@ class Detection:
     maxHullIndex = startFrom
     for i in range(startFrom, len(hull)):
       if hullsMeanDistanceFromCenter[i] > hullsMeanDistanceFromCenter[maxHullIndex]:
-        maxHullIndex = i
+        if hasPolygonCenterOfColor(cv_image, contours[i], blueColor):
+          if isPolygonInROI(hull[i], colorROI):
+            maxHullIndex = i
 
 
     ###########################################################################################
@@ -148,8 +156,8 @@ class Detection:
     ###########################################################################################
     # Center of mass of tool (weighted average of cm computed from contour and cm computed from toolPixels)
     toolPixelsCM = geometry.centerOfMass(toolPixels) # toolPixelsCM coordinates are (Y,X) (??)
-    maxHullCmX = (2*contourCenterOfMass[maxHullIndex][0] + 4*toolPixelsCM[1]) / 6
-    maxHullCmY = (2*contourCenterOfMass[maxHullIndex][1] + 4*toolPixelsCM[0]) / 6
+    maxHullCmX = (5*contourCenterOfMass[maxHullIndex][0] + 1*toolPixelsCM[1]) / 6
+    maxHullCmY = (5*contourCenterOfMass[maxHullIndex][1] + 1*toolPixelsCM[0]) / 6
 
     # Find orientation vectors of tool
     a,b = geometry.orientationVectors(toolPixels)
@@ -196,6 +204,9 @@ class Detection:
       # draw ith contour
         cv2.drawContours(img_detection_region, contoursGreen, i, contour_color, 2, 8, hierarchy)
     cmb = geometry.centerOfMass(toolPixels)
+
+    # Draw Color Region Of Interest
+    # cv2.polylines(cv_image, [colorROI], True, (0,255,0), thickness=3)
 
     # Draw tool detection message
     font                   = cv2.FONT_HERSHEY_SIMPLEX
