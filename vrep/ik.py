@@ -6,13 +6,36 @@ from time import sleep
 
 
 def main():
+  # Execute circular trajectory
   samplesNum = 20
   step = 1.0 / samplesNum
   t = 0
-  for i in range(samplesNum):
+  for i in range(samplesNum+1):
     x = 0.1 * cos(2*pi*t) + 0.75
     y = 0.1 * sin(2*pi*t) - 0.125
     z = 1.2
+    yaw = 0
+    pitch = pi/2
+    roll = 0
+    pose = [x, y, z] + eulerToQuaternion(yaw, pitch, roll)
+    moveTargetFrame(pose)
+    t = step*i
+    sleep(0.5)
+
+  # Execute linear trajectory
+  samplesNum = 20
+  step = 1.0 / samplesNum
+  t = 0
+  x0 = 0.85
+  y0 = -0.125
+  z0 = 1.2
+  x1 = -0.15
+  y1 = 0.65
+  z1 = 1.2
+  for i in range(samplesNum+2):
+    x = t*(x1 - x0) + x0
+    y = t*(y1 - y0) + y0
+    z = t*(z1 - z0) + z0
     yaw = 0
     pitch = pi/2
     roll = 0

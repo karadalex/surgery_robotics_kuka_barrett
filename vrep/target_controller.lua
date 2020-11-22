@@ -61,7 +61,8 @@ function moveTarget(targetPose)
 
   targetPosition = {targetPose[1], targetPose[2], targetPose[3]}
   targetQuaternion = {targetPose[4], targetPose[5], targetPose[6], targetPose[7]}
-  print("targetPosition: ", targetPosition, "targetQuaternion: ", targetQuaternion)
+  -- targetQuaternion = nil
+  -- print("targetPosition: ", targetPosition, "targetQuaternion: ", targetQuaternion)
 
   vel = 0.2
   accel = 2
