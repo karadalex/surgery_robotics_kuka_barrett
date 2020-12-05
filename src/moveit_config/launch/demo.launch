@@ -1,4 +1,6 @@
 <launch>
+  <arg name="world" default="or_world1.world" />
+  <arg name="attach_surgical_tool" default="false" />
 
   <!-- specify the planning pipeline -->
   <arg name="pipeline" default="ompl" />
@@ -19,7 +21,10 @@
   </include>
 
   <!-- Launch Gazebo and Controller spawners -->
-  <include file="$(find kuka_barrett_control)/launch/kuka_barrett_control.launch"/>
+  <include file="$(find kuka_barrett_control)/launch/kuka_barrett_control.launch">
+        <arg name="world" value="$(arg world)" />
+        <arg name="attach_surgical_tool" value="$(arg attach_surgical_tool)" />
+    </include>
   
   <rosparam command="load" file="$(find moveit_config)/config/joint_names.yaml"/>
   <rosparam command="load" file="$(find moveit_config)/config/ros_controllers.yaml"/>

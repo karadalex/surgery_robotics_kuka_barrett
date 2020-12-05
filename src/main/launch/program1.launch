@@ -6,7 +6,11 @@
     <arg name="pipeline" default="ompl" />
 
     <!-- Load Gazebo with RViz and MoveIt -->
-    <!-- <include file="$(find moveit_config)/launch/demo.launch"/> -->
+    <!-- <include file="$(find moveit_config)/launch/demo.launch">
+        <arg name="world" value="$(arg world)" />
+        <arg name="attach_surgical_tool" value="$(arg attach_surgical_tool)" />
+        <arg name="pipeline" value="$(arg pipeline)"/>
+    </include> -->
     <include file="$(find moveit_config)/launch/iiwa_planning_execution.launch">
         <arg name="world" value="$(arg world)" />
         <arg name="attach_surgical_tool" value="$(arg attach_surgical_tool)" />
