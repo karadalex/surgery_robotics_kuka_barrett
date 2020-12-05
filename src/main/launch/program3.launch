@@ -1,0 +1,33 @@
+<launch>
+    <arg name="world" default="or_world3.world" />
+    <arg name="attach_surgical_tool" default="true"/>
+
+    <!-- specify the planning pipeline -->
+    <arg name="pipeline" default="ompl" />
+
+    <!-- Load Gazebo with RViz and MoveIt -->
+    <!-- <include file="$(find moveit_config)/launch/demo.launch">
+        <arg name="world" value="$(arg world)" />
+        <arg name="attach_surgical_tool" value="$(arg attach_surgical_tool)" />
+        <arg name="pipeline" value="$(arg pipeline)"/>
+    </include> -->
+    <include file="$(find moveit_config)/launch/iiwa_planning_execution.launch">
+        <arg name="world" value="$(arg world)" />
+        <arg name="attach_surgical_tool" value="$(arg attach_surgical_tool)" />
+        <arg name="pipeline" value="$(arg pipeline)"/>
+    </include>
+
+    <!-- Load gazebo world models to RViz using Gazebo Fake object recognition service -->
+    <node name="table1" pkg="gazebo_test_tools" type="fake_object_recognizer_cmd" args="table1 1" />
+    <node name="table2" pkg="gazebo_test_tools" type="fake_object_recognizer_cmd" args="table2 1" />
+
+    <!-- Load more complicated collision objects via scene_objects node -->
+    <node name="scene_objects" pkg="kuka_barrett" type="scene_objects2"/>
+
+    <node name="KinematicStateNode" pkg="kinematics" type="KinematicStateNode"/>
+
+    <!-- <node name="robot_planner1" pkg="kuka_barrett" type="robot_planner1"/> -->
+
+    <!-- OpenCV - Computer Vision -->
+    <!-- <include file="$(find vision)/launch/vision.launch" /> -->
+</launch>
