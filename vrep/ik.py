@@ -5,47 +5,52 @@ from math import pi, cos, sin
 from time import sleep
 
 
-def main():
-  # Execute circular trajectory
-  samplesNum = 20
-  step = 1.0 / samplesNum
-  t = 0
-  for i in range(samplesNum+1):
-    x = 0.1 * cos(2*pi*t) + 0.75
-    y = 0.1 * sin(2*pi*t) - 0.125
-    z = 1.2
-    yaw = 0
-    pitch = pi/2
-    roll = 0
-    pose = [x, y, z] + eulerToQuaternion(yaw, pitch, roll)
-    moveTargetFrame(pose)
-    t = step*i
-    sleep(0.5)
+class Pose:
+  def __init__(self, x, y, z, roll, pitch, yaw):
+    """[summary]
 
-  # Execute linear trajectory
+    Args:
+        x (float): [description]
+        y (float): [description]
+        z (float): [description]
+        roll (float): [description]
+        pitch (float): [description]
+        yaw (float): [description]
+    """
+    self.x = x
+    self.y = y
+    self.z = z
+    self.roll = roll
+    self.pitch = pitch
+    self.yaw = yaw
+
+
+def executeLinearTrajectory(start, end, clientID, samplesNum=20):
+  """[summary]
+
+  Args:
+      start ([type]): [description]
+      end ([type]): [description]
+      clientID ([type]): [description]
+      samplesNum (int, optional): [description]. Defaults to 20.
+  """
   samplesNum = 20
   step = 1.0 / samplesNum
   t = 0
-  x0 = 0.85
-  y0 = -0.125
-  z0 = 1.2
-  x1 = -0.15
-  y1 = 0.65
-  z1 = 1.2
   for i in range(samplesNum+2):
-    x = t*(x1 - x0) + x0
-    y = t*(y1 - y0) + y0
-    z = t*(z1 - z0) + z0
-    yaw = 0
-    pitch = pi/2
-    roll = 0
+    x = t*(end.x - start.x) + start.x
+    y = t*(end.y - start.y) + start.y
+    z = t*(end.z - start.z) + start.z
+    yaw = t*(end.yaw - start.yaw) + start.yaw
+    pitch = t*(end.pitch - start.pitch) + start.pitch
+    roll = t*(end.roll - start.roll) + start.roll
     pose = [x, y, z] + eulerToQuaternion(yaw, pitch, roll)
-    moveTargetFrame(pose)
+    moveTargetFrame(pose, clientID)
     t = step*i
     sleep(0.5)
 
 
-def moveTargetFrame(targetPosition):
+def moveTargetFrame(targetPosition, clientID):
   """[summary]
 
   Args:
@@ -88,17 +93,3 @@ def eulerToQuaternion(yaw, pitch, roll):
   qz = cr * cp * sy - sr * sp * cy
 
   return [qx, qy, qz, qw]
-
-
-if __name__ == "__main__":
-  # Establish Connection
-  sim.simxFinish(-1)
-  clientID = sim.simxStart('127.0.0.1',19999,True,True,5000,5)
-
-  if clientID != -1:
-    print("Connected to remote API Server")      
-  else:
-    print("Connection not succesfull")
-    sys.exit("Could not connect")
-
-  main()
