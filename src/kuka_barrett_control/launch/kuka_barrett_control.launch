@@ -12,9 +12,19 @@
 
   <!-- Load joint controller CONFIGURATIONS from YAML file to parameter server -->
   <rosparam file="$(find kuka_barrett_control)/config/barrett_control.yaml" command="load"/>
-
   <rosparam file="$(find kuka_barrett_control)/config/kuka_control.yaml" command="load"/>
+
   <node name="kuka_controller_spawner" pkg="controller_manager" type="spawner" args="arm_controller" />
+  <!-- <node name="barrett_controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
+    output="screen" ns="/" args="joint_state_controller 
+      bh_j11_position_controller 
+      bh_j12_position_controller 
+      bh_j13_position_controller 
+      bh_j21_position_controller 
+      bh_j22_position_controller 
+      bh_j23_position_controller 
+      bh_j32_position_controller 
+      bh_j33_position_controller"/>  -->
   <node name="barrett_controller_spawner" pkg="controller_manager" type="spawner" args="gripper_controller" />
 
   <!-- Robot state publisher -->
