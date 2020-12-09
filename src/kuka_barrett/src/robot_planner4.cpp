@@ -96,7 +96,9 @@ int main(int argc, char** argv)
 	// path2.push_back(onCubePose);
 	// traj1.executeCartesianPath(path2, "approaching cube");
 
+	// ****************************************************************************
 	// Pick Pipeline
+	// ****************************************************************************
 	std::vector<moveit_msgs::Grasp> grasps;
 	grasps.resize(1);
 
@@ -135,6 +137,44 @@ int main(int argc, char** argv)
 	move_group.setSupportSurfaceName("table1");
 	// Call pick to pick up the object using the grasps given
 	move_group.pick("cube", grasps);
+
+	// ****************************************************************************
+	// Place Pipeline
+	// ****************************************************************************
+	std::vector<moveit_msgs::PlaceLocation> place_location;
+	place_location.resize(1);
+
+	// Setting place location pose
+	place_location[0].place_pose.header.frame_id = "world";
+	orientation.setRPY(0, 0, M_PI / 2);
+	place_location[0].place_pose.pose.orientation = tf2::toMsg(orientation);
+	// While placing it is the exact location of the center of the object.
+	place_location[0].place_pose.pose.position.x = 0.06149;
+	place_location[0].place_pose.pose.position.y = -0.719461;
+	place_location[0].place_pose.pose.position.z = 1.302148;
+
+	// Setting pre-place approach
+	// Defined with respect to frame_id
+	place_location[0].pre_place_approach.direction.header.frame_id = "world";
+	// Direction is set as negative z axis
+	place_location[0].pre_place_approach.direction.vector.x = -1.0;
+	place_location[0].pre_place_approach.min_distance = 0.095;
+	place_location[0].pre_place_approach.desired_distance = 0.115;
+
+	// Setting post-grasp retreat
+	// Defined with respect to frame_id
+	place_location[0].post_place_retreat.direction.header.frame_id = "world";
+	// Direction is set as negative y axis
+	place_location[0].post_place_retreat.direction.vector.z = -1.0;
+	place_location[0].post_place_retreat.min_distance = 0.1;
+	place_location[0].post_place_retreat.desired_distance = 0.25;
+
+	// Setting posture of eef after placing object
+	// Similar to the pick case
+	openGripper(place_location[0].post_place_posture);
+
+	move_group.setSupportSurfaceName("table1");
+	move_group.place("cube", place_location);
 
 	ros::shutdown();
 	return 0;
