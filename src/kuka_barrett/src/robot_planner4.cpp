@@ -96,6 +96,30 @@ int main(int argc, char** argv)
 	// path2.push_back(onCubePose);
 	// traj1.executeCartesianPath(path2, "approaching cube");
 
+	// Create Collision Objects - Cube
+	std::vector<moveit_msgs::CollisionObject> collision_objects;
+	collision_objects.resize(1);
+
+	collision_objects[0].header.frame_id = "world";
+	collision_objects[0].id = "cube";
+
+/* Define the primitive and its dimensions. */
+	collision_objects[0].primitives.resize(1);
+	collision_objects[0].primitives[0].type = collision_objects[1].primitives[0].BOX;
+	collision_objects[0].primitives[0].dimensions.resize(3);
+	collision_objects[0].primitives[0].dimensions[0] = 0.1;
+	collision_objects[0].primitives[0].dimensions[1] = 0.1;
+	collision_objects[0].primitives[0].dimensions[2] = 0.1;
+
+/* Define the pose of the object. */
+	collision_objects[0].primitive_poses.resize(1);
+	collision_objects[0].primitive_poses[0].position.x = 0;
+	collision_objects[0].primitive_poses[0].position.y = -0.72;
+	collision_objects[0].primitive_poses[0].position.z = 1.0493;
+
+	collision_objects[0].operation = collision_objects[0].ADD;
+	planning_scene_interface.applyCollisionObjects(collision_objects);
+
 	// ****************************************************************************
 	// Pick Pipeline
 	// ****************************************************************************
@@ -109,15 +133,15 @@ int main(int argc, char** argv)
 	grasps[0].grasp_pose.pose.orientation = tf2::toMsg(orientation);
 	grasps[0].grasp_pose.pose.position.x = 0.004149;
 	grasps[0].grasp_pose.pose.position.y = -0.719461;
-	grasps[0].grasp_pose.pose.position.z = 1.302148;
+	grasps[0].grasp_pose.pose.position.z = 1.202148;
 
 	// Setting pre-grasp approach
 	// Defined with respect to frame_id
 	grasps[0].pre_grasp_approach.direction.header.frame_id = "world";
 	// Direction is set as positive x axis
-	grasps[0].pre_grasp_approach.direction.vector.x = 1.0;
-	grasps[0].pre_grasp_approach.min_distance = 0.195;
-	grasps[0].pre_grasp_approach.desired_distance = 0.215;
+	grasps[0].pre_grasp_approach.direction.vector.z = -1.0;
+	grasps[0].pre_grasp_approach.min_distance = 0.05;
+	grasps[0].pre_grasp_approach.desired_distance = 0.1;
 
 	// Setting post-grasp retreat
 	// Defined with respect to frame_id
@@ -149,23 +173,23 @@ int main(int argc, char** argv)
 	orientation.setRPY(0, 0, M_PI / 2);
 	place_location[0].place_pose.pose.orientation = tf2::toMsg(orientation);
 	// While placing it is the exact location of the center of the object.
-	place_location[0].place_pose.pose.position.x = 0.06149;
-	place_location[0].place_pose.pose.position.y = -0.719461;
-	place_location[0].place_pose.pose.position.z = 1.302148;
+	place_location[0].place_pose.pose.position.x = -0.08149;
+	place_location[0].place_pose.pose.position.y = 0.719461;
+	place_location[0].place_pose.pose.position.z = 1.202148;
 
 	// Setting pre-place approach
 	// Defined with respect to frame_id
 	place_location[0].pre_place_approach.direction.header.frame_id = "world";
 	// Direction is set as negative z axis
-	place_location[0].pre_place_approach.direction.vector.x = -1.0;
-	place_location[0].pre_place_approach.min_distance = 0.095;
-	place_location[0].pre_place_approach.desired_distance = 0.115;
+	place_location[0].pre_place_approach.direction.vector.z = -1.0;
+	place_location[0].pre_place_approach.min_distance = 0.1;
+	place_location[0].pre_place_approach.desired_distance = 0.5;
 
 	// Setting post-grasp retreat
 	// Defined with respect to frame_id
 	place_location[0].post_place_retreat.direction.header.frame_id = "world";
 	// Direction is set as negative y axis
-	place_location[0].post_place_retreat.direction.vector.z = -1.0;
+	place_location[0].post_place_retreat.direction.vector.z = 1.0;
 	place_location[0].post_place_retreat.min_distance = 0.1;
 	place_location[0].post_place_retreat.desired_distance = 0.25;
 
