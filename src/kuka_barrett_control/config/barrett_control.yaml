@@ -29,6 +29,7 @@
 gripper_controller:
    # type: gripper_action/GripperCommand
    type: position_controllers/JointTrajectoryController
+   # type: effort_controllers/JointTrajectoryController
    joints:
       - bh_j11_joint
       - bh_j12_joint
@@ -38,3 +39,13 @@ gripper_controller:
       - bh_j23_joint
       - bh_j32_joint
       - bh_j33_joint
+   # Uncomment gains in case, effort_controllers are used
+   # gains: # Required because we're controlling an effort interface
+   #    bh_j11_joint: {p: 100,  d: 1, i: 1, i_clamp: 1}
+   #    bh_j12_joint: {p: 100,  d: 1, i: 1, i_clamp: 1}
+   #    bh_j13_joint: {p: 100,  d: 1, i: 1, i_clamp: 1} 
+   #    bh_j21_joint: {p: 100,  d: 1, i: 1, i_clamp: 1}
+   #    bh_j22_joint: {p: 100,  d: 1, i: 1, i_clamp: 1}
+   #    bh_j23_joint: {p: 100,  d: 1, i: 1, i_clamp: 1}
+   #    bh_j32_joint: {p: 100,  d: 1, i: 1, i_clamp: 1}
+   #    bh_j33_joint: {p: 100,  d: 1, i: 1, i_clamp: 1}
