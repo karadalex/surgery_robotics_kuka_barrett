@@ -48,7 +48,7 @@ void closedGripper(trajectory_msgs::JointTrajectory& posture)
 	posture.points.resize(1);
 	posture.points[0].positions.resize(8);
 	for (int j = 0; j < posture.joint_names.size(); ++j)
-		posture.points[0].positions[j] = 0.8;
+		posture.points[0].positions[j] = 0.7;
 	posture.points[0].time_from_start = ros::Duration(0.5);
 }
 
@@ -197,7 +197,7 @@ int main(int argc, char** argv)
 	// Similar to the pick case
 	openGripper(place_location[0].post_place_posture);
 
-	move_group.setSupportSurfaceName("table1");
+	move_group.setSupportSurfaceName("table2");
 	move_group.place("cube", place_location);
 
 	ros::shutdown();
