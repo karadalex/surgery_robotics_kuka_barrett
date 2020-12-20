@@ -23,6 +23,11 @@
 
     <!-- Load more complicated collision objects via scene_objects node -->
     <node name="scene_objects" pkg="kuka_barrett" type="scene_objects2"/>
+    
+    <node name="surgical_tool1" pkg="gazebo_test_tools" type="fake_object_recognizer_cmd" args="surgical_tool1 1" />
+    <node name="surgical_tool2" pkg="gazebo_test_tools" type="fake_object_recognizer_cmd" args="surgical_tool2 1" />
+    <node name="surgical_tool3" pkg="gazebo_test_tools" type="fake_object_recognizer_cmd" args="surgical_tool3 1" />
+    <node name="surgical_tool4" pkg="gazebo_test_tools" type="fake_object_recognizer_cmd" args="surgical_tool4 1" />
 
     <node name="KinematicStateNode" pkg="kinematics" type="KinematicStateNode"/>
 

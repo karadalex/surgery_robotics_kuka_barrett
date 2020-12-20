@@ -62,27 +62,32 @@ int main(int argc, char** argv)
 	addObjectToScene(&planning_scene_diff_publisher, "package://kuka_barrett_gazebo/objects/mounting_dock/meshes/mounting_dock.stl", "mounting_dock", mounting_pose);
 
 	// Load surgical tools
-	// string toolPath = "package://kuka_barrett_gazebo/objects/surgical_tool/meshes/surgical_tool_collision.stl";
-	// geometry_msgs::Pose genericToolPose;
-	// genericToolPose.position.x = 0;
-	// genericToolPose.position.y = -0.72;
-	// genericToolPose.position.z = 1.0493;
+	string toolPath = "package://kuka_barrett_gazebo/objects/surgical_tool/meshes/surgical_tool_collision.stl";
+	geometry_msgs::Pose genericToolPose;
+	genericToolPose.position.x = 0;
+	genericToolPose.position.y = -0.530130;
+	genericToolPose.position.z = 1.036376;
+	quaternion.setRPY(0.006054, 0.004613, 0.000184);
+	genericToolPose.orientation.w = quaternion.getW();
+	genericToolPose.orientation.x = quaternion.getX();
+	genericToolPose.orientation.y = quaternion.getY();
+	genericToolPose.orientation.z = quaternion.getZ();
 
-	// geometry_msgs::Pose tool1pose = genericToolPose;
-	// tool1pose.position.x = 0;
-	// addObjectToScene(&planning_scene_diff_publisher, toolPath, "surgical_tool1", tool1pose);
+	geometry_msgs::Pose tool1pose = genericToolPose;
+	tool1pose.position.x = -0.599903;
+	addObjectToScene(&planning_scene_diff_publisher, toolPath, "surgical_tool1", tool1pose);
 
-	// geometry_msgs::Pose tool2pose = genericToolPose;
-	// tool2pose.position.x = 0.2;
-	// addObjectToScene(&planning_scene_diff_publisher, toolPath, "surgical_tool2", tool2pose);
+	geometry_msgs::Pose tool2pose = genericToolPose;
+	tool2pose.position.x = -0.399903;
+	addObjectToScene(&planning_scene_diff_publisher, toolPath, "surgical_tool2", tool2pose);
 
-	// geometry_msgs::Pose tool3pose = genericToolPose;
-	// tool3pose.position.x = 0.4;
-	// addObjectToScene(&planning_scene_diff_publisher, toolPath, "surgical_tool3", tool3pose);
+	geometry_msgs::Pose tool3pose = genericToolPose;
+	tool3pose.position.x = -0.199903;
+	addObjectToScene(&planning_scene_diff_publisher, toolPath, "surgical_tool3", tool3pose);
 
-	// geometry_msgs::Pose tool4pose = genericToolPose;
-	// tool4pose.position.x = 0.6;
-	// addObjectToScene(&planning_scene_diff_publisher, toolPath, "surgical_tool4", tool4pose);
+	geometry_msgs::Pose tool4pose = genericToolPose;
+	tool4pose.position.x = 0;
+	addObjectToScene(&planning_scene_diff_publisher, toolPath, "surgical_tool4", tool4pose);
 
 	ros::shutdown();
 	return 0;
