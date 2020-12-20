@@ -28,7 +28,7 @@ Requirements
 
   .. code-block:: bash
 
-    $ sudo apt-get install ros-kinetic-joint-trajectory-controller
+    $ sudo apt-get install ros-melodic-joint-trajectory-controller
 
   * ROS Controllers
 
@@ -40,7 +40,7 @@ Requirements
 
   .. code-block:: bash
 
-  $ sudo apt-get install ros-melodic-cv-camera  
+    $ sudo apt-get install ros-melodic-cv-camera  
 
   * Catkin tools (optional)
   
