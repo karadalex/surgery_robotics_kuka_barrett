@@ -962,43 +962,151 @@
   <gazebo reference="bh_finger_31_link">
     <material>Gazebo/Grey</material>
     <turnGravityOff>false</turnGravityOff>
+    <sensor name="bh_finger_31_link_contactsensor_sensor" type="contact">
+      <selfCollide>true</selfCollide>
+      <alwaysOn>true</alwaysOn>
+      <updateRate>15.0</updateRate>
+      <contact>
+        <collision>bh_finger_31_link_collision</collision>
+      </contact>
+      <plugin filename="libgazebo_ros_bumper.so" name="gazebo_ros_bumper_controller">
+        <bumperTopicName>bh_finger_31_link_contactsensor_state</bumperTopicName>
+        <frameName>world</frameName>
+      </plugin>
+    </sensor>
   </gazebo>
   <gazebo reference="bh_finger_32_link">
     <material>Gazebo/Grey</material>
     <turnGravityOff>false</turnGravityOff>
+    <sensor name="bh_finger_32_link_contactsensor_sensor" type="contact">
+      <selfCollide>true</selfCollide>
+      <alwaysOn>true</alwaysOn>
+      <updateRate>15.0</updateRate>
+      <contact>
+        <collision>bh_finger_32_link_collision</collision>
+      </contact>
+      <plugin filename="libgazebo_ros_bumper.so" name="gazebo_ros_bumper_controller">
+        <bumperTopicName>bh_finger_32_link_contactsensor_state</bumperTopicName>
+        <frameName>world</frameName>
+      </plugin>
+    </sensor>
   </gazebo>
   <gazebo reference="bh_finger_33_link">
     <material>Gazebo/Grey</material>
     <turnGravityOff>false</turnGravityOff>
+    <sensor name="bh_finger_33_link_contactsensor_sensor" type="contact">
+      <selfCollide>true</selfCollide>
+      <alwaysOn>true</alwaysOn>
+      <updateRate>15.0</updateRate>
+      <contact>
+        <collision>bh_finger_33_link_collision</collision>
+      </contact>
+      <plugin filename="libgazebo_ros_bumper.so" name="gazebo_ros_bumper_controller">
+        <bumperTopicName>bh_finger_33_link_contactsensor_state</bumperTopicName>
+        <frameName>world</frameName>
+      </plugin>
+    </sensor>
   </gazebo>
   <gazebo reference="bh_finger_11_link">
     <material>Gazebo/Grey</material>
     <turnGravityOff>false</turnGravityOff>
+    <sensor name="bh_finger_11_link_contactsensor_sensor" type="contact">
+      <selfCollide>true</selfCollide>
+      <alwaysOn>true</alwaysOn>
+      <updateRate>15.0</updateRate>
+      <contact>
+        <collision>bh_finger_11_link_collision</collision>
+      </contact>
+      <plugin filename="libgazebo_ros_bumper.so" name="gazebo_ros_bumper_controller">
+        <bumperTopicName>bh_finger_11_link_contactsensor_state</bumperTopicName>
+        <frameName>world</frameName>
+      </plugin>
+    </sensor>
   </gazebo>
   <gazebo reference="bh_finger_12_link">
     <material>Gazebo/Grey</material>
     <turnGravityOff>false</turnGravityOff>
+    <sensor name="bh_finger_12_link_contactsensor_sensor" type="contact">
+      <selfCollide>true</selfCollide>
+      <alwaysOn>true</alwaysOn>
+      <updateRate>15.0</updateRate>
+      <contact>
+        <collision>bh_finger_12_link_collision</collision>
+      </contact>
+      <plugin filename="libgazebo_ros_bumper.so" name="gazebo_ros_bumper_controller">
+        <bumperTopicName>bh_finger_12_link_contactsensor_state</bumperTopicName>
+        <frameName>world</frameName>
+      </plugin>
+    </sensor>
   </gazebo>
   <gazebo reference="bh_finger_13_link">
     <material>Gazebo/Grey</material>
     <turnGravityOff>false</turnGravityOff>
+    <sensor name="bh_finger_13_link_contactsensor_sensor" type="contact">
+      <selfCollide>true</selfCollide>
+      <alwaysOn>true</alwaysOn>
+      <updateRate>15.0</updateRate>
+      <contact>
+        <collision>bh_finger_13_link_collision</collision>
+      </contact>
+      <plugin filename="libgazebo_ros_bumper.so" name="gazebo_ros_bumper_controller">
+        <bumperTopicName>bh_finger_13_link_contactsensor_state</bumperTopicName>
+        <frameName>world</frameName>
+      </plugin>
+    </sensor>
   </gazebo>
   <gazebo reference="bh_finger_21_link">
     <material>Gazebo/Grey</material>
     <turnGravityOff>false</turnGravityOff>
+    <sensor name="bh_finger_21_link_contactsensor_sensor" type="contact">
+      <selfCollide>true</selfCollide>
+      <alwaysOn>true</alwaysOn>
+      <updateRate>15.0</updateRate>
+      <contact>
+        <collision>bh_finger_21_link_collision</collision>
+      </contact>
+      <plugin filename="libgazebo_ros_bumper.so" name="gazebo_ros_bumper_controller">
+        <bumperTopicName>bh_finger_21_link_contactsensor_state</bumperTopicName>
+        <frameName>world</frameName>
+      </plugin>
+    </sensor>
   </gazebo>
   <gazebo reference="bh_finger_22_link">
     <material>Gazebo/Grey</material>
     <turnGravityOff>false</turnGravityOff>
+    <sensor name="bh_finger_22_link_contactsensor_sensor" type="contact">
+      <selfCollide>true</selfCollide>
+      <alwaysOn>true</alwaysOn>
+      <updateRate>15.0</updateRate>
+      <contact>
+        <collision>bh_finger_22_link_collision</collision>
+      </contact>
+      <plugin filename="libgazebo_ros_bumper.so" name="gazebo_ros_bumper_controller">
+        <bumperTopicName>bh_finger_22_link_contactsensor_state</bumperTopicName>
+        <frameName>world</frameName>
+      </plugin>
+    </sensor>
   </gazebo>
   <gazebo reference="bh_finger_23_link">
     <material>Gazebo/Grey</material>
     <turnGravityOff>false</turnGravityOff>
+    <sensor name="bh_finger_23_link_contactsensor_sensor" type="contact">
+      <selfCollide>true</selfCollide>
+      <alwaysOn>true</alwaysOn>
+      <updateRate>15.0</updateRate>
+      <contact>
+        <collision>bh_finger_23_link_collision</collision>
+      </contact>
+      <plugin filename="libgazebo_ros_bumper.so" name="gazebo_ros_bumper_controller">
+        <bumperTopicName>bh_finger_23_link_contactsensor_state</bumperTopicName>
+        <frameName>world</frameName>
+      </plugin>
+    </sensor>
   </gazebo>
   <!-- Left camera -->
   <joint name="camera_joint1" type="fixed">
     <axis xyz="0 1 0"/>
-    <origin rpy="0 -1.57 0" xyz="-0.08 -0.02 0"/>
+    <origin rpy="0 -1.57 0" xyz="-0.12 -0.02 0"/>
     <parent link="iiwa_link_ee"/>
     <child link="camera_link1"/>
     <mimic joint="bh_base_joint" multiplier="1" offset="0"/>
@@ -1027,7 +1135,7 @@
   <!-- Right camera -->
   <joint name="camera_joint2" type="fixed">
     <axis xyz="0 1 0"/>
-    <origin rpy="0 -1.57 0" xyz="-0.08 0.02 0"/>
+    <origin rpy="0 -1.57 0" xyz="-0.12 0.02 0"/>
     <parent link="iiwa_link_ee"/>
     <child link="camera_link2"/>
     <mimic joint="bh_base_joint" multiplier="1" offset="0"/>
@@ -1080,7 +1188,7 @@
       <plugin filename="libgazebo_ros_camera.so" name="camera_controller">
         <alwaysOn>true</alwaysOn>
         <updateRate>0.0</updateRate>
-        <cameraName>barrett/camera1</cameraName>
+        <cameraName>stereo/right</cameraName>
         <imageTopicName>image_raw</imageTopicName>
         <cameraInfoTopicName>camera_info</cameraInfoTopicName>
         <frameName>camera_link1</frameName>
@@ -1121,7 +1229,7 @@
       <plugin filename="libgazebo_ros_camera.so" name="camera_controller">
         <alwaysOn>true</alwaysOn>
         <updateRate>0.0</updateRate>
-        <cameraName>barrett/camera2</cameraName>
+        <cameraName>stereo/left</cameraName>
         <imageTopicName>image_raw</imageTopicName>
         <cameraInfoTopicName>camera_info</cameraInfoTopicName>
         <frameName>camera_link2</frameName>

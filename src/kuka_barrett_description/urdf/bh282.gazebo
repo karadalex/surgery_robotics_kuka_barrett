@@ -18,46 +18,154 @@
 		<gazebo reference="${name}_finger_31_link">
 			<material>Gazebo/Grey</material>
 			<turnGravityOff>false</turnGravityOff>
+			<sensor name="${name}_finger_31_link_contactsensor_sensor" type="contact">
+				<selfCollide>true</selfCollide>
+				<alwaysOn>true</alwaysOn>
+				<updateRate>15.0</updateRate>
+				<contact>
+					<collision>${name}_finger_31_link_collision</collision>
+				</contact>
+				<plugin name="gazebo_ros_bumper_controller" filename="libgazebo_ros_bumper.so">
+					<bumperTopicName>${name}_finger_31_link_contactsensor_state</bumperTopicName>
+					<frameName>world</frameName>
+				</plugin>
+			</sensor>
 		</gazebo>
 
 		<gazebo reference="${name}_finger_32_link">
 			<material>Gazebo/Grey</material>
 			<turnGravityOff>false</turnGravityOff>
+			<sensor name="${name}_finger_32_link_contactsensor_sensor" type="contact">
+				<selfCollide>true</selfCollide>
+				<alwaysOn>true</alwaysOn>
+				<updateRate>15.0</updateRate>
+				<contact>
+					<collision>${name}_finger_32_link_collision</collision>
+				</contact>
+				<plugin name="gazebo_ros_bumper_controller" filename="libgazebo_ros_bumper.so">
+					<bumperTopicName>${name}_finger_32_link_contactsensor_state</bumperTopicName>
+					<frameName>world</frameName>
+				</plugin>
+			</sensor>
 		</gazebo>
 
 		<gazebo reference="${name}_finger_33_link">
 			<material>Gazebo/Grey</material>
 			<turnGravityOff>false</turnGravityOff>
+			<sensor name="${name}_finger_33_link_contactsensor_sensor" type="contact">
+				<selfCollide>true</selfCollide>
+				<alwaysOn>true</alwaysOn>
+				<updateRate>15.0</updateRate>
+				<contact>
+					<collision>${name}_finger_33_link_collision</collision>
+				</contact>
+				<plugin name="gazebo_ros_bumper_controller" filename="libgazebo_ros_bumper.so">
+					<bumperTopicName>${name}_finger_33_link_contactsensor_state</bumperTopicName>
+					<frameName>world</frameName>
+				</plugin>
+			</sensor>
 		</gazebo>
 
 		<gazebo reference="${name}_finger_11_link">
 			<material>Gazebo/Grey</material>
 			<turnGravityOff>false</turnGravityOff>
+			<sensor name="${name}_finger_11_link_contactsensor_sensor" type="contact">
+				<selfCollide>true</selfCollide>
+				<alwaysOn>true</alwaysOn>
+				<updateRate>15.0</updateRate>
+				<contact>
+					<collision>${name}_finger_11_link_collision</collision>
+				</contact>
+				<plugin name="gazebo_ros_bumper_controller" filename="libgazebo_ros_bumper.so">
+					<bumperTopicName>${name}_finger_11_link_contactsensor_state</bumperTopicName>
+					<frameName>world</frameName>
+				</plugin>
+			</sensor>
 		</gazebo>
 
 		<gazebo reference="${name}_finger_12_link">
 			<material>Gazebo/Grey</material>
 			<turnGravityOff>false</turnGravityOff>
+			<sensor name="${name}_finger_12_link_contactsensor_sensor" type="contact">
+				<selfCollide>true</selfCollide>
+				<alwaysOn>true</alwaysOn>
+				<updateRate>15.0</updateRate>
+				<contact>
+					<collision>${name}_finger_12_link_collision</collision>
+				</contact>
+				<plugin name="gazebo_ros_bumper_controller" filename="libgazebo_ros_bumper.so">
+					<bumperTopicName>${name}_finger_12_link_contactsensor_state</bumperTopicName>
+					<frameName>world</frameName>
+				</plugin>
+			</sensor>
 		</gazebo>
 
 		<gazebo reference="${name}_finger_13_link">
 			<material>Gazebo/Grey</material>
 			<turnGravityOff>false</turnGravityOff>
+			<sensor name="${name}_finger_13_link_contactsensor_sensor" type="contact">
+				<selfCollide>true</selfCollide>
+				<alwaysOn>true</alwaysOn>
+				<updateRate>15.0</updateRate>
+				<contact>
+					<collision>${name}_finger_13_link_collision</collision>
+				</contact>
+				<plugin name="gazebo_ros_bumper_controller" filename="libgazebo_ros_bumper.so">
+					<bumperTopicName>${name}_finger_13_link_contactsensor_state</bumperTopicName>
+					<frameName>world</frameName>
+				</plugin>
+			</sensor>
 		</gazebo>
 		
 		<gazebo reference="${name}_finger_21_link">
 			<material>Gazebo/Grey</material>
 			<turnGravityOff>false</turnGravityOff>
+			<sensor name="${name}_finger_21_link_contactsensor_sensor" type="contact">
+				<selfCollide>true</selfCollide>
+				<alwaysOn>true</alwaysOn>
+				<updateRate>15.0</updateRate>
+				<contact>
+					<collision>${name}_finger_21_link_collision</collision>
+				</contact>
+				<plugin name="gazebo_ros_bumper_controller" filename="libgazebo_ros_bumper.so">
+					<bumperTopicName>${name}_finger_21_link_contactsensor_state</bumperTopicName>
+					<frameName>world</frameName>
+				</plugin>
+			</sensor>
 		</gazebo>
 
 		<gazebo reference="${name}_finger_22_link">
 			<material>Gazebo/Grey</material>
 			<turnGravityOff>false</turnGravityOff>
+			<sensor name="${name}_finger_22_link_contactsensor_sensor" type="contact">
+				<selfCollide>true</selfCollide>
+				<alwaysOn>true</alwaysOn>
+				<updateRate>15.0</updateRate>
+				<contact>
+					<collision>${name}_finger_22_link_collision</collision>
+				</contact>
+				<plugin name="gazebo_ros_bumper_controller" filename="libgazebo_ros_bumper.so">
+					<bumperTopicName>${name}_finger_22_link_contactsensor_state</bumperTopicName>
+					<frameName>world</frameName>
+				</plugin>
+			</sensor>
 		</gazebo>
 
 		<gazebo reference="${name}_finger_23_link">
 			<material>Gazebo/Grey</material>
 			<turnGravityOff>false</turnGravityOff>
+			<sensor name="${name}_finger_23_link_contactsensor_sensor" type="contact">
+				<selfCollide>true</selfCollide>
+				<alwaysOn>true</alwaysOn>
+				<updateRate>15.0</updateRate>
+				<contact>
+					<collision>${name}_finger_23_link_collision</collision>
+				</contact>
+				<plugin name="gazebo_ros_bumper_controller" filename="libgazebo_ros_bumper.so">
+					<bumperTopicName>${name}_finger_23_link_contactsensor_state</bumperTopicName>
+					<frameName>world</frameName>
+				</plugin>
+			</sensor>
 		</gazebo>
 
 	</xacro:macro>
