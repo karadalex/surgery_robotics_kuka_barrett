@@ -46,3 +46,5 @@ install(TARGETS ${PROJECT_NAME}
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
+add_executable(kuka_barrett_teleop src/kuka_barrett_teleop.cpp)
+target_link_libraries(kuka_barrett_teleop ${catkin_LIBRARIES})
