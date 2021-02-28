@@ -137,51 +137,51 @@ void KeyboardTeleopControl::keyLoop()
 		switch (c)
 		{
 		case KEYCODE_LEFT:
-			x = -1.0;
+			x = -0.01;
 			dirty = true;
 			break;
 		case KEYCODE_RIGHT:
-			x = 1.0;
+			x = 0.01;
 			dirty = true;
 			break;
 		case KEYCODE_UP:
-			z = 1.0;
+			z = 0.01;
 			dirty = true;
 			break;
 		case KEYCODE_DOWN:
-			z = -1.0;
+			z = -0.01;
 			dirty = true;
 			break;
 		case KEYCODE_A:
-			y = -1.0;
+			y = -0.01;
 			dirty = true;
 			break;
 		case KEYCODE_S:
-			y = 1.0;
+			y = 0.01;
 			dirty = true;
 			break;
 		case KEYCODE_E:
-			roll = -1.0;
+			roll = -0.01;
 			dirty = true;
 			break;
 		case KEYCODE_R:
-			roll = 1.0;
+			roll = 0.01;
 			dirty = true;
 			break;
 		case KEYCODE_D:
-			pitch = -1.0;
+			pitch = -0.01;
 			dirty = true;
 			break;
 		case KEYCODE_F:
-			pitch = 1.0;
+			pitch = 0.01;
 			dirty = true;
 			break;
 		case KEYCODE_C:
-			yaw = -1.0;
+			yaw = -0.01;
 			dirty = true;
 			break;
 		case KEYCODE_V:
-			yaw = 1.0;
+			yaw = 0.01;
 			dirty = true;
 			break;
 		case KEYCODE_Q:
