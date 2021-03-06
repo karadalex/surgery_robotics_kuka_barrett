@@ -8,6 +8,7 @@ import numpy as np
 import math
 import time
 from std_msgs.msg import String
+from geometry_msgs.msg import Twist
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge, CvBridgeError
 from helpers import *
@@ -20,7 +21,8 @@ roslib.load_manifest('vision')
 class Detection:
 
   def __init__(self):
-    self.image_pub = rospy.Publisher("/opencv/test_topic_1",Image)
+    self.image_pub = rospy.Publisher("/opencv/test_topic_1", Image)
+    self.servo_cmd = rospy.Publisher("kuka_barrett/cmd_vel", Twist)
 
     self.bridge = CvBridge()
     self.image_sub = rospy.Subscriber("/stereo/left/image_raw",Image,self.callback)
@@ -188,6 +190,22 @@ class Detection:
       self.toolOrientX = a
       self.toolOrientY = b
 
+    ###########################################################################################
+    #    VISUAL SERVOING COMMAND
+    ###########################################################################################
+    # The origin is the desired position for our visual servo controller
+    originY = int(rows/2)
+    originX = int(cols/2)
+
+    # Actual position of center of mass
+    cmX = self.toolCenterOfMass[0]
+    cmY = self.toolCenterOfMass[1]
+
+    if blueToolDetected:
+      twist = Twist()
+      twist.linear.x = 0.1*round((cmX - originX)/float(cols), 2)
+      twist.linear.y = -0.1*round((cmY - originY)/float(rows), 2)
+      self.servo_cmd.publish(twist)
 
     ###########################################################################################
     #    FIND GRASP POINTS - FORCE CLOSURE
@@ -199,8 +217,6 @@ class Detection:
     ###########################################################################################
 
     # Draw target at the center (origin) of the image
-    originY = int(rows/2)
-    originX = int(cols/2)
     cv2.circle(img_detection_region,(originX,originY),10,(255,0,255),-1)
 
     # draw contour and hull points of the biggest convex hull, 
@@ -216,8 +232,6 @@ class Detection:
       cv2.drawContours(img_detection_region, hull, maxHullIndex, convex_hull_color, 2, 8)
 
       # draw center of mass of convex hull
-      cmX = self.toolCenterOfMass[0]
-      cmY = self.toolCenterOfMass[1]
       cv2.circle(img_detection_region,(cmX,cmY),5,(0,0,255),-1)
 
       # draw orientation vectors

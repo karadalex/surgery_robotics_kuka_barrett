@@ -21,11 +21,11 @@ class ServoPlanner
 private:
 	// Setup Move group
 	const std::string PLANNING_GROUP = "iiwa_arm";
-	double pos_tolerance = 0.00005;
-	double orient_tolerance = 0.00005;
-	int plan_time_sec = 5;
+	double pos_tolerance = 0.001;
+	double orient_tolerance = 0.001;
+	double plan_time_sec = 0.1;
 	bool replanning = true;
-	int plan_attempts = 6;
+	int plan_attempts = 2;
 	const string base_frame = "world";
 	TrajectoryExecution traj1 = TrajectoryExecution(PLANNING_GROUP, pos_tolerance, orient_tolerance, plan_time_sec, replanning, plan_attempts, base_frame);
 	bool initialPathExecuted = false;
@@ -35,12 +35,6 @@ private:
 
 public:
 	ServoPlanner() {
-		moveit::planning_interface::PlanningSceneInterface planning_scene_interface;
-		moveit::planning_interface::MoveGroupInterface move_group("iiwa_arm");
-		move_group.setPlanningTime(1);
-		move_group.allowReplanning(false);
-		move_group.setNumPlanningAttempts(1);
-
 		// path.push_back({0, 0, 2.262, 0, 0, 0}); // For z >= 2.261 the robot reaches end of workspace, which is a singularity and cant be calculated from the numerical IK
 		path.push_back({0, 0, 2.26, 0, 0, 0}); // Home position
 		// TCP position for point above cube
