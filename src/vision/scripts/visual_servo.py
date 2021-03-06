@@ -59,18 +59,15 @@ class Detection:
     # Count blue and/or green pixels within detection area
     numBluePixels = 0
     numGreenPixels = 0
-    toolPixels = []
     # for i in range(detectionAreaYRange[0], detectionAreaYRange[1], 3):
     for i in range(0, rows, 10):
       # for j in range(0, cols, 10):
       for j in range(detectionAreaXRange[0], detectionAreaXRange[1], 10):
         if cv_image[i,j,0] >= 200:
           numBluePixels += 1
-          cv_image[i,j] = [0,255,0]
-          toolPixels.append(np.array([[i,j]]))
+          # cv_image[i,j] = [0,255,0]
         elif cv_image[i,j,1] >= 240:
           numGreenPixels += 1
-    toolPixels = np.array(toolPixels)
 
     # Decide if there are enough blue pixels to consider them a blue tool
     if numBluePixels >= 20:
@@ -153,12 +150,28 @@ class Detection:
     ###########################################################################################
     #    POSE DETECTION
     ###########################################################################################
+    
+    # Get pixels inside the selected contour
+    # CAUTION: This is very heavy computanionally and drops FPS by half or more!
+    # Could be avoided with a more clever handling
+    toolPixels = []
+    # for i in range(detectionAreaYRange[0], detectionAreaYRange[1], 3):
+    for i in range(0, rows, 10):
+      for j in range(0, cols, 10):
+      # for j in range(detectionAreaXRange[0], detectionAreaXRange[1], 10):
+        point = (j,i)
+        if cv_image[i,j,0] >= 200 and cv2.pointPolygonTest(contours[maxHullIndex], point, False) != -1:
+          numBluePixels += 1
+          cv_image[i,j] = [0,255,0]
+          toolPixels.append(np.array([[i,j]]))
+        elif cv_image[i,j,1] >= 240:
+          numGreenPixels += 1
+    toolPixels = np.array(toolPixels)
+
     # Center of mass of tool (weighted average of cm computed from contour and cm computed from toolPixels)
     toolPixelsCM = geometry.centerOfMass(toolPixels) # toolPixelsCM coordinates are (Y,X) (??)
-    # maxHullCmX = (5*contourCenterOfMass[maxHullIndex][0] + toolPixelsCM[1]) / 6
-    # maxHullCmY = (5*contourCenterOfMass[maxHullIndex][1] + toolPixelsCM[0]) / 6
-    maxHullCmX = contourCenterOfMass[maxHullIndex][0]
-    maxHullCmY = contourCenterOfMass[maxHullIndex][1]
+    maxHullCmX = (contourCenterOfMass[maxHullIndex][0] + 5*toolPixelsCM[1]) / 6
+    maxHullCmY = (contourCenterOfMass[maxHullIndex][1] + 5*toolPixelsCM[0]) / 6
 
     # Find orientation vectors of tool
     a,b = geometry.orientationVectors(toolPixels)
