@@ -37,9 +37,9 @@ public:
 	ServoPlanner() {
 		moveit::planning_interface::PlanningSceneInterface planning_scene_interface;
 		moveit::planning_interface::MoveGroupInterface move_group("iiwa_arm");
-		move_group.setPlanningTime(45.0);
-		move_group.allowReplanning(true);
-		move_group.setNumPlanningAttempts(3);
+		move_group.setPlanningTime(1);
+		move_group.allowReplanning(false);
+		move_group.setNumPlanningAttempts(1);
 
 		// path.push_back({0, 0, 2.262, 0, 0, 0}); // For z >= 2.261 the robot reaches end of workspace, which is a singularity and cant be calculated from the numerical IK
 		path.push_back({0, 0, 2.26, 0, 0, 0}); // Home position
@@ -83,7 +83,7 @@ int main(int argc, char** argv)
 	ros::init(argc, argv, "robot_planner5");
 	ros::NodeHandle node_handle;
 	ros::AsyncSpinner spinner(1);
-	ros::Rate loop_rate(10);
+	ros::Rate loop_rate(1000);
 	spinner.start();
 
 	auto* servoPlanner = new ServoPlanner();
