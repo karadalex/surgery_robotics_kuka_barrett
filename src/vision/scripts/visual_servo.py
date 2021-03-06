@@ -68,7 +68,7 @@ class Detection:
           numBluePixels += 1
           cv_image[i,j] = [0,255,0]
           toolPixels.append(np.array([[i,j]]))
-        elif cv_image[i,j,1] >= 180:
+        elif cv_image[i,j,1] >= 240:
           numGreenPixels += 1
     toolPixels = np.array(toolPixels)
 
@@ -145,10 +145,9 @@ class Detection:
       startFrom = 0
     maxHullIndex = startFrom
     for i in range(startFrom, len(hull)):
-      if hullsMeanDistanceFromCenter[i] > hullsMeanDistanceFromCenter[maxHullIndex]:
-        if hasPolygonCenterOfColor(cv_image, contours[i], blueColor):
-          if isPolygonInROI(hull[i], colorROI):
-            maxHullIndex = i
+      if hasPolygonCenterOfColor(cv_image, contours[i], blueColor):
+        if hullsMeanDistanceFromCenter[i] > hullsMeanDistanceFromCenter[maxHullIndex]:
+          maxHullIndex = i
 
 
     ###########################################################################################
@@ -156,8 +155,10 @@ class Detection:
     ###########################################################################################
     # Center of mass of tool (weighted average of cm computed from contour and cm computed from toolPixels)
     toolPixelsCM = geometry.centerOfMass(toolPixels) # toolPixelsCM coordinates are (Y,X) (??)
-    maxHullCmX = (5*contourCenterOfMass[maxHullIndex][0] + 1*toolPixelsCM[1]) / 6
-    maxHullCmY = (5*contourCenterOfMass[maxHullIndex][1] + 1*toolPixelsCM[0]) / 6
+    # maxHullCmX = (5*contourCenterOfMass[maxHullIndex][0] + toolPixelsCM[1]) / 6
+    # maxHullCmY = (5*contourCenterOfMass[maxHullIndex][1] + toolPixelsCM[0]) / 6
+    maxHullCmX = contourCenterOfMass[maxHullIndex][0]
+    maxHullCmY = contourCenterOfMass[maxHullIndex][1]
 
     # Find orientation vectors of tool
     a,b = geometry.orientationVectors(toolPixels)
@@ -183,30 +184,46 @@ class Detection:
     ###########################################################################################
     #    DRAW OPENCV IMAGE
     ###########################################################################################
+
+    # Draw target at the center (origin) of the image
+    originY = int(rows/2)
+    originX = int(cols/2)
+    cv2.circle(img_detection_region,(originX,originY),10,(255,0,255),-1)
+
     # draw contour and hull points of the biggest convex hull, 
     # Draw if there was a blue tool
     contour_color = (0, 0, 255)
     convex_hull_color = (0, 255, 0)
+
+    # for i in range(len(contours)):
+    #   cv2.drawContours(img_detection_region, contours, i, contour_color, 2, 8)
+
     if len(hull) > 1 and blueToolDetected: # if there is only one hull, it means this is the while picture (default convex hull)
       # draw max convex hull object
       cv2.drawContours(img_detection_region, hull, maxHullIndex, convex_hull_color, 2, 8)
+
       # draw center of mass of convex hull
       cmX = self.toolCenterOfMass[0]
       cmY = self.toolCenterOfMass[1]
       cv2.circle(img_detection_region,(cmX,cmY),5,(0,0,255),-1)
+
       # draw orientation vectors
       a = self.toolOrientX
       b = self.toolOrientY
       cv2.arrowedLine(img_detection_region, (cmX,cmY), (a[0], a[1]), redColor, 2, 8, 0, 0.1)
       cv2.arrowedLine(img_detection_region, (cmX,cmY), (b[0], b[1]), greenColor, 2, 8, 0, 0.1)
+
+      # Draw arrow from detected tool center of mass to center of the image
+      # This arrow will also be used as the visual servoing command
+      cv2.arrowedLine(img_detection_region, (cmX,cmY), (originX, originY), (0,255,255), 2, 8, 0, 0.1)
+
     if trocarDetected:
       for i in range(1, len(contoursGreen)):
       # draw ith contour
         cv2.drawContours(img_detection_region, contoursGreen, i, contour_color, 2, 8, hierarchy)
-    cmb = geometry.centerOfMass(toolPixels)
 
     # Draw Color Region Of Interest
-    # cv2.polylines(cv_image, [colorROI], True, (0,255,0), thickness=3)
+    cv2.polylines(cv_image, [colorROI], True, (0,255,0), thickness=3)
 
     # Draw tool detection message
     font                   = cv2.FONT_HERSHEY_SIMPLEX

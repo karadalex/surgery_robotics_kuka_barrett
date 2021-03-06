@@ -97,7 +97,7 @@ def checkApproximateColorEq(px, color, r):
   return False
 
 
-def hasPolygonCenterOfColor(img, hull, color, r=2):
+def hasPolygonCenterOfColor(img, hull, color, r=5):
   """[summary]
 
   Args:
