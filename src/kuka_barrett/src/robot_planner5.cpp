@@ -37,8 +37,8 @@ public:
 	ServoPlanner() {
 		// path.push_back({0, 0, 2.262, 0, 0, 0}); // For z >= 2.261 the robot reaches end of workspace, which is a singularity and cant be calculated from the numerical IK
 		path.push_back({0, 0, 2.26, 0, 0, 0}); // Home position
-		// TCP position for point above cube
-		path.push_back({0.004149, -0.719461, 1.366577, 3.139543, 0.022613, -1.657719});
+		// Start point
+		path.push_back({0.209815, -0.770712, 1.363938, 3.141426, 0.022613, -1.599220});
 		traj1.executePath(path);
 
 		initialPathExecuted = true;
