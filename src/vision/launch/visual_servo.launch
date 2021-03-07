@@ -1,0 +1,7 @@
+<launch>
+    <rosparam command="load" file="$(find vision)/config/visual_servo.yaml" />
+
+    <node name="opencv_image_view" pkg="vision" type="visual_servo.py" args=""/>
+
+    <node name="rqt_gui" pkg="rqt_gui" type="rqt_gui"/>
+</launch>

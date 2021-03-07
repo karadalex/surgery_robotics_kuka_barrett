@@ -1,0 +1,6 @@
+visual_servo:
+  controller:
+    p: 0.9
+    i: 0.01
+    d: 0.2
+    i_clamp: 0

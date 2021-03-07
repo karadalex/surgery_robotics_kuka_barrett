@@ -36,6 +36,18 @@ class Detection:
     self.toolOrientX = []
     self.toolOrientY = []
 
+    # Setup visual servoing controller
+    self.Kp = rospy.get_param("/visual_servo/controller/p", 0.9)
+    self.Ki = rospy.get_param("/visual_servo/controller/i", 0.01)
+    self.Kd = rospy.get_param("/visual_servo/controller/d", 0.2)
+    self.prev_ex = 0
+    self.ex_sum = 0
+    self.prev_ey = 0
+    self.ey_sum = 0
+    self.prev_eth = 0
+    self.eth_sum = 0
+    self.error_tolerance = 0.001
+
   def callback(self,data):
     try:
       cv_image = self.bridge.imgmsg_to_cv2(data, "bgr8")
@@ -186,7 +198,7 @@ class Detection:
       for j in range(min_x, max_x, 10):
       # for j in range(detectionAreaXRange[0], detectionAreaXRange[1], 10):
         point = (j,i)
-        if cv_image[i,j,0] >= 200 and cv2.pointPolygonTest(contours[maxHullIndex], point, False) != -1:
+        if cv2.pointPolygonTest(contours[maxHullIndex], point, False) != -1:
           numBluePixels += 1
           cv_image[i,j] = [0,255,0]
           toolPixels.append(np.array([[i,j]]))
@@ -226,10 +238,23 @@ class Detection:
     cmY = self.toolCenterOfMass[1]
 
     if not disable_servo and blueToolDetected:
-        twist = Twist()
-        twist.linear.x = 0.1*round((cmX - originX)/float(cols), 2)
-        twist.linear.y = -0.1*round((cmY - originY)/float(rows), 2)
+      ex = round(0.1*(cmX - originX)/float(cols), 4)
+      ey = -round(0.1*(cmY - originY)/float(rows), 4)
+      eth = 0 # TODO calculate error in orientation
+      error_norm = math.sqrt(ex**2 + ey**2)
+      twist = Twist()
+      # Only send the command if one of the errors is bigger than the allowed tolerance, so that
+      # we avoid small oscillations in the target position
+      if error_norm > self.error_tolerance or eth > self.error_tolerance:
+        twist.linear.x = self.Kp*ex + self.Kd*(ex - self.prev_ex)
+        twist.linear.y = self.Kp*ey + self.Kd*(ey - self.prev_ey)
+        print(twist.linear.x, twist.linear.y)
         self.servo_cmd.publish(twist)
+
+      self.prev_ex = ex
+      self.ex_sum += ex
+      self.prev_ey = ey
+      self.ey_sum += ey
 
     ###########################################################################################
     #    FIND GRASP POINTS - FORCE CLOSURE
@@ -240,8 +265,9 @@ class Detection:
     #    DRAW OPENCV IMAGE
     ###########################################################################################
 
-    # Draw target at the center (origin) of the image
-    cv2.circle(img_detection_region,(originX,originY),10,(255,0,255),-1)
+    if not disable_servo:
+      # Draw target at the center (origin) of the image
+      cv2.circle(img_detection_region,(originX,originY),10,(255,0,255),-1)
 
     # draw contour and hull points of the biggest convex hull, 
     # Draw if there was a blue tool
@@ -264,9 +290,10 @@ class Detection:
       cv2.arrowedLine(img_detection_region, (cmX,cmY), (a[0], a[1]), redColor, 2, 8, 0, 0.1)
       cv2.arrowedLine(img_detection_region, (cmX,cmY), (b[0], b[1]), greenColor, 2, 8, 0, 0.1)
 
-      # Draw arrow from detected tool center of mass to center of the image
-      # This arrow will also be used as the visual servoing command
-      cv2.arrowedLine(img_detection_region, (cmX,cmY), (originX, originY), (0,255,255), 2, 8, 0, 0.1)
+      if not disable_servo:
+        # Draw arrow from detected tool center of mass to center of the image
+        # This arrow will also be used as the visual servoing command
+        cv2.arrowedLine(img_detection_region, (cmX,cmY), (originX, originY), (0,255,255), 2, 8, 0, 0.1)
 
     if trocarDetected:
       for i in range(1, len(contoursGreen)):
