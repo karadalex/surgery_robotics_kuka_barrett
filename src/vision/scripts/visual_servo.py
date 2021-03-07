@@ -17,6 +17,9 @@ import geometry
 
 roslib.load_manifest('vision')
 
+disable_servo = False
+show_error_graph = False
+
 
 class Detection:
 
@@ -152,14 +155,35 @@ class Detection:
     ###########################################################################################
     #    POSE DETECTION
     ###########################################################################################
+
+    # Calculate ROI of selected tool using it's convex hull
+    min_x = cols
+    min_y = rows
+    max_x = max_y = 0
+    for point in hull[maxHullIndex]:
+      if point[0][0] < min_x:
+        min_x = point[0][0]
+      if point[0][1] < min_y:
+        min_y = point[0][1]
+      if point[0][0] > max_x:
+        max_x = point[0][0]
+      if point[0][1] > max_y:
+        max_y = point[0][1]
+
+    toolROI = np.array([
+      [min_x, min_y],
+      [max_x, min_y],
+      [max_x, max_y],
+      [min_x, max_y]
+    ])
     
     # Get pixels inside the selected contour
     # CAUTION: This is very heavy computanionally and drops FPS by half or more!
     # Could be avoided with a more clever handling
     toolPixels = []
     # for i in range(detectionAreaYRange[0], detectionAreaYRange[1], 3):
-    for i in range(0, rows, 10):
-      for j in range(0, cols, 10):
+    for i in range(min_y, max_y, 10):
+      for j in range(min_x, max_x, 10):
       # for j in range(detectionAreaXRange[0], detectionAreaXRange[1], 10):
         point = (j,i)
         if cv_image[i,j,0] >= 200 and cv2.pointPolygonTest(contours[maxHullIndex], point, False) != -1:
@@ -201,11 +225,11 @@ class Detection:
     cmX = self.toolCenterOfMass[0]
     cmY = self.toolCenterOfMass[1]
 
-    if blueToolDetected:
-      twist = Twist()
-      twist.linear.x = 0.1*round((cmX - originX)/float(cols), 2)
-      twist.linear.y = -0.1*round((cmY - originY)/float(rows), 2)
-      self.servo_cmd.publish(twist)
+    if not disable_servo and blueToolDetected:
+        twist = Twist()
+        twist.linear.x = 0.1*round((cmX - originX)/float(cols), 2)
+        twist.linear.y = -0.1*round((cmY - originY)/float(rows), 2)
+        self.servo_cmd.publish(twist)
 
     ###########################################################################################
     #    FIND GRASP POINTS - FORCE CLOSURE
@@ -250,7 +274,10 @@ class Detection:
         cv2.drawContours(img_detection_region, contoursGreen, i, contour_color, 2, 8, hierarchy)
 
     # Draw Color Region Of Interest
-    cv2.polylines(cv_image, [colorROI], True, (0,255,0), thickness=3)
+    # cv2.polylines(cv_image, [colorROI], True, (0,255,0), thickness=3)
+
+    # Draw Tool Region Of Interest
+    cv2.polylines(cv_image, [toolROI], True, (255,255,255), thickness=2)
 
     # Draw tool detection message
     font                   = cv2.FONT_HERSHEY_SIMPLEX
@@ -317,5 +344,23 @@ def main(args):
   cv2.destroyAllWindows()
 
 
+help_string = """
+Copmuter Vision and Visual servoing for KUKA-Barrett robot
+
+rosrun vision visual_servo.py [OPTIONS]
+
+OPTIONS:
+  -h, --help
+  -d, --disable-servo
+  -e, --show-error-graph
+"""
 if __name__ == '__main__':
+  if "--help" in sys.argv or "-h" in sys.argv:
+    print(help_string)
+  else:
+    if "--disable-servo" in sys.argv or "-d" in sys.argv:
+      disable_servo = True
+    if "--show-error-graph" in sys.argv or "-e" in sys.argv:
+      show_error_graph = True
+
     main(sys.argv)
