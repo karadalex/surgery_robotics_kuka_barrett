@@ -7,7 +7,7 @@ import cv2
 import numpy as np
 import math
 import time
-from std_msgs.msg import String
+from std_msgs.msg import String, Float32
 from geometry_msgs.msg import Twist
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge, CvBridgeError
@@ -26,6 +26,8 @@ class Detection:
   def __init__(self):
     self.image_pub = rospy.Publisher("/opencv/test_topic_1", Image)
     self.servo_cmd = rospy.Publisher("kuka_barrett/cmd_vel", Twist)
+    self.error_pub = rospy.Publisher("kuka_barrett/visual_servo/error", Float32)
+    self.error_theta_pub = rospy.Publisher("kuka_barrett/visual_servo/error_theta", Float32)
 
     self.bridge = CvBridge()
     self.image_sub = rospy.Subscriber("/stereo/left/image_raw",Image,self.callback)
@@ -47,6 +49,7 @@ class Detection:
     self.prev_eth = 0
     self.eth_sum = 0
     self.error_tolerance = 0.001
+    self.prev_error_norm = 0.0
 
   def callback(self,data):
     try:
@@ -241,25 +244,42 @@ class Detection:
       ex = round(0.1*(cmX - originX)/float(cols), 4)
       ey = -round(0.1*(cmY - originY)/float(rows), 4)
       eth = 0 # TODO calculate error in orientation
+      
       error_norm = math.sqrt(ex**2 + ey**2)
+      # Filter out sudden spikes in error which occur from sudden temporary detection of another tool
+      if error_norm > 2*self.prev_error_norm and self.prev_error_norm > 0.0:
+        ex = self.prev_ex
+        ey = self.prev_ey
+        error_norm = self.prev_error_norm
+      
       twist = Twist()
       # Only send the command if one of the errors is bigger than the allowed tolerance, so that
       # we avoid small oscillations in the target position
       if error_norm > self.error_tolerance or eth > self.error_tolerance:
         twist.linear.x = self.Kp*ex + self.Kd*(ex - self.prev_ex)
         twist.linear.y = self.Kp*ey + self.Kd*(ey - self.prev_ey)
-        print(twist.linear.x, twist.linear.y)
         self.servo_cmd.publish(twist)
+      
+      self.error_pub.publish(error_norm)
+      self.error_theta_pub.publish(eth)
 
       self.prev_ex = ex
       self.ex_sum += ex
       self.prev_ey = ey
       self.ey_sum += ey
+      self.prev_error_norm = math.sqrt(self.prev_ex**2 + self.prev_ey**2)
 
     ###########################################################################################
     #    FIND GRASP POINTS - FORCE CLOSURE
     ###########################################################################################
-    # TODO
+    
+    # create an image filled with zeros, single-channel, same size as img_detection_region.
+    blank = np.zeros(img_detection_region.shape[0:2])
+    circle_img = cv2.circle(blank.copy(), (originX,originY), 30, 1, 1)
+    contour_img = cv2.drawContours(blank.copy(), contours, maxHullIndex, 1, 2, 8)
+    # now AND the two together
+    # intersection = np.logical_and(circle_img, contour_img)
+    # print(cv2.findNonZero(circle_img))
 
     ###########################################################################################
     #    DRAW OPENCV IMAGE
