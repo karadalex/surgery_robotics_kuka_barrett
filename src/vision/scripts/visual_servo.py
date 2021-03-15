@@ -243,7 +243,7 @@ class Detection:
     if not disable_servo and blueToolDetected:
       ex = round(0.1*(cmX - originX)/float(cols), 4)
       ey = -round(0.1*(cmY - originY)/float(rows), 4)
-      eth = 0 # TODO calculate error in orientation
+      eth = round(math.atan(a[0]/a[1]), 4)/math.pi
       
       error_norm = math.sqrt(ex**2 + ey**2)
       # Filter out sudden spikes in error which occur from sudden temporary detection of another tool
@@ -258,6 +258,7 @@ class Detection:
       if error_norm > self.error_tolerance or eth > self.error_tolerance:
         twist.linear.x = self.Kp*ex + self.Kd*(ex - self.prev_ex)
         twist.linear.y = self.Kp*ey + self.Kd*(ey - self.prev_ey)
+        # twist.angular.z = eth
         self.servo_cmd.publish(twist)
       
       self.error_pub.publish(error_norm)
@@ -275,11 +276,27 @@ class Detection:
     
     # create an image filled with zeros, single-channel, same size as img_detection_region.
     blank = np.zeros(img_detection_region.shape[0:2])
-    circle_img = cv2.circle(blank.copy(), (originX,originY), 30, 1, 1)
-    contour_img = cv2.drawContours(blank.copy(), contours, maxHullIndex, 1, 2, 8)
-    # now AND the two together
-    # intersection = np.logical_and(circle_img, contour_img)
-    # print(cv2.findNonZero(circle_img))
+    cv2.circle(img_detection_region, (cmX,cmY), 100, 1, 1)
+    circle_img = cv2.circle(blank.copy(), (cmX,cmY), 100, 1, 1)
+    contour_img = cv2.drawContours(blank.copy(), contours, maxHullIndex, 1, 1, 8)
+    intersectedImg = circle_img + contour_img
+    intersectionPoints = np.argwhere(intersectedImg == np.max(intersectedImg))
+    reducedIntersectionPoints = [intersectionPoints[0]]
+    for p in range(1, len(intersectionPoints)):
+      pt1 = intersectionPoints[p]
+      canAddPoint = True
+      for pt2 in reducedIntersectionPoints:
+        # Manhattan Distance
+        if abs(pt1[0] - pt2[0]) + abs(pt1[1] - pt2[1]) < 10:
+          canAddPoint = False
+          break
+      if canAddPoint:
+        reducedIntersectionPoints.append(pt1)
+    
+    if len(reducedIntersectionPoints) > 3:
+      reducedIntersectionPoints = reducedIntersectionPoints[0:3]
+
+    # print("reducedIntersectionPoints", reducedIntersectionPoints)
 
     ###########################################################################################
     #    DRAW OPENCV IMAGE
@@ -325,6 +342,12 @@ class Detection:
 
     # Draw Tool Region Of Interest
     cv2.polylines(cv_image, [toolROI], True, (255,255,255), thickness=2)
+
+    # Draw grasp points and their triangle
+    for point in reducedIntersectionPoints:
+      cv2.circle(img_detection_region,(point[1],point[0]),7,(10,255,255),-1)
+    grasp_triangle = np.flip(np.array(reducedIntersectionPoints)).reshape((-1,1,2))
+    cv2.polylines(cv_image, [grasp_triangle], True, (0,255,255))
 
     # Draw tool detection message
     font                   = cv2.FONT_HERSHEY_SIMPLEX
