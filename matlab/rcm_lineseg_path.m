@@ -21,29 +21,7 @@ B = [-0.2, 0.2, 0.2, -0.2]*1.5;
 C = zeros(size(A));
 
 %% TCP Path
-tcp = zeros(size(P));
-dists = zeros(size(P,1),1); % all distances must be equal to the legth of the tool
-for i=1:size(P)
-    px = P(i,1); py = P(i,2); pz = P(i,3);
-    r = sqrt(px^2+py^2+pz^2);
-    th = atan2(sqrt(px^2+py^2), pz);
-    phi = atan2(py, px);
-    vx = [cos(th)*cos(phi); cos(th)*sin(phi); -sin(th)];
-    vy = [-sin(phi); cos(phi); 0];
-    vz = [-sin(th)*cos(phi); -sin(th)*sin(phi); cos(th)];
-    vp = r*[sin(th)*cos(phi); sin(th)*sin(phi); cos(th)];
-    T = zeros(4,4);
-    R = [vx, vy, vz];
-    T(1:3,1:3) = R;
-    T(1:3,4) = vp;
-    T(4,4) = 1;
-    Td = eye(4);
-    Td(1:3,4) = (r-L)/r*vp;
-    tcp_point = Td*inv(T)*[P(i,:).'; 1];
-    tcp(i,:) = tcp_point(1:3).';
-    dist2 = (px-tcp(i,1))^2 + (py-tcp(i,2))^2 + (pz-tcp(i,3))^2;
-    dists(i) = sqrt(dist2);
-end
+tcp = fulcrumEffectPath(P, L);
 
 %% Plot data
 close all
@@ -55,7 +33,7 @@ scatter3(x,y,z,'r','filled');
 scatter3(0, 0, 0, 'g', 'filled');
 f = fill3(A,B,C,'m');
 f.FaceAlpha = 0.1;
-plot3(tcp(:,1),tcp(:,2),tcp(:,3));
+plot3(tcp(:,1),tcp(:,2),tcp(:,3),'c');
 for i=1:size(P)
     dx = [tcp(i,1), P(i,1)];
     dy = [tcp(i,2), P(i,2)];
@@ -67,5 +45,5 @@ end
 xlabel('x');
 ylabel('y');
 zlabel('z');
-legend({'Bezier Curve', 'Control Points', 'RCM (Fulcrum)'});
+legend({'Line segment trajectory', 'Control Points', 'RCM (Fulcrum)', 'Separation plane', 'TCP Trajectory (transformed line segment)'});
 set(gca,'DataAspectRatio',[1 1 1]);
