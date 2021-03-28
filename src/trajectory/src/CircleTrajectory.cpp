@@ -91,6 +91,8 @@ vector<geometry_msgs::Pose> CircleTrajectory::getCartesianWaypoints(int samples,
 
 		// Add pose to waypoints list
 		waypoints.push_back(pose);
+		Eigen::Isometry3d eigenPose = Eigen::Isometry3d(p2);
+		eigen_waypoints.push_back(eigenPose);
 	}
 
 	return waypoints;

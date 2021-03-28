@@ -51,6 +51,9 @@
   <run_depend>std_msgs</run_depend>
   <build_depend>std_msgs</build_depend>
 
+  <build_depend>smach</build_depend>
+  <run_depend>smach</run_depend>
+
   <build_depend>kinematics</build_depend>
   <run_depend>kinematics</run_depend>
 

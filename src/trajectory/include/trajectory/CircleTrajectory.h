@@ -16,6 +16,7 @@ using namespace std;
 class CircleTrajectory {
 public:
 	vector<geometry_msgs::Pose> waypoints;
+	vector<Eigen::Isometry3d> eigen_waypoints;
 
 	/**
 	 *

@@ -1,5 +1,5 @@
 //
-// Created by karadalex on 11/8/20.
+// Created by karadalex on 23/03/21.
 //
 
 #include <moveit/planning_scene_interface/planning_scene_interface.h>
@@ -15,7 +15,7 @@ using namespace std;
 
 int main(int argc, char** argv)
 {
-	ros::init(argc, argv, "robot_planner3");
+	ros::init(argc, argv, "robot_planner3f");
 	ros::NodeHandle node_handle;
 	ros::AsyncSpinner spinner(1);
 	spinner.start();

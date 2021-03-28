@@ -222,8 +222,26 @@ target_link_libraries(robot_planner2 ${catkin_LIBRARIES} ${Boost_LIBRARIES})
 add_executable(robot_planner2b src/robot_planner2b.cpp)
 target_link_libraries(robot_planner2b ${catkin_LIBRARIES} ${Boost_LIBRARIES})
 
-add_executable(robot_planner3 src/robot_planner3.cpp)
-target_link_libraries(robot_planner3 ${catkin_LIBRARIES} ${Boost_LIBRARIES})
+add_executable(robot_planner3a src/robot_planner3a.cpp)
+target_link_libraries(robot_planner3a ${catkin_LIBRARIES} ${Boost_LIBRARIES})
+
+add_executable(robot_planner3b src/robot_planner3b.cpp)
+target_link_libraries(robot_planner3b ${catkin_LIBRARIES} ${Boost_LIBRARIES})
+
+add_executable(robot_planner3c src/robot_planner3c.cpp)
+target_link_libraries(robot_planner3c ${catkin_LIBRARIES} ${Boost_LIBRARIES})
+
+add_executable(robot_planner3d src/robot_planner3d.cpp)
+target_link_libraries(robot_planner3d ${catkin_LIBRARIES} ${Boost_LIBRARIES})
+
+add_executable(robot_planner3e src/robot_planner3e.cpp)
+target_link_libraries(robot_planner3e ${catkin_LIBRARIES} ${Boost_LIBRARIES})
+
+add_executable(robot_planner3f src/robot_planner3f.cpp)
+target_link_libraries(robot_planner3f ${catkin_LIBRARIES} ${Boost_LIBRARIES})
+
+add_executable(robot_planner3g src/robot_planner3g.cpp)
+target_link_libraries(robot_planner3g ${catkin_LIBRARIES} ${Boost_LIBRARIES})
 
 add_executable(robot_planner4 src/robot_planner4.cpp)
 target_link_libraries(robot_planner4 ${catkin_LIBRARIES} ${Boost_LIBRARIES})

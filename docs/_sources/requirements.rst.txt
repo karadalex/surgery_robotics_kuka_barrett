@@ -40,7 +40,7 @@ Requirements
 
   .. code-block:: bash
 
-    $ sudo apt-get install ros-melodic-cv-camera  
+    $ sudo apt-get install ros-melodic-cv-camera ros-melodic-executive-smach ros-melodic-smach ros-melodic-smach-viewer
 
   * Catkin tools (optional)
   
