@@ -136,6 +136,7 @@ include_directories(
    src/Transformation.cpp
    src/BarrettInv.cpp
    src/TrajectoryExecution.cpp
+   src/utils.cpp
 )
 
 ## Add cmake target dependencies of the library
