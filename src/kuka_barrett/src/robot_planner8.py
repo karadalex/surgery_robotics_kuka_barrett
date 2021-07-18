@@ -13,8 +13,10 @@ TOOL_PICKING = 'TOOL_PICKING'
 TOOL_PLACING = 'TOOL_PLACING'
 PIVOT_MOTION_PLANNING = 'PIVOT_MOTION_PLANNING'
 PIVOT_MOTION_EXECUTION = 'PIVOT_MOTION_EXECUTION'
+REMOVE_TOOL_FROM_PATIENT = 'REMOVE_TOOL_FROM_PATIENT'
 
 # All available outcomes
+abort = 'abort'
 failed = 'failed'
 success = 'success'
 tool_not_found = 'tool not found'
@@ -39,7 +41,7 @@ class HomePosition(smach.State):
 
 class ToolHomePosition(smach.State):
     def __init__(self):
-        smach.State.__init__(self, outcomes=[failed, success])
+        smach.State.__init__(self, outcomes=[failed, success, abort])
         self.counter = 0
 
     def execute(self, userdata):
@@ -54,7 +56,7 @@ class ToolHomePosition(smach.State):
 
 class ToolTableScanning(smach.State):
     def __init__(self):
-        smach.State.__init__(self, outcomes=[tool_not_found, tool_found])
+        smach.State.__init__(self, outcomes=[tool_not_found, tool_found, abort])
         self.counter = 0
 
     def execute(self, userdata):
@@ -69,7 +71,7 @@ class ToolTableScanning(smach.State):
 
 class ToolPicking(smach.State):
     def __init__(self):
-        smach.State.__init__(self, outcomes=[failed, success, max_retries])
+        smach.State.__init__(self, outcomes=[failed, success, max_retries, abort])
         self.counter = 0
 
     def execute(self, userdata):
@@ -84,7 +86,7 @@ class ToolPicking(smach.State):
 
 class ToolPlacing(smach.State):
     def __init__(self):
-        smach.State.__init__(self, outcomes=[failed, success])
+        smach.State.__init__(self, outcomes=[failed, success, abort])
         self.counter = 0
 
     def execute(self, userdata):
@@ -99,11 +101,26 @@ class ToolPlacing(smach.State):
 
 class PivotMotionPlanning(smach.State):
     def __init__(self):
-        smach.State.__init__(self, outcomes=[failed, success])
+        smach.State.__init__(self, outcomes=[failed, success, abort])
         self.counter = 0
 
     def execute(self, userdata):
         rospy.loginfo('Executing state %s', PIVOT_MOTION_PLANNING)
+        time.sleep(2)
+        if self.counter < 3:
+            self.counter += 1
+            return failed
+        else:
+            return success
+
+
+class ToolRemoval(smach.State):
+    def __init__(self):
+        smach.State.__init__(self, outcomes=[failed, success])
+        self.counter = 0
+
+    def execute(self, userdata):
+        rospy.loginfo('Executing state %s', REMOVE_TOOL_FROM_PATIENT)
         time.sleep(2)
         if self.counter < 3:
             self.counter += 1
@@ -131,17 +148,19 @@ def main():
             }
         )
         smach.StateMachine.add(
-            TOOL_HOME_POSITION, HomePosition(),
+            TOOL_HOME_POSITION, ToolHomePosition(),
             transitions={
                 failed: TOOL_HOME_POSITION, 
-                success: TOOL_TABLE_SCANNING
+                success: TOOL_TABLE_SCANNING,
+                abort: HOME_POSITION
             }
         )
         smach.StateMachine.add(
             TOOL_TABLE_SCANNING, ToolTableScanning(),
             transitions={
                 tool_not_found: TOOL_TABLE_SCANNING, 
-                tool_found: TOOL_PICKING
+                tool_found: TOOL_PICKING,
+                abort: HOME_POSITION
             }
         )
         smach.StateMachine.add(
@@ -149,7 +168,8 @@ def main():
             transitions={
                 failed: TOOL_PICKING, 
                 success: TOOL_PLACING,
-                max_retries: TOOL_TABLE_SCANNING
+                max_retries: TOOL_TABLE_SCANNING,
+                abort: HOME_POSITION
             }
         )
         smach.StateMachine.add(
@@ -157,6 +177,7 @@ def main():
             transitions={
                 failed: TOOL_PLACING, 
                 success: PIVOT_MOTION_PLANNING,
+                abort: REMOVE_TOOL_FROM_PATIENT
             }
         )
         smach.StateMachine.add(
@@ -164,6 +185,14 @@ def main():
             transitions={
                 failed: PIVOT_MOTION_PLANNING, 
                 success: PIVOT_MOTION_PLANNING,
+                abort: REMOVE_TOOL_FROM_PATIENT
+            }
+        )
+        smach.StateMachine.add(
+            REMOVE_TOOL_FROM_PATIENT, ToolRemoval(),
+            transitions={
+                failed: REMOVE_TOOL_FROM_PATIENT, 
+                success: HOME_POSITION,
             }
         )
 
