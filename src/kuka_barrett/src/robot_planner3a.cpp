@@ -9,6 +9,7 @@
 #include "trajectory/CircleTrajectory.h"
 #include "kinematics/Pose.h"
 #include <trajectory_msgs/JointTrajectory.h>
+#include "kinematics/utils.h"
 
 
 using namespace std;
@@ -20,21 +21,6 @@ int main(int argc, char** argv)
 	ros::NodeHandle node_handle;
 	ros::AsyncSpinner spinner(1);
 	spinner.start();
-
-	ros::Publisher kuka_publisher = node_handle.advertise<trajectory_msgs::JointTrajectory > ("/arm_controller/command", 1000);
-
-	// Load robot
-	robot_model_loader::RobotModelLoader robot_model_loader("robot_description");
-	const moveit::core::RobotModelPtr& kinematic_model = robot_model_loader.getModel();
-	ROS_INFO("Model frame: %s", kinematic_model->getModelFrame().c_str());
-
-	// Create Kinematic state
-	moveit::core::RobotStatePtr kinematic_state(new moveit::core::RobotState(kinematic_model));
-	kinematic_state->setToDefaultValues();
-	const moveit::core::JointModelGroup* joint_model_group = kinematic_model->getJointModelGroup("iiwa_arm");
-
-	// Set end-effector state
-	kinematic_state->setToRandomPositions(joint_model_group);
 
 	// Setup Move group
 	static const std::string PLANNING_GROUP = "iiwa_arm";
@@ -81,48 +67,21 @@ int main(int argc, char** argv)
 	circleTrajCenter << 0, 0, 0.2; // Coordinates of desired circle w.r.t. to {F} reference frame
 	CircleTrajectory* circleTrajectory = new CircleTrajectory(circleTrajCenter, 0.2);
 	vector<geometry_msgs::Pose> circle_waypoints = circleTrajectory->getCartesianWaypoints(20, U_T_F);
+	vector<geometry_msgs::Pose> transformed_waypoints = fulcrumEffectTransformation(circle_waypoints, 0.4);
+	for (int j = 0; j < circle_waypoints.size(); ++j) {
+		transformed_waypoints.push_back(circle_waypoints.at(j));
+	}
 
 	// Path to circle
 	std::vector<geometry_msgs::Pose> path3;
 	path3.push_back(fulcrumInsertedPose1);
-	path3.push_back(circle_waypoints.at(0));
-	traj1.executeCartesianPath(path3, "Path to circle");
-	traj1.executeCartesianPath(circle_waypoints, "Circular Trajectory");
+	path3.push_back(transformed_waypoints.at(0));
 	traj1.executeCartesianPath(path3, "Path to circle");
 
-	// trajectory_msgs::JointTrajectory kuka_msg;
-	// kuka_msg.header.seq = 0;
-	// kuka_msg.header.stamp.sec = 0;
-	// kuka_msg.header.stamp.nsec = 0;
-	// kuka_msg.header.frame_id = "";
-	// kuka_msg.joint_names = joint_model_group->getVariableNames();
-	// vector<Eigen::Isometry3d> eigen_waypoints = circleTrajectory->eigen_waypoints;
-	// kuka_msg.points.resize(eigen_waypoints.size());
-	// for (int i = 0; i < eigen_waypoints.size(); ++i) {
-	// 	Eigen::Isometry3d pose = eigen_waypoints.at(i);
-	// 	std::vector<double> joint_values;
-	// 	double timeout = 0.1;
-	// 	bool found_ik = kinematic_state->setFromIK(joint_model_group, pose, timeout);
-	// 	if (found_ik) {
-	// 		kinematic_state->copyJointGroupPositions(joint_model_group, joint_values);
-	// 		kuka_msg.points[i].positions.resize(kuka_msg.joint_names.size());
-	// 		kuka_msg.points[i].velocities.resize(kuka_msg.joint_names.size());
-	// 		kuka_msg.points[i].effort.resize(kuka_msg.joint_names.size());
-	// 		for (int j = 0; j < 7; ++j) {
-	// 			kuka_msg.points[i].positions[j] = joint_values[j];
-	// 			kuka_msg.points[i].velocities[j] = 0.0;
-	// 		}
-	// 		// To be reached 1 second after starting along the trajectory
-	// 		kuka_msg.points[i].time_from_start = ros::Duration(3*(i+1));
-	// 	} else {
-	// 		for (int j = 0; j < 7; ++j) {
-	// 			kuka_msg.points[i].positions[j] = 0.0;
-	// 			kuka_msg.points[i].velocities[j] = 0.0;
-	// 		}
-	// 		ROS_INFO("Did not find IK solution");
-	// 	}
-	// }
-	// kuka_publisher.publish(kuka_msg);
+	traj1.executeCartesianPath(transformed_waypoints, "Circular Trajectory");
+
+	traj1.executeCartesianPath(path3, "Path to circle");
+
 
 	ros::shutdown();
 	return 0;

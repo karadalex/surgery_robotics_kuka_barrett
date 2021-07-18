@@ -7,6 +7,7 @@
 #include <moveit/robot_model/robot_model.h>
 #include <moveit/robot_state/robot_state.h>
 #include <trajectory_msgs/JointTrajectory.h>
+#include <tf2_geometry_msgs/tf2_geometry_msgs.h>
 
 
 using namespace std;
@@ -67,10 +68,12 @@ int main(int argc, char** argv)
 			ROS_INFO("Joint %s: %f", kuka_msg.joint_names[i].c_str(), joint_values[i]);
 		}
 
-		kuka_publisher.publish(kuka_msg);
+		// kuka_publisher.publish(kuka_msg);
 	} else {
 		ROS_INFO("Did not find IK solution");
 	}
+
+	kuka_publisher.publish(kuka_msg);
 
 
 	ros::shutdown();

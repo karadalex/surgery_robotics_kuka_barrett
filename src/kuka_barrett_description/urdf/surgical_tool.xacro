@@ -39,20 +39,13 @@
 			<material>Gazebo/Blue</material>
 			<turnGravityOff>false</turnGravityOff>
 		</gazebo>
-  </xacro:macro>
-
-</robot>
 
 
-<!-- ############################################################################################################## -->
-<!-- The following are for visualization/calculation purposes only, do not uncomment if you want the robot to move! -->
-<!-- ############################################################################################################## -->
-<!-- <?xml version="1.0"?>
-<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
-
-  <xacro:macro name="surgical_tool" params="parent">
+		<!-- ############################################################################################################## -->
+		<!-- The following are for visualization/calculation purposes only, do not uncomment if you want the robot to move! -->
+		<!-- ############################################################################################################## -->
 		<!-- 7 -> TCP -->
-		<joint name="tcp_joint" type="revolute">
+		<!-- <joint name="tcp_joint" type="revolute">
         <axis xyz="0 0 1" />
         <origin xyz="0 0 0.094" rpy="0 0 0"/>
         <parent link="${parent}"/>
@@ -89,7 +82,6 @@
 			<turnGravityOff>false</turnGravityOff>
 		</gazebo>
 
-		<!-- TCP -> B -->
 		<joint name="tool_joint" type="revolute">
         <axis xyz="0 0 1" />
         <origin xyz="0.05 0 0" rpy="1.57 0 1.57"/>
@@ -128,7 +120,6 @@
 			<turnGravityOff>false</turnGravityOff>
 		</gazebo>
 
-		<!-- B -> T -->
 		<joint name="tool_tip_joint" type="revolute">
         <axis xyz="0 0 1" />
         <origin xyz="-0.01 0.022 0.455" rpy="0 0 0"/>
@@ -164,7 +155,8 @@
 		<gazebo reference="tool_tip">
 			<material>Gazebo/Red</material>
 			<turnGravityOff>false</turnGravityOff>
-		</gazebo>
-  </xacro:macro>
+		</gazebo> -->
 
-</robot> -->
+
+  </xacro:macro>
+</robot>
