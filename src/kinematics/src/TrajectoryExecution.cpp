@@ -135,6 +135,7 @@ void TrajectoryExecution::executeCartesianPath(vector<geometry_msgs::Pose> waypo
 
 	moveit::planning_interface::MoveGroupInterface::Plan insertion_plan;
 	bool success = (move_group.plan(insertion_plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
+	ROS_INFO_NAMED("robot_planner1", "Planning time for path %s was %.6f seconds", traj_name, insertion_plan.planning_time_);
 	if (success) {
 		insertion_plan.trajectory_ = trajectory;
 		move_group.execute(insertion_plan);
