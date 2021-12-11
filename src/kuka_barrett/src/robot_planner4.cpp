@@ -65,6 +65,9 @@ int main(int argc, char** argv)
 	move_group.setPlanningTime(45.0);
 	move_group.allowReplanning(true);
 	move_group.setNumPlanningAttempts(3);
+	move_group.setPlannerId("RRΤConnect");
+	// move_group.setPlannerId("RRΤstar");
+	// move_group.setPlannerId("PRMstar");
 
 	ros::WallDuration(1.0).sleep();
 

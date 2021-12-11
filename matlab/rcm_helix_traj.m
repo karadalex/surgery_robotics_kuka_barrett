@@ -45,5 +45,5 @@ end
 xlabel('x');
 ylabel('y');
 zlabel('z');
-legend({'Circular trajectory', 'RCM (Fulcrum)', 'Separation plane', 'TCP Trajectory (transformed circular trajectory)'});
+legend({'Helical trajectory', 'RCM (Fulcrum)', 'Separation plane', 'TCP Trajectory (transformed helical trajectory)'});
 set(gca,'DataAspectRatio',[1 1 1]);
