@@ -34,6 +34,21 @@ TrajectoryExecution::TrajectoryExecution(const string PLANNING_GROUP, double pos
 	move_group.setNumPlanningAttempts(plan_attempts);
 	move_group.setPlannerId(plannerId);
 
+	// Try to set Elbow up constraint to avoid collision with trocar mounting dock
+	// https://github.com/ros-planning/moveit_tutorials/blob/master/doc/planning_with_approximated_constraint_manifolds/planning_with_approximated_constraint_manifolds_tutorial.rst
+	// https://docs.ros.org/en/melodic/api/moveit_tutorials/html/doc/move_group_interface/move_group_interface_tutorial.html#planning-with-path-constraints
+	// moveit_msgs::OrientationConstraint ocm;
+	// ocm.link_name = "iiwa_link_3";
+	// ocm.header.frame_id = "world";
+	// ocm.orientation.w = 1.0;
+	// ocm.absolute_x_axis_tolerance = M_PI_2;
+	// ocm.absolute_y_axis_tolerance = M_PI_2;
+	// ocm.absolute_z_axis_tolerance = M_PI_2;
+	// ocm.weight = 1.0;
+	// moveit_msgs::Constraints test_constraints;
+	// test_constraints.orientation_constraints.push_back(ocm);
+	// move_group.setPathConstraints(test_constraints);
+
 	// The package MoveItVisualTools provides many capabilties for visualizing objects, robots,
 	// and trajectories in RViz as well as debugging tools such as step-by-step introspection of a script
 	visual_tools = moveit_visual_tools::MoveItVisualTools(base_frame);

@@ -8,6 +8,8 @@
 #include <moveit/move_group_interface/move_group_interface.h>
 #include <moveit/planning_scene_interface/planning_scene_interface.h>
 #include <moveit_msgs/CollisionObject.h>
+#include <moveit_msgs/OrientationConstraint.h>
+#include <moveit_msgs/Constraints.h>
 #include <moveit_visual_tools/moveit_visual_tools.h>
 #include <tf2/LinearMath/Quaternion.h>
 #include <std_msgs/Float64.h>
