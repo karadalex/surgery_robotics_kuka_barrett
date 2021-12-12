@@ -33,10 +33,12 @@ public:
 	 * @param replanning: bool, allow for replanning
 	 * @param plan_attempts: int, planning attempts
 	 * @param base_frame: string, base reference frame
+	 * @param plannerId: string, optional, id of the path planning algorithm to use, default is RRTConnect
 	 */
+
 	TrajectoryExecution(const string PLANNING_GROUP, double pos_tolerance, double orient_tolerance,
 											int plan_time_sec, bool replanning, int plan_attempts,
-											const string base_frame);
+											const string base_frame, const string plannerId = "RRΤConnect");
 
  	/**
  	 * Simple execution of path. Path input is given in the format: X Y Z Roll Pitch Yaw

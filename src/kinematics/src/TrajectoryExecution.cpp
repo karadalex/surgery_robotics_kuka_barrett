@@ -24,7 +24,7 @@ geometry_msgs::Pose getPoseFromPathPoint(vector<float> pathPoint) {
 
 TrajectoryExecution::TrajectoryExecution(const string PLANNING_GROUP, double pos_tolerance, double orient_tolerance,
 																				 int plan_time_sec, bool replanning, int plan_attempts,
-																				 const string base_frame) {
+																				 const string base_frame, const string plannerId) {
 	// Setup Move group
 	move_group = moveit::planning_interface::MoveGroupInterface(PLANNING_GROUP);
 	move_group.setGoalPositionTolerance(pos_tolerance);
@@ -32,6 +32,7 @@ TrajectoryExecution::TrajectoryExecution(const string PLANNING_GROUP, double pos
 	move_group.setPlanningTime(plan_time_sec);
 	move_group.allowReplanning(replanning);
 	move_group.setNumPlanningAttempts(plan_attempts);
+	move_group.setPlannerId(plannerId);
 
 	// The package MoveItVisualTools provides many capabilties for visualizing objects, robots,
 	// and trajectories in RViz as well as debugging tools such as step-by-step introspection of a script
