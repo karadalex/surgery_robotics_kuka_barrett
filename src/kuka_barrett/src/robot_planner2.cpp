@@ -16,13 +16,15 @@ int main(int argc, char** argv)
 
 	// Setup Move group
 	static const std::string PLANNING_GROUP = "iiwa_arm";
-	double pos_tolerance = 0.000005;
-	double orient_tolerance = 0.000005;
+	double pos_tolerance = 0.0005;
+  double orient_tolerance = 0.0005;
 	int plan_time_sec = 5;
 	bool replanning = true;
 	int plan_attempts = 6;
 	const string base_frame = "world";
-	TrajectoryExecution traj1 = TrajectoryExecution(PLANNING_GROUP, pos_tolerance, orient_tolerance, plan_time_sec, replanning, plan_attempts, base_frame);
+	const string plannerId = "RRTConnect";
+	// const string plannerId = "RRTstar";
+	TrajectoryExecution traj1 = TrajectoryExecution(PLANNING_GROUP, pos_tolerance, orient_tolerance, plan_time_sec, replanning, plan_attempts, base_frame, plannerId);
 
 	// X Y Z Roll Pitch Yaw
 	vector<vector<float>> path1;
@@ -40,12 +42,12 @@ int main(int argc, char** argv)
 	vector<float> fulcrumInsertedPoseFloat1 = {-0.113231, 0.681543, 1.449251, 0.019169, 0.783348, 0.073975};
 	geometry_msgs::Pose fulcrumInsertedPose1 = getPoseFromPathPoint(fulcrumInsertedPoseFloat1);
 	path2.push_back(fulcrumInsertedPose1);
-	traj1.executeCartesianPath(path2, "insertion movement");
+	traj1.executeCartesianPath(path2, "trocar 1 insertion movement");
 	// Reverse insertion movement - Remove tool from trocar1
 	std::vector<geometry_msgs::Pose> path3;
 	path3.push_back(fulcrumInsertedPose1);
 	path3.push_back(fulcrumAbovePose1);
-	traj1.executeCartesianPath(path3, "reverse insertion movement");
+	traj1.executeCartesianPath(path3, "trocar 1 reverse insertion movement");
 
 	// Go above fulcrum point 2
 	std::vector<geometry_msgs::Pose> path4;
@@ -65,13 +67,13 @@ int main(int argc, char** argv)
 	vector<float> fulcrumInsertedPoseFloat2 = {0.149236, 0.693004, 1.664076, 0.067349, 1.367062, 0.125869};
 	geometry_msgs::Pose fulcrumInsertedPose2 = getPoseFromPathPoint(fulcrumInsertedPoseFloat2);
 	path5.push_back(fulcrumInsertedPose2);
-	traj1.executeCartesianPath(path5, "insertion movement");
+	traj1.executeCartesianPath(path5, "trocar 2 insertion movement");
 	// Reverse insertion movement - Remove tool from trocar2
 	std::vector<geometry_msgs::Pose> path6;
 	path6.push_back(fulcrumInsertedPose2);
 	path6.push_back(fulcrumInsertedPose2Intermediary);
 	path6.push_back(fulcrumAbovePose2);
-	traj1.executeCartesianPath(path6, "reverse insertion movement");
+	traj1.executeCartesianPath(path6, "trocar 2 reverse insertion movement");
 
 	// Go above fulcrum point 3
 	std::vector<geometry_msgs::Pose> path7;
@@ -94,14 +96,14 @@ int main(int argc, char** argv)
 	vector<float> fulcrumInsertedPoseFloat3 = {0.301965, 0.692619, 1.659563, 0.055821, 1.351665, 0.113147};
 	geometry_msgs::Pose fulcrumInsertedPose3 = getPoseFromPathPoint(fulcrumInsertedPoseFloat3);
 	path8.push_back(fulcrumInsertedPose3);
-	traj1.executeCartesianPath(path8, "insertion movement");
-	// Reverse insertion movement - Remove tool from trocar2
+	traj1.executeCartesianPath(path8, "trocar 3 insertion movement");
+	// Reverse insertion movement - Remove tool from trocar3
 	std::vector<geometry_msgs::Pose> path9;
 	path9.push_back(fulcrumInsertedPose3);
 	path9.push_back(fulcrumInsertedPose3Intermediary2);
 	path9.push_back(fulcrumInsertedPose3Intermediary);
 	path9.push_back(fulcrumAbovePose3);
-	traj1.executeCartesianPath(path9, "reverse insertion movement");
+	traj1.executeCartesianPath(path9, "trocar 3 reverse insertion movement");
 
 	ros::shutdown();
 	return 0;

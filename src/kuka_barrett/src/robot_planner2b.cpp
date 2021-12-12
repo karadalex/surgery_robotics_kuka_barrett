@@ -16,13 +16,15 @@ int main(int argc, char** argv)
 
 	// Setup Move group
 	static const std::string PLANNING_GROUP = "iiwa_arm";
-	double pos_tolerance = 0.000005;
-	double orient_tolerance = 0.000005;
+	double pos_tolerance = 0.0005;
+  double orient_tolerance = 0.0005;
 	int plan_time_sec = 5;
 	bool replanning = true;
 	int plan_attempts = 6;
 	const string base_frame = "world";
-	TrajectoryExecution traj1 = TrajectoryExecution(PLANNING_GROUP, pos_tolerance, orient_tolerance, plan_time_sec, replanning, plan_attempts, base_frame);
+	const string plannerId = "RRTConnect";
+	// const string plannerId = "RRTstar";
+	TrajectoryExecution traj1 = TrajectoryExecution(PLANNING_GROUP, pos_tolerance, orient_tolerance, plan_time_sec, replanning, plan_attempts, base_frame, plannerId);
 
 	// X Y Z Roll Pitch Yaw
 	vector<vector<float>> path1;
