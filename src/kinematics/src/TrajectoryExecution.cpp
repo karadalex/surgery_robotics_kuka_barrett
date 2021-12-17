@@ -69,7 +69,7 @@ TrajectoryExecution::TrajectoryExecution(const string PLANNING_GROUP, double pos
 }
 
 
-void TrajectoryExecution::executePath(vector<vector<float>> path) {
+void TrajectoryExecution::executePath(vector<vector<float>> path, const char* traj_name) {
 	namespace rvt = rviz_visual_tools;
 
 	geometry_msgs::Pose target_pose;
@@ -93,11 +93,13 @@ void TrajectoryExecution::executePath(vector<vector<float>> path) {
 		visual_tools.trigger();
 
 		move_group.execute(my_plan);
+		ROS_INFO_NAMED("robot_planner1", "Planning time for path %s was %.6f seconds", traj_name, my_plan.planning_time_);
+		ROS_INFO_NAMED("robot_planner1", "Executing %s plan %s", traj_name, success ? "SUCCESS" : "FAILED");
 	}
 }
 
 
-void TrajectoryExecution::executePath(vector<geometry_msgs::Pose> path) {
+void TrajectoryExecution::executePath(vector<geometry_msgs::Pose> path, const char* traj_name) {
 	namespace rvt = rviz_visual_tools;
 
 	geometry_msgs::Pose target_pose;
@@ -118,6 +120,9 @@ void TrajectoryExecution::executePath(vector<geometry_msgs::Pose> path) {
 		visual_tools.trigger();
 
 		move_group.execute(my_plan);
+
+		ROS_INFO_NAMED("robot_planner1", "Planning time for path %s was %.6f seconds", traj_name, my_plan.planning_time_);
+		ROS_INFO_NAMED("robot_planner1", "Executing %s plan %s", traj_name, success ? "SUCCESS" : "FAILED");
 	}
 }
 

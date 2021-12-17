@@ -46,9 +46,9 @@ public:
  	 * Simple execution of path. Path input is given in the format: X Y Z Roll Pitch Yaw
  	 * @param path
  	 */
-	void executePath(vector<vector<float>> path);
+	void executePath(vector<vector<float>> path, const char* traj_name = "trajectory");
 
-	void executePath(vector<geometry_msgs::Pose> path);
+	void executePath(vector<geometry_msgs::Pose> path, const char* traj_name = "trajectory");
 
 	/**
 	 * Calculate and execute a cartesian trajectory between the given waypoints
