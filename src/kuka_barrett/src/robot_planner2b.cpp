@@ -27,14 +27,21 @@ int main(int argc, char** argv)
 	TrajectoryExecution traj1 = TrajectoryExecution(PLANNING_GROUP, pos_tolerance, orient_tolerance, plan_time_sec, replanning, plan_attempts, base_frame, plannerId);
 
 	// X Y Z Roll Pitch Yaw
-	vector<vector<float>> float_path1;
+	vector<vector<float>> preparation_path;
 	// path.push_back({0, 0, 2.262, 0, 0, 0}); // For z >= 2.261 the robot reaches end of workspace, which is a signularity and cant be calculated from the numerical IK
-	float_path1.push_back({0, 0, 2.26, 0, 0, 0}); // Home position
-	// TCP position for point above fulcrum 1
-	float_path1.push_back({0.503454, 0.359961, 1.902053, -3.083623, 1.113981, -1.494644});
+	preparation_path.push_back({0, 0, 2.26, 0, 0, 0}); // Home position
+	// TCP pose around home position, such that the robot arm starts in an elbow-up configuration
+	preparation_path.push_back({0.103454, 0.359961, 1.902053, -3.083623, 1.113981, -1.494644});
+	std::vector<geometry_msgs::Pose> path0;
+	path0.push_back(getPoseFromPathPoint(preparation_path.at(0)));
+	path0.push_back(getPoseFromPathPoint(preparation_path.at(1)));
+	traj1.executeCartesianPath(path0, "preparation path for elbow-up configuration");
+
+	// TCP pose for point above fulcrum 1
+	preparation_path.push_back({0.503454, 0.359961, 1.902053, -3.083623, 1.113981, -1.494644});
 	std::vector<geometry_msgs::Pose> path1;
-	path1.push_back(getPoseFromPathPoint(float_path1.at(0)));
-	path1.push_back(getPoseFromPathPoint(float_path1.at(1)));
+	path1.push_back(getPoseFromPathPoint(preparation_path.at(1)));
+	path1.push_back(getPoseFromPathPoint(preparation_path.at(2)));
 	traj1.executeCartesianPath(path1, "movement towards above fulcrum point 1");
 
 	// Approaching Fulcrum point 1 - Insertion motion Cartesian path
