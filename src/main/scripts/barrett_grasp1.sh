@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-rostopic pub /gripper_controller/command trajectory_msgs/JointTrajectory "header:
+rostopic pub --once /gripper_controller/command trajectory_msgs/JointTrajectory "header:
   seq: 0
   stamp:
     secs: 0
