@@ -126,6 +126,26 @@ void TrajectoryExecution::executePath(vector<geometry_msgs::Pose> path, const ch
 	}
 }
 
+void TrajectoryExecution::moveToTarget(geometry_msgs::Pose target, const char* traj_name) {
+	namespace rvt = rviz_visual_tools;
+	moveit::planning_interface::MoveGroupInterface::Plan my_plan;
+
+	move_group.setPoseTarget(target);
+
+	bool success = (move_group.plan(my_plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
+	ROS_INFO_NAMED("robot_planner1", "Visualizing plan %s (pose goal) %s", traj_name, success ? "SUCCESS" : "FAILED");
+	// Visualize plan
+	ROS_INFO_NAMED("robot_planner1", "Visualizing plan %s as trajectory line", traj_name);
+	visual_tools.publishText(text_pose, "Pose Goal", rvt::WHITE, rvt::XLARGE);
+	visual_tools.publishTrajectoryLine(my_plan.trajectory_, joint_model_group);
+	visual_tools.trigger();
+
+	move_group.execute(my_plan);
+
+	ROS_INFO_NAMED("robot_planner1", "Planning time for path %s was %.6f seconds", traj_name, my_plan.planning_time_);
+	ROS_INFO_NAMED("robot_planner1", "Executing %s plan %s", traj_name, success ? "SUCCESS" : "FAILED");
+}
+
 
 void TrajectoryExecution::executeCartesianPath(vector<geometry_msgs::Pose> waypoints, const char* traj_name) {
 	namespace rvt = rviz_visual_tools;

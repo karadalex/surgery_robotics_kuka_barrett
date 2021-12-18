@@ -28,20 +28,15 @@ int main(int argc, char** argv)
 
 	// X Y Z Roll Pitch Yaw
 	vector<vector<float>> preparation_path;
-	// path.push_back({0, 0, 2.262, 0, 0, 0}); // For z >= 2.261 the robot reaches end of workspace, which is a signularity and cant be calculated from the numerical IK
-	preparation_path.push_back({0, 0, 2.26, 0, 0, 0}); // Home position
 	// TCP pose around home position, such that the robot arm starts in an elbow-up configuration
-	preparation_path.push_back({0.103454, 0.359961, 1.902053, -3.083623, 1.113981, -1.494644});
-	std::vector<geometry_msgs::Pose> path0;
-	path0.push_back(getPoseFromPathPoint(preparation_path.at(0)));
-	path0.push_back(getPoseFromPathPoint(preparation_path.at(1)));
-	traj1.executeCartesianPath(path0, "preparation path for elbow-up configuration");
-
+	preparation_path.push_back({0.1, 0.359961, 1.9, -3.083623, 1.113981, -1.494644});
+	traj1.moveToTarget(getPoseFromPathPoint(preparation_path.at(0)));
 	// TCP pose for point above fulcrum 1
 	preparation_path.push_back({0.503454, 0.359961, 1.902053, -3.083623, 1.113981, -1.494644});
+
 	std::vector<geometry_msgs::Pose> path1;
+	path1.push_back(getPoseFromPathPoint(preparation_path.at(0)));
 	path1.push_back(getPoseFromPathPoint(preparation_path.at(1)));
-	path1.push_back(getPoseFromPathPoint(preparation_path.at(2)));
 	traj1.executeCartesianPath(path1, "movement towards above fulcrum point 1");
 
 	// Approaching Fulcrum point 1 - Insertion motion Cartesian path
@@ -81,19 +76,22 @@ int main(int argc, char** argv)
 	path6.push_back(fulcrumAbovePose2);
 	traj1.executeCartesianPath(path6, "trocar 2 reverse insertion movement");
 
+	geometry_msgs::Pose preFulcrumAbovePose3 = getPoseFromPathPoint({0.1, -0.093628, 1.976414, 2.971154, 1.389222, 1.391472});
+	traj1.moveToTarget(preFulcrumAbovePose3);
+
 	// Go above fulcrum point 3
 	std::vector<geometry_msgs::Pose> path7;
-	path7.push_back(fulcrumAbovePose2);
+	path7.push_back(preFulcrumAbovePose3);
 	vector<float> fulcrumAbovePoseFloat3 = {0.522168, -0.093628, 1.976414, 2.971154, 1.389222, 1.391472};
 	geometry_msgs::Pose fulcrumAbovePose3 = getPoseFromPathPoint(fulcrumAbovePoseFloat3);
 	path7.push_back(fulcrumAbovePose3);
-	traj1.executePath(path7, "movement towards above fulcrum point 3");
+	traj1.executeCartesianPath(path7, "movement towards above fulcrum point 3");
 
 	// Approaching Fulcrum point 3 - Insertion motion Cartesian path
 	// Move in a line segment while approaching fulcrum point and entering body
 	std::vector<geometry_msgs::Pose> path8;
 	path8.push_back(fulcrumAbovePose3);
-	vector<float> fulcrumInsertedPoseFloat3 = {0.531381, -0.042863, 1.694900, 2.971154, 1.389222, 1.391472};
+	vector<float> fulcrumInsertedPoseFloat3 = {0.529101, -0.055493, 1.764731, 2.971154, 1.389222, 1.391472};
 	geometry_msgs::Pose fulcrumInsertedPose3 = getPoseFromPathPoint(fulcrumInsertedPoseFloat3);
 	path8.push_back(fulcrumInsertedPose3);
 	traj1.executeCartesianPath(path8, "trocar 3 insertion movement");
@@ -109,7 +107,7 @@ int main(int argc, char** argv)
 	vector<float> fulcrumAbovePoseFloat4 = {0.519565, -0.394395, 1.853448, 3.077139, 1.095558, 1.501610};
 	geometry_msgs::Pose fulcrumAbovePose4 = getPoseFromPathPoint(fulcrumAbovePoseFloat4);
 	path10.push_back(fulcrumAbovePose4);
-	traj1.executePath(path10, "movement towards above fulcrum point 4");
+	traj1.executeCartesianPath(path10, "movement towards above fulcrum point 4");
 
 	// Approaching Fulcrum point 4 - Insertion motion Cartesian path
 	// Move in a line segment while approaching fulcrum point and entering body

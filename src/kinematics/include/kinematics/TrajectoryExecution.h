@@ -56,6 +56,12 @@ public:
 	 * @param traj_name
 	 */
 	void executeCartesianPath(vector<geometry_msgs::Pose> waypoints, const char* traj_name);
+
+	/**
+ 	 * Simple execution of path. Path input is given in the format: X Y Z Roll Pitch Yaw
+ 	 * @param path
+ 	 */
+	void moveToTarget(geometry_msgs::Pose target, const char* traj_name = "trajectory");
 };
 
 #endif //SRC_TRAJECTORYEXECUTION_H
