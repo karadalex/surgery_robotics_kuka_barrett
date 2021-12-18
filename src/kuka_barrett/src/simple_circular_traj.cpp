@@ -34,7 +34,7 @@ int main(int argc, char** argv)
 	// path.push_back({0, 0, 2.262, 0, 0, 0}); // For z >= 2.261 the robot reaches end of workspace, which is a signularity and cant be calculated from the numerical IK
 	path1.push_back(getPoseFromPathPoint({0, 0, 2.26, 0, 0, 0})); // Home position
 	path1.push_back(getPoseFromPathPoint({0.4, 0, 1.8, 0, 0, 0})); // Home position
-	traj1.executeCartesianPath(path1, "Lower down from home position");
+	traj1.moveToTarget(path1.at(1), "Lower down from home position");
 
 	Eigen::Vector3f circleTrajCenter;
 	// Initialize vector with known values https://eigen.tuxfamily.org/dox/group__TutorialAdvancedInitialization.html

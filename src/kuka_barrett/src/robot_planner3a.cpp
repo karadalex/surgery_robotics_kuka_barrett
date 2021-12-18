@@ -37,15 +37,15 @@ int main(int argc, char** argv)
 	// path.push_back({0, 0, 2.262, 0, 0, 0}); // For z >= 2.261 the robot reaches end of workspace, which is a signularity and cant be calculated from the numerical IK
 	path1.push_back({0, 0, 2.26, 0, 0, 0}); // Home position
 	// TCP position for point above fulcrum 1
-	path1.push_back({0.505761, 0.339868, 1.884992, 0.024080, 1.242948, -1.444770});
-	traj1.executePath(path1);
+	path1.push_back({0.529857, -0.051310, 1.964421, 0.0, M_PI_2, M_PI_2});
+	traj1.moveToTarget(getPoseFromPathPoint(path1.at(1)));
 
 	// Approaching Fulcrum point 1 - Insertion motion Cartesian path
 	// Move in a line segment while approaching fulcrum point and entering body
 	geometry_msgs::Pose fulcrumAbovePose1 = getPoseFromPathPoint(path1.at(path1.size()-1)); // Start insertion trajectory from last target point of previous trajectory
 	std::vector<geometry_msgs::Pose> path2;
 	path2.push_back(fulcrumAbovePose1);
-	vector<float> fulcrumInsertedPoseFloat1 = {0.515165, 0.265558, 1.664860, 0.023993, 1.242965, -1444829};
+	vector<float> fulcrumInsertedPoseFloat1 = {0.529857, -0.051310, 1.741838, 0.0, M_PI_2, M_PI_2};
 	geometry_msgs::Pose fulcrumInsertedPose1 = getPoseFromPathPoint(fulcrumInsertedPoseFloat1);
 	path2.push_back(fulcrumInsertedPose1);
 	traj1.executeCartesianPath(path2, "insertion movement");
@@ -56,7 +56,7 @@ int main(int argc, char** argv)
 	// traj1.executeCartesianPath(path3, "reverse insertion movement");
 
 	// Get transformation matrix of reference frame {F} (Fulcrum reference frame) w.r.t. to the universal reference frame {U}
-	Pose* FPose = new Pose(0.531483, 0.058691, 1.398114, -0.018658, -0.594264, 0.009121);
+	Pose* FPose = new Pose(0.529857, -0.051310, 1.398114, 0.0, M_PI_2, M_PI_2);
 	Eigen::Matrix4d U_T_F = FPose->pose;
 
 
