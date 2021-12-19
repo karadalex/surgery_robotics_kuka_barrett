@@ -30,6 +30,7 @@
     <node name="surgical_tool4" pkg="gazebo_test_tools" type="fake_object_recognizer_cmd" args="surgical_tool4 1" />
 
     <node name="KinematicStateNode" pkg="kinematics" type="KinematicStateNode"/>
+    <node name="DesiredForwardKinematicsTrajectoryNode" pkg="kinematics" type="DesiredForwardKinematicsTrajectoryNode"/>
 
     <!-- <node name="robot_planner1" pkg="kuka_barrett" type="robot_planner1"/> -->
 

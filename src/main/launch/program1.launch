@@ -25,6 +25,7 @@
     <node name="scene_objects" pkg="kuka_barrett" type="scene_objects"/>
 
     <node name="KinematicStateNode" pkg="kinematics" type="KinematicStateNode"/>
+    <node name="DesiredForwardKinematicsTrajectoryNode" pkg="kinematics" type="DesiredForwardKinematicsTrajectoryNode"/>
 
     <!-- <node name="robot_planner1" pkg="kuka_barrett" type="robot_planner1"/> -->
 
