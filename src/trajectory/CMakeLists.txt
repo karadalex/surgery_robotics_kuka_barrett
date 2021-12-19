@@ -14,6 +14,7 @@ find_package(catkin REQUIRED COMPONENTS
     std_msgs
     geometry_msgs
     custom_math
+    kinematics
 )
 
 ## System dependencies are found with CMake's conventions
@@ -111,7 +112,7 @@ include_directories(${Eigen3_INCLUDE_DIRS})
 catkin_package(
     INCLUDE_DIRS include
     LIBRARIES ${PROJECT_NAME}
-    CATKIN_DEPENDS control_msgs roscpp rospy std_msgs
+    CATKIN_DEPENDS control_msgs roscpp rospy std_msgs kinematics
 #  DEPENDS system_lib
 )
 

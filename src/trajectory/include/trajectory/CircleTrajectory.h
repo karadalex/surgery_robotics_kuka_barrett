@@ -9,6 +9,7 @@
 #include <vector>
 #include <geometry_msgs/Pose.h>
 #include <tf2/LinearMath/Quaternion.h>
+#include "kinematics/utils.h"
 
 using namespace std;
 

@@ -49,7 +49,7 @@ vector<geometry_msgs::Pose> CircleTrajectory::getCartesianWaypoints(int samples,
 		// Convert p1 w.r.t to Universal frame
 		Eigen::Matrix4d p2 = left_mat * p1 * right_mat;
 
-		Eigen::Matrix4d rotx, roty, rotz, p;
+		Eigen::Matrix4d rotx, roty, rotz;
 		// Rotate by 180deg around x-axis (?)
 		rotx << 1,  0,  0, 0,
 		        0, -1,  0, 0,
@@ -65,29 +65,10 @@ vector<geometry_msgs::Pose> CircleTrajectory::getCartesianWaypoints(int samples,
 						 0, -1, 0, 0,
 						 0,  0, 1, 0,
 						 0,  0, 0, 1;
-		// p = p2 * rotx * roty;
-		p = p2;
+		// p2 = p2 * rotx * roty;
 
 		// Generate pose in Quaternion Form
-		geometry_msgs::Pose pose;
-		tf2::Quaternion quaternion;
-
-		pose.position.x = p(0,3);
-		pose.position.y = p(1,3);
-		pose.position.z = p(2,3);
-
-		float roll = atan2(p(1,0), p(0,0));
-		float pitch = atan2(-p(2,0), sqrt(p(0,0)*p(0,0) + p(1,0)*p(1,0)));
-		float yaw = atan2(p(2,1), p(2,2));
-
-		// float roll, pitch, yaw;
-		// roll = pitch = yaw = 0;
-
-		quaternion.setRPY(roll, pitch, yaw);
-		pose.orientation.w = quaternion.getW();
-		pose.orientation.x = quaternion.getX();
-		pose.orientation.y = quaternion.getY();
-		pose.orientation.z = quaternion.getZ();
+		geometry_msgs::Pose pose = matrixTransformToQuaternionPose(p2);
 
 		// Add pose to waypoints list
 		waypoints.push_back(pose);

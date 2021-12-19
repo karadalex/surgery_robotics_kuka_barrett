@@ -4,11 +4,12 @@
 
 #include "kinematics/utils.h"
 
-vector<geometry_msgs::Pose> fulcrumEffectTransformation(vector<geometry_msgs::Pose> taskPoints, double L) {
+vector<geometry_msgs::Pose> fulcrumEffectTransformation(vector<geometry_msgs::Pose> taskPoints, double L, Eigen::Matrix4d left_mat, Eigen::Matrix4d right_mat) {
 	vector<geometry_msgs::Pose> transformedPoints;
 
 	for (int i = 0; i < taskPoints.size(); i++) {
 		geometry_msgs::Pose pose = taskPoints.at(i);
+
 		double px = pose.position.x;
 		double py = pose.position.y;
 		double pz = pose.position.z;
@@ -38,3 +39,26 @@ vector<geometry_msgs::Pose> fulcrumEffectTransformation(vector<geometry_msgs::Po
 
 	return transformedPoints;
 }
+
+geometry_msgs::Pose matrixTransformToQuaternionPose(Eigen::Matrix4d T) {
+	// Generate pose in Quaternion Form
+	geometry_msgs::Pose pose;
+	tf2::Quaternion quaternion;
+
+	pose.position.x = T(0, 3);
+	pose.position.y = T(1, 3);
+	pose.position.z = T(2, 3);
+
+	float roll = atan2(T(1, 0), T(0, 0));
+	float pitch = atan2(-T(2, 0), sqrt(T(0, 0) * T(0, 0) + T(1, 0) * T(1, 0)));
+	float yaw = atan2(T(2, 1), T(2, 2));
+
+	quaternion.setRPY(roll, pitch, yaw);
+	pose.orientation.w = quaternion.getW();
+	pose.orientation.x = quaternion.getX();
+	pose.orientation.y = quaternion.getY();
+	pose.orientation.z = quaternion.getZ();
+
+	return pose;
+}
+
