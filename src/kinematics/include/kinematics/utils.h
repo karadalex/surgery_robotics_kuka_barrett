@@ -8,6 +8,7 @@
 #include <Eigen/Dense>
 #include <vector>
 #include <geometry_msgs/Pose.h>
+#include <geometry_msgs/Point.h>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.h>
 
 using namespace std;
@@ -26,5 +27,12 @@ vector<geometry_msgs::Pose> fulcrumEffectTransformation(vector<geometry_msgs::Po
  * @return geometry_msgs::Pose pose
  */
 geometry_msgs::Pose matrixTransformToQuaternionPose(Eigen::Matrix4d T);
+
+/**
+ *
+ * @param pose
+ * @return
+ */
+Eigen::Matrix4d quaternionPoseToMatrixTransform(geometry_msgs::Pose pose);
 
 #endif //SURGERY_ROBOTICS_KUKA_BARRETT_UTILS_H

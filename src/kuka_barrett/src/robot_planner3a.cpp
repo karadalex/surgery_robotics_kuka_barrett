@@ -56,18 +56,21 @@ int main(int argc, char** argv)
 	// traj1.executeCartesianPath(path3, "reverse insertion movement");
 
 	// Get transformation matrix of reference frame {F} (Fulcrum reference frame) w.r.t. to the universal reference frame {U}
-	Pose* FPose = new Pose(0.529857, -0.051310, 1.398114, 0.0, M_PI_2, M_PI_2);
+	Pose* FPose = new Pose(0.529996, 0.059271, 1.398114, 0, 0.0, -0.271542);
 	Eigen::Matrix4d U_T_F = FPose->pose;
-
+	Eigen::Matrix4d T_7_TCP = Eigen::Matrix4d::Zero(4, 4);
+	T_7_TCP(0, 2) = 1; T_7_TCP(1, 0) = 1;
+	T_7_TCP(2, 1) = 1; T_7_TCP(3, 3) = 1;
+	Eigen::Matrix4d T_TCP_7 = T_7_TCP.inverse();
 
 	Eigen::Vector3f circleTrajCenter;
 	// Initialize vector with known values https://eigen.tuxfamily.org/dox/group__TutorialAdvancedInitialization.html
 	// values are given in x, y, z order
 	// circleTrajCenter << 0.259807, 0.689203, 1.174661;
-	circleTrajCenter << 0, 0, 0.2; // Coordinates of desired circle w.r.t. to {F} reference frame
-	CircleTrajectory* circleTrajectory = new CircleTrajectory(circleTrajCenter, 0.2);
-	vector<geometry_msgs::Pose> circle_waypoints = circleTrajectory->getCartesianWaypoints(20, U_T_F);
-	vector<geometry_msgs::Pose> transformed_waypoints = fulcrumEffectTransformation(circle_waypoints, 0.4);
+	circleTrajCenter << 0.0, 0.0, -0.1; // Coordinates of desired circle w.r.t. to {F} reference frame
+	CircleTrajectory* circleTrajectory = new CircleTrajectory(circleTrajCenter, 0.1);
+	vector<geometry_msgs::Pose> circle_waypoints = circleTrajectory->getCartesianWaypoints(20, U_T_F, T_TCP_7);
+	vector<geometry_msgs::Pose> transformed_waypoints = fulcrumEffectTransformation(circle_waypoints, 0.4, U_T_F, T_TCP_7);
 	for (int j = 0; j < circle_waypoints.size(); ++j) {
 		transformed_waypoints.push_back(circle_waypoints.at(j));
 	}
