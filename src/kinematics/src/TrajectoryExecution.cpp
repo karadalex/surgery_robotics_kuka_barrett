@@ -160,7 +160,6 @@ void TrajectoryExecution::executeCartesianPath(vector<geometry_msgs::Pose> waypo
 	// translation.  We will specify the jump threshold as 0.0, effectively disabling it.
 	// WARNING - disabling the jump threshold while operating real hardware can cause
 	// large unpredictable motions of redundant joints and could be a safety issue
-	moveit_msgs::RobotTrajectory trajectory;
 	const double jump_threshold = 0.0;
 	const double eef_step = 0.001;
 	double fraction = move_group.computeCartesianPath(waypoints, eef_step, jump_threshold, trajectory);

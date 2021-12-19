@@ -2,6 +2,7 @@
 #include <moveit_msgs/CollisionObject.h>
 #include <std_msgs/Float64.h>
 #include "kinematics/TrajectoryExecution.h"
+#include <moveit_msgs/RobotTrajectory.h>
 
 
 using namespace std;
@@ -13,6 +14,8 @@ int main(int argc, char** argv)
 	ros::NodeHandle node_handle;
 	ros::AsyncSpinner spinner(1);
 	spinner.start();
+
+	ros::Publisher traj_pub = node_handle.advertise<moveit_msgs::RobotTrajectory>("desired_robot_trajectory", 1000);
 
 	// Setup Move group
 	static const std::string PLANNING_GROUP = "iiwa_arm";
@@ -38,6 +41,8 @@ int main(int argc, char** argv)
 	path1.push_back(getPoseFromPathPoint(preparation_path.at(0)));
 	path1.push_back(getPoseFromPathPoint(preparation_path.at(1)));
 	traj1.executeCartesianPath(path1, "movement towards above fulcrum point 1");
+
+	traj_pub.publish(traj1.trajectory);
 
 	// Approaching Fulcrum point 1 - Insertion motion Cartesian path
 	// Move in a line segment while approaching fulcrum point and entering body

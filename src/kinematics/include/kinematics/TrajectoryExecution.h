@@ -25,6 +25,7 @@ public:
 	moveit_visual_tools::MoveItVisualTools visual_tools = moveit_visual_tools::MoveItVisualTools("world");
 	Eigen::Isometry3d text_pose;
 	const robot_state::JointModelGroup* joint_model_group;
+	moveit_msgs::RobotTrajectory trajectory;
 
 	/**
 	 * Prepare to execute new trajection. Initialize move_group and visual_tools provided by moveit

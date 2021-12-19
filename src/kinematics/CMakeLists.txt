@@ -59,6 +59,7 @@ find_package(catkin REQUIRED COMPONENTS
  add_message_files(
    FILES
    KinematicState.msg
+   DesiredForwardKinematicsTrajectory.msg
  )
 
 ## Generate services in the 'srv' folder
@@ -220,3 +221,6 @@ install(
 
 add_executable(KinematicStateNode src/KinematicStateNode.cpp)
 target_link_libraries(KinematicStateNode ${catkin_LIBRARIES})
+
+add_executable(DesiredForwardKinematicsTrajectoryNode src/DesiredForwardKinematicsTrajectoryNode.cpp)
+target_link_libraries(DesiredForwardKinematicsTrajectoryNode ${catkin_LIBRARIES})
