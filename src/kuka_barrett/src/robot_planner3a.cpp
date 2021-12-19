@@ -37,31 +37,37 @@ int main(int argc, char** argv)
 	moveit_visual_tools::MoveItVisualTools visual_tools = moveit_visual_tools::MoveItVisualTools(base_frame);
 
 	// X Y Z Roll Pitch Yaw
-	vector<vector<float>> path1;
-	// path.push_back({0, 0, 2.262, 0, 0, 0}); // For z >= 2.261 the robot reaches end of workspace, which is a signularity and cant be calculated from the numerical IK
-	path1.push_back({0, 0, 2.26, 0, 0, 0}); // Home position
-	// TCP position for point above fulcrum 1
-	path1.push_back({0.529857, -0.051310, 1.964421, 0.0, M_PI_2, M_PI_2});
-	traj1.moveToTarget(getPoseFromPathPoint(path1.at(1)));
+	vector<vector<float>> preparation_path;
+	// TCP pose around home position, such that the robot arm starts in an elbow-up configuration
+	preparation_path.push_back({0.1, 0.087249, 1.8, 2.952052, 1.311528, -1.750799});
+	traj1.moveToTarget(getPoseFromPathPoint(preparation_path.at(0)));
+
+	std::vector<geometry_msgs::Pose> path1;
+	preparation_path.push_back({0.1, 0.087249, 1.953192, 2.952052, 1.311528, -1.750799});
+	path1.push_back(getPoseFromPathPoint(preparation_path.at(0)));
+	path1.push_back(getPoseFromPathPoint(preparation_path.at(1)));
+	traj1.executeCartesianPath(path1, "elbow-up preparation path");
+
+	// TCP pose for point above fulcrum 1
+	preparation_path.push_back({0.552931, 0.087249, 1.953192, 2.952052, 1.311528, -1.750799});
+	path1.clear();
+	path1.push_back(getPoseFromPathPoint(preparation_path.at(1)));
+	path1.push_back(getPoseFromPathPoint(preparation_path.at(2)));
+	traj1.executeCartesianPath(path1, "movement towards above fulcrum point 1");
 
 	// Approaching Fulcrum point 1 - Insertion motion Cartesian path
 	// Move in a line segment while approaching fulcrum point and entering body
-	geometry_msgs::Pose fulcrumAbovePose1 = getPoseFromPathPoint(path1.at(path1.size()-1)); // Start insertion trajectory from last target point of previous trajectory
+	geometry_msgs::Pose fulcrumAbovePose1 = path1.at(path1.size()-1); // Start insertion trajectory from last target point of previous trajectory
 	std::vector<geometry_msgs::Pose> path2;
 	path2.push_back(fulcrumAbovePose1);
-	vector<float> fulcrumInsertedPoseFloat1 = {0.529857, -0.060781, 1.741838, 0.0, M_PI_2, M_PI_2};
+	vector<float> fulcrumInsertedPoseFloat1 = {0.544067, 0.038585, 1.756649, 2.951693, 1.311653, -1.751226};
 	geometry_msgs::Pose fulcrumInsertedPose1 = getPoseFromPathPoint(fulcrumInsertedPoseFloat1);
 	path2.push_back(fulcrumInsertedPose1);
 	traj1.executeCartesianPath(path2, "insertion movement");
-	// Reverse insertion movement - Remove tool from trocar1
-	// std::vector<geometry_msgs::Pose> path3;
-	// path3.push_back(fulcrumInsertedPose1);
-	// path3.push_back(fulcrumAbovePose1);
-	// traj1.executeCartesianPath(path3, "reverse insertion movement");
 
 	// Get transformation matrix of reference frame {F} (Fulcrum reference frame) w.r.t. to the universal reference frame {U}
 	Pose* FPose = new Pose(0.529996, 0.059271, 1.398114, 0, 0.0, -0.271542);
-	// Publish axis of fulcrum reference frame, note the small difference in the rpy angles
+	// Publish axis of fulcrum reference frame, note the small difference in the rpy angles, because of a permutation of the axes from the end-effector to the TCP
 	visual_tools.publishAxisLabeled(getPoseFromPathPoint({0.529996, 0.059271, 1.398114, -0.271542, 0.0, 0}), "Fulcrum2", rvt::MEDIUM);
 	visual_tools.trigger();
 	Eigen::Matrix4d U_T_F = FPose->pose;
