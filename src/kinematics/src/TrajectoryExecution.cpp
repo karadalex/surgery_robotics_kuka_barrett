@@ -155,7 +155,7 @@ void TrajectoryExecution::moveToTarget(geometry_msgs::Pose target, const char* t
 }
 
 
-void TrajectoryExecution::executeCartesianPath(vector<geometry_msgs::Pose> waypoints, const char* traj_name) {
+void TrajectoryExecution::executeCartesianPath(vector<geometry_msgs::Pose> waypoints, const char* traj_name, bool publishAxes) {
 	namespace rvt = rviz_visual_tools;
 
 	// The approaching motion needs to be slower.
@@ -177,8 +177,13 @@ void TrajectoryExecution::executeCartesianPath(vector<geometry_msgs::Pose> waypo
 	// visual_tools.deleteAllMarkers();
 	visual_tools.publishText(text_pose, "Joint Space Goal", rvt::WHITE, rvt::XLARGE);
 	visual_tools.publishPath(waypoints, rvt::LIME_GREEN, rvt::SMALL);
-	for (std::size_t i = 0; i < waypoints.size(); ++i)
-		visual_tools.publishAxisLabeled(waypoints[i], "pt" + std::to_string(i), rvt::SMALL);
+	for (std::size_t i = 0; i < waypoints.size(); ++i) {
+		if (publishAxes) {
+			visual_tools.publishAxisLabeled(waypoints[i], "pt" + std::to_string(i), rvt::SMALL);
+		} else {
+			visual_tools.publishSphere(waypoints[i], rvt::BLUE, rvt::LARGE);
+		}
+	}
 	visual_tools.trigger();
 
 	moveit::planning_interface::MoveGroupInterface::Plan insertion_plan;
@@ -191,4 +196,25 @@ void TrajectoryExecution::executeCartesianPath(vector<geometry_msgs::Pose> waypo
 	ROS_INFO_NAMED("robot_planner1", "Executing %s plan %s", traj_name, success ? "SUCCESS" : "FAILED");
 
 	traj_pub.publish(trajectory);
+}
+
+void TrajectoryExecution::visualizeCartesianPath(vector<geometry_msgs::Pose> waypoints, const char* traj_name, bool publishAxes) {
+	namespace rvt = rviz_visual_tools;
+	const double jump_threshold = 0.0;
+	const double eef_step = 0.001;
+	moveit_msgs::RobotTrajectory tmp_trajectory;
+	double fraction = move_group.computeCartesianPath(waypoints, eef_step, jump_threshold, tmp_trajectory);
+	ROS_INFO_NAMED("robot_planner1", "Visualizing plan for %s (Cartesian path) (%.2f%% achieved)", traj_name, fraction * 100.0);
+
+	// Visualize the plan in RViz
+	// visual_tools.deleteAllMarkers();
+	visual_tools.publishText(text_pose, "Joint Space Goal", rvt::WHITE, rvt::XLARGE);
+	visual_tools.publishPath(waypoints, rvt::DARK_GREY, rvt::SMALL);
+	for (std::size_t i = 0; i < waypoints.size(); ++i)
+		if (publishAxes) {
+			visual_tools.publishAxisLabeled(waypoints[i], "pt" + std::to_string(i), rvt::SMALL);
+		} else {
+			visual_tools.publishSphere(waypoints[i], rvt::BLUE, rvt::LARGE);
+		}
+	visual_tools.trigger();
 }

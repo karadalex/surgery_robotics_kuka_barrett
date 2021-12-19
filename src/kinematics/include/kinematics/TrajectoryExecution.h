@@ -58,13 +58,20 @@ public:
 	 * @param waypoints
 	 * @param traj_name
 	 */
-	void executeCartesianPath(vector<geometry_msgs::Pose> waypoints, const char* traj_name);
+	void executeCartesianPath(vector<geometry_msgs::Pose> waypoints, const char* traj_name, bool publishAxes = true);
 
 	/**
  	 * Simple execution of path. Path input is given in the format: X Y Z Roll Pitch Yaw
  	 * @param path
  	 */
 	void moveToTarget(geometry_msgs::Pose target, const char* traj_name = "trajectory");
+
+	/**
+	 * Compute cartesian trajectory and onyl visualize it without executing it
+	 * @param waypoints
+	 * @param traj_name
+	 */
+	void visualizeCartesianPath(vector<geometry_msgs::Pose> waypoints, const char* traj_name = "rviz-only trajectory", bool publishAxes = true);
 };
 
 #endif //SRC_TRAJECTORYEXECUTION_H
