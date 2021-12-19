@@ -58,6 +58,7 @@ def main(args):
   subscriber1 = rospy.Subscriber("/desired_robot_trajectory_fwd", DesiredForwardKinematicsTrajectory, desired_traj_callback, queue_size=1)
   subscriber2 = rospy.Subscriber("/kinematic_state", KinematicState, actual_state_callback, queue_size=1)
   
+  # https://stackoverflow.com/questions/35145555/python-real-time-plotting-ros-data
   # rospy.spin()
   plt.show(block=True)
 

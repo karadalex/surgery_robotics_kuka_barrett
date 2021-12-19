@@ -25,6 +25,8 @@ public:
 	moveit_visual_tools::MoveItVisualTools visual_tools = moveit_visual_tools::MoveItVisualTools("world");
 	Eigen::Isometry3d text_pose;
 	const robot_state::JointModelGroup* joint_model_group;
+	ros::NodeHandle nh;
+	ros::Publisher traj_pub;
 	moveit_msgs::RobotTrajectory trajectory;
 
 	/**
@@ -41,7 +43,7 @@ public:
 
 	TrajectoryExecution(const string PLANNING_GROUP, double pos_tolerance, double orient_tolerance,
 											int plan_time_sec, bool replanning, int plan_attempts,
-											const string base_frame, const string plannerId = "RRΤConnect");
+											const string base_frame, ros::NodeHandle node_handle, const string plannerId = "RRΤConnect");
 
  	/**
  	 * Simple execution of path. Path input is given in the format: X Y Z Roll Pitch Yaw

@@ -24,7 +24,11 @@ geometry_msgs::Pose getPoseFromPathPoint(vector<float> pathPoint) {
 
 TrajectoryExecution::TrajectoryExecution(const string PLANNING_GROUP, double pos_tolerance, double orient_tolerance,
 																				 int plan_time_sec, bool replanning, int plan_attempts,
-																				 const string base_frame, const string plannerId) {
+																				 const string base_frame, ros::NodeHandle node_handle, const string plannerId) {
+
+	nh = node_handle;
+	traj_pub = node_handle.advertise<moveit_msgs::RobotTrajectory>("desired_robot_trajectory", 1000);
+
 	// Setup Move group
 	move_group = moveit::planning_interface::MoveGroupInterface(PLANNING_GROUP);
 	move_group.setGoalPositionTolerance(pos_tolerance);
@@ -93,6 +97,8 @@ void TrajectoryExecution::executePath(vector<vector<float>> path, const char* tr
 		visual_tools.trigger();
 
 		move_group.execute(my_plan);
+		traj_pub.publish(my_plan.trajectory_);
+
 		ROS_INFO_NAMED("robot_planner1", "Planning time for path %s was %.6f seconds", traj_name, my_plan.planning_time_);
 		ROS_INFO_NAMED("robot_planner1", "Executing %s plan %s", traj_name, success ? "SUCCESS" : "FAILED");
 	}
@@ -120,6 +126,7 @@ void TrajectoryExecution::executePath(vector<geometry_msgs::Pose> path, const ch
 		visual_tools.trigger();
 
 		move_group.execute(my_plan);
+		traj_pub.publish(my_plan.trajectory_);
 
 		ROS_INFO_NAMED("robot_planner1", "Planning time for path %s was %.6f seconds", traj_name, my_plan.planning_time_);
 		ROS_INFO_NAMED("robot_planner1", "Executing %s plan %s", traj_name, success ? "SUCCESS" : "FAILED");
@@ -141,6 +148,7 @@ void TrajectoryExecution::moveToTarget(geometry_msgs::Pose target, const char* t
 	visual_tools.trigger();
 
 	move_group.execute(my_plan);
+	traj_pub.publish(my_plan.trajectory_);
 
 	ROS_INFO_NAMED("robot_planner1", "Planning time for path %s was %.6f seconds", traj_name, my_plan.planning_time_);
 	ROS_INFO_NAMED("robot_planner1", "Executing %s plan %s", traj_name, success ? "SUCCESS" : "FAILED");
@@ -181,4 +189,6 @@ void TrajectoryExecution::executeCartesianPath(vector<geometry_msgs::Pose> waypo
 		move_group.execute(insertion_plan);
 	}
 	ROS_INFO_NAMED("robot_planner1", "Executing %s plan %s", traj_name, success ? "SUCCESS" : "FAILED");
+
+	traj_pub.publish(trajectory);
 }

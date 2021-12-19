@@ -24,7 +24,7 @@ int main(int argc, char** argv)
 	const string base_frame = "world";
 	const string plannerId = "RRTConnect";
 	// const string plannerId = "RRTstar";
-	TrajectoryExecution traj1 = TrajectoryExecution(PLANNING_GROUP, pos_tolerance, orient_tolerance, plan_time_sec, replanning, plan_attempts, base_frame, plannerId);
+	TrajectoryExecution traj1 = TrajectoryExecution(PLANNING_GROUP, pos_tolerance, orient_tolerance, plan_time_sec, replanning, plan_attempts, base_frame, node_handle, plannerId);
 
 	// X Y Z Roll Pitch Yaw
 	vector<vector<float>> path1;

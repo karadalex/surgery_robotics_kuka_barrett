@@ -15,8 +15,6 @@ int main(int argc, char** argv)
 	ros::AsyncSpinner spinner(1);
 	spinner.start();
 
-	ros::Publisher traj_pub = node_handle.advertise<moveit_msgs::RobotTrajectory>("desired_robot_trajectory", 1000);
-
 	// Setup Move group
 	static const std::string PLANNING_GROUP = "iiwa_arm";
 	double pos_tolerance = 0.0005;
@@ -27,7 +25,7 @@ int main(int argc, char** argv)
 	const string base_frame = "world";
 	const string plannerId = "RRTConnect";
 	// const string plannerId = "RRTstar";
-	TrajectoryExecution traj1 = TrajectoryExecution(PLANNING_GROUP, pos_tolerance, orient_tolerance, plan_time_sec, replanning, plan_attempts, base_frame, plannerId);
+	TrajectoryExecution traj1 = TrajectoryExecution(PLANNING_GROUP, pos_tolerance, orient_tolerance, plan_time_sec, replanning, plan_attempts, base_frame, node_handle, plannerId);
 
 	// X Y Z Roll Pitch Yaw
 	vector<vector<float>> preparation_path;
@@ -41,8 +39,6 @@ int main(int argc, char** argv)
 	path1.push_back(getPoseFromPathPoint(preparation_path.at(0)));
 	path1.push_back(getPoseFromPathPoint(preparation_path.at(1)));
 	traj1.executeCartesianPath(path1, "movement towards above fulcrum point 1");
-
-	traj_pub.publish(traj1.trajectory);
 
 	// Approaching Fulcrum point 1 - Insertion motion Cartesian path
 	// Move in a line segment while approaching fulcrum point and entering body

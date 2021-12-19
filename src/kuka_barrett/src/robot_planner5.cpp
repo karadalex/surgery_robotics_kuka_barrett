@@ -27,14 +27,16 @@ private:
 	bool replanning = true;
 	int plan_attempts = 2;
 	const string base_frame = "world";
-	TrajectoryExecution traj1 = TrajectoryExecution(PLANNING_GROUP, pos_tolerance, orient_tolerance, plan_time_sec, replanning, plan_attempts, base_frame);
+	TrajectoryExecution traj1 = TrajectoryExecution(PLANNING_GROUP, pos_tolerance, orient_tolerance, plan_time_sec, replanning, plan_attempts, base_frame, ros::NodeHandle());
 	bool initialPathExecuted = false;
 
 	// X Y Z Roll Pitch Yaw
 	vector<vector<float>> path;
 
 public:
-	ServoPlanner() {
+	ServoPlanner(ros::NodeHandle node_handle) {
+		traj1 = TrajectoryExecution(PLANNING_GROUP, pos_tolerance, orient_tolerance, plan_time_sec, replanning, plan_attempts, base_frame, node_handle);
+
 		// path.push_back({0, 0, 2.262, 0, 0, 0}); // For z >= 2.261 the robot reaches end of workspace, which is a singularity and cant be calculated from the numerical IK
 		path.push_back({0, 0, 2.26, 0, 0, 0}); // Home position
 		// Start point
@@ -80,7 +82,7 @@ int main(int argc, char** argv)
 	ros::Rate loop_rate(1000);
 	spinner.start();
 
-	auto* servoPlanner = new ServoPlanner();
+	auto* servoPlanner = new ServoPlanner(node_handle);
 	// It is important to set queue size small or otherwise it will be very slow to handle all incoming messages!
 	ros::Subscriber sub = node_handle.subscribe("kuka_barrett/cmd_vel", 2, &ServoPlanner::velocityCallback, servoPlanner);
 
