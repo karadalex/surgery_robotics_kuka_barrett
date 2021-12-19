@@ -21,7 +21,6 @@ install
 .ruby-version
 dist/
 bower_components/
-include/
 lib/
 local/
 node_modules
