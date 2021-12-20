@@ -6,7 +6,7 @@
 #include <moveit_msgs/CollisionObject.h>
 #include <std_msgs/Float64.h>
 #include "kinematics/TrajectoryExecution.h"
-#include "trajectory/CircleTrajectory.h"
+#include "trajectory/LineSegTrajectory.h"
 #include "kinematics/Pose.h"
 #include <trajectory_msgs/JointTrajectory.h>
 #include "kinematics/utils.h"
@@ -63,7 +63,7 @@ int main(int argc, char** argv)
 	vector<float> fulcrumInsertedPoseFloat1 = {0.544067, 0.038585, 1.756649, 2.951693, 1.311653, -1.751226};
 	geometry_msgs::Pose fulcrumInsertedPose1 = getPoseFromPathPoint(fulcrumInsertedPoseFloat1);
 	path2.push_back(fulcrumInsertedPose1);
-	traj1.executeCartesianPath(path2, "insertion movement");
+	traj1.executeCartesianPath(path2, "insertion movement", false);
 
 	// Get transformation matrix of reference frame {F} (Fulcrum reference frame) w.r.t. to the universal reference frame {U}
 	Pose* FPose = new Pose(0.529996, 0.059271, 1.398114, 0, 0.0, -0.271542);
@@ -76,24 +76,25 @@ int main(int argc, char** argv)
 	T_7_TCP(2, 1) = 1; T_7_TCP(3, 3) = 1;
 	Eigen::Matrix4d T_TCP_7 = T_7_TCP.inverse();
 
-	Eigen::Vector3f circleTrajCenter;
+	Eigen::Vector3f start, end;
 	// Initialize vector with known values https://eigen.tuxfamily.org/dox/group__TutorialAdvancedInitialization.html
 	// values are given in x, y, z order
 	// circleTrajCenter << 0.259807, 0.689203, 1.174661;
-	circleTrajCenter << 0.0, 0.0, -0.1; // Coordinates of desired circle w.r.t. to {F} reference frame
-	CircleTrajectory* circleTrajectory = new CircleTrajectory(circleTrajCenter, 0.1);
-	vector<geometry_msgs::Pose> circle_waypoints = circleTrajectory->getCartesianWaypoints(20, U_T_F, T_TCP_7);
-	vector<geometry_msgs::Pose> transformed_waypoints = fulcrumEffectTransformation(circle_waypoints, 0.4, U_T_F, T_TCP_7);
+	start << -0.1, -0.1, -0.1; // Coordinates of start point of the line segment
+	end << 0.1, 0.1, -0.2; // Coordinates of start point of the line segment
+	LineSegTrajectory* circleTrajectory = new LineSegTrajectory(start, end);
+	vector<geometry_msgs::Pose> line_seg_waypoints = circleTrajectory->getCartesianWaypoints(10, U_T_F, T_TCP_7);
+	vector<geometry_msgs::Pose> transformed_waypoints = fulcrumEffectTransformation(line_seg_waypoints, 0.4, U_T_F, T_TCP_7);
 
 	// Path to circle
 	std::vector<geometry_msgs::Pose> path3;
 	path3.push_back(fulcrumInsertedPose1);
 	path3.push_back(transformed_waypoints.at(0));
 
-	traj1.executeCartesianPath(path3, "Path to circle");
-	traj1.executeCartesianPath(transformed_waypoints, "Circular Trajectory", false);
+	traj1.executeCartesianPath(path3, "Path approaching line segment start", false);
+	traj1.executeCartesianPath(transformed_waypoints, "Line Segment transformed Trajectory", false);
 
-	traj1.visualizeCartesianPath(circle_waypoints, "Original taskspace circular trajectory", false);
+	traj1.visualizeCartesianPath(line_seg_waypoints, "Original taskspace line segment trajectory", false);
 
 	ros::shutdown();
 	return 0;
