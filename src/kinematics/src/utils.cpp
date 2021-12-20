@@ -56,6 +56,9 @@ vector<geometry_msgs::Pose> fulcrumEffectTransformation(vector<geometry_msgs::Po
 		tf2::Quaternion poseOrientation = tf2::Quaternion(q.x, q.y, q.z, q.w);
 		tf2::Transform transformation = left_T * Td * T.inverse() * tf2::Transform(poseOrientation, posePosition) * right_T;
 
+		// In the fulcrum transformation, the orientation does not change (when seen from the universal reference frame)
+		transformation.setRotation(globalPoseOrientation);
+
 		geometry_msgs::Pose fulcrumPose;
 		tf2::toMsg(transformation, fulcrumPose);
 		transformedPoints.push_back(fulcrumPose);
