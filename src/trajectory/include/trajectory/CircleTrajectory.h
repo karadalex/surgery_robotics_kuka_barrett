@@ -5,16 +5,12 @@
 #ifndef SRC_CIRCLETRAJECTORY_H
 #define SRC_CIRCLETRAJECTORY_H
 
-#include <Eigen/Dense>
-#include <vector>
-#include <geometry_msgs/Pose.h>
-#include <tf2/LinearMath/Quaternion.h>
-#include "kinematics/utils.h"
+#include "trajectory/TrajectoryBase.h"
 
 using namespace std;
 
 
-class CircleTrajectory {
+class CircleTrajectory: public TrajectoryBase {
 public:
 	vector<geometry_msgs::Pose> waypoints;
 	vector<Eigen::Isometry3d> eigen_waypoints;
@@ -26,21 +22,13 @@ public:
 	 */
 	CircleTrajectory(Eigen::Vector3f center, float radius);
 
-	/**
-	 *
-	 * @param samples
-	 * @param left_mat
-	 * @param right_mat
-	 * @return
-	 */
-	vector<geometry_msgs::Pose> getCartesianWaypoints(int samples, Eigen::Matrix4d left_mat = Eigen::Matrix4d::Identity(), Eigen::Matrix4d right_mat = Eigen::Matrix4d::Identity());
+protected:
+	float getWaypointXCoord(float t) override;
+	float getWaypointYCoord(float t) override;
+	float getWaypointZCoord(float t) override;
 
 private:
 	float xf0, yf0, zf0, r0;
-
-	float getWaypointXCoord(float t);
-	float getWaypointYCoord(float t);
-	float getWaypointZCoord(float t);
 };
 
 

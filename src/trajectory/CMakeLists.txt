@@ -129,8 +129,10 @@ include_directories(
 
 ## Declare a C++ library
 add_library(${PROJECT_NAME}
+    src/TrajectoryBase.cpp
     src/CircleTrajectory.cpp
     src/LineSegTrajectory.cpp
+    src/CubicSplineTrajectory.cpp
 )
 
 ## Add cmake target dependencies of the library
