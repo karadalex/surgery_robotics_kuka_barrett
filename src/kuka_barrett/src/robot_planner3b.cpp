@@ -79,11 +79,10 @@ int main(int argc, char** argv)
 	Eigen::Vector3f start, end;
 	// Initialize vector with known values https://eigen.tuxfamily.org/dox/group__TutorialAdvancedInitialization.html
 	// values are given in x, y, z order
-	// circleTrajCenter << 0.259807, 0.689203, 1.174661;
 	start << -0.1, -0.1, -0.1; // Coordinates of start point of the line segment
 	end << 0.1, 0.1, -0.2; // Coordinates of start point of the line segment
-	LineSegTrajectory* circleTrajectory = new LineSegTrajectory(start, end);
-	vector<geometry_msgs::Pose> line_seg_waypoints = circleTrajectory->getCartesianWaypoints(10, U_T_F, T_TCP_7);
+	LineSegTrajectory* lineSegTrajectory = new LineSegTrajectory(start, end);
+	vector<geometry_msgs::Pose> line_seg_waypoints = lineSegTrajectory->getCartesianWaypoints(10, U_T_F, T_TCP_7);
 	vector<geometry_msgs::Pose> transformed_waypoints = fulcrumEffectTransformation(line_seg_waypoints, 0.4, U_T_F, T_TCP_7);
 
 	// Path to circle
