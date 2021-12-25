@@ -79,6 +79,9 @@ int main(int argc, char** argv)
 	Eigen::Vector3f start, end;
 	// Initialize vector with known values https://eigen.tuxfamily.org/dox/group__TutorialAdvancedInitialization.html
 	// values are given in x, y, z order
+	// points that define a line segment that is invariant under the fulcrum transformation
+	// start << 0.0, 0.0, -0.1; // Coordinates of start point of the line segment
+	// end << 0.0, 0.0, -0.3; // Coordinates of start point of the line segment
 	start << -0.1, -0.1, -0.1; // Coordinates of start point of the line segment
 	end << 0.1, 0.1, -0.2; // Coordinates of start point of the line segment
 	LineSegTrajectory* lineSegTrajectory = new LineSegTrajectory(start, end);
