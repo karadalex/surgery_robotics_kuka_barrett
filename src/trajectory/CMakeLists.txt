@@ -134,6 +134,7 @@ add_library(${PROJECT_NAME}
     src/LineSegTrajectory.cpp
     src/CubicSplineTrajectory.cpp
     src/BSplineTrajectory.cpp
+    src/HelixTrajectory.cpp
 )
 
 ## Add cmake target dependencies of the library

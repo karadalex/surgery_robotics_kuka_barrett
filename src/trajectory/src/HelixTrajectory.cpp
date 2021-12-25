@@ -1,12 +1,34 @@
 //
-// Created by karadalex on 21/12/21.
+// Created by karadalex on 25/12/21.
 //
 
-#include "trajectory/TrajectoryBase.h"
+#include "trajectory/HelixTrajectory.h"
 
-vector<geometry_msgs::Pose> TrajectoryBase::getCartesianWaypoints(int samples, Eigen::Matrix4d left_mat, Eigen::Matrix4d right_mat) {
-	float step = 1.0f / (float)samples;
+
+HelixTrajectory::HelixTrajectory(Eigen::Vector3f center, float radius, float cycles, float beta) : r0(radius), cycles(cycles), beta(beta) {
+	xf0 = center(0);
+	yf0 = center(1);
+	zf0 = center(2);
+}
+
+float HelixTrajectory::getWaypointXCoord(float t) {
+	float xf = r0 * cos(2*M_PI*t) + xf0;
+	return xf;
+}
+
+float HelixTrajectory::getWaypointYCoord(float t) {
+	float yf = r0 * sin(2*M_PI*t) + yf0;
+	return yf;
+}
+
+float HelixTrajectory::getWaypointZCoord(float t) {
+	return beta * t + zf0;
+}
+
+vector<geometry_msgs::Pose> HelixTrajectory::getCartesianWaypoints(int samples, Eigen::Matrix4d left_mat, Eigen::Matrix4d right_mat) {
+	float step = cycles / (float)samples;
 	float xf, yf, zf, rho, theta, phi;
+
 	for (int i = 0; i < samples-1; ++i) {
 		// Get cartesian coordinates w.r.t. {F} reference frame
 		xf = getWaypointXCoord(step*i);
