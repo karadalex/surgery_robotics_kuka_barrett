@@ -107,7 +107,7 @@ def callback(data):
 
 
 def main(args):
-  rospy.init_node('plot_trajectories', anonymous=True)
+  rospy.init_node('plot_trajectories_state', anonymous=True)
   subscriber = rospy.Subscriber("/arm_controller/state", JointTrajectoryControllerState, callback, queue_size=1)
   plt.show()
 
