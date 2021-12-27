@@ -8,6 +8,8 @@
 #include <moveit/robot_state/robot_state.h>
 #include <trajectory_msgs/JointTrajectory.h>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.h>
+#include <tf/LinearMath/Matrix3x3.h>
+#include "trajectory/Polynomial5SingleJointTrajectory.h"
 
 
 using namespace std;
@@ -32,48 +34,78 @@ int main(int argc, char** argv)
 	kinematic_state->setToDefaultValues();
 	const moveit::core::JointModelGroup* joint_model_group = kinematic_model->getJointModelGroup("iiwa_arm");
 
-	// Set end-effector state
-	kinematic_state->setToRandomPositions(joint_model_group);
-	const Eigen::Isometry3d& end_effector_state = kinematic_state->getGlobalLinkTransform("iiwa_link_ee");
-	cout << end_effector_state.matrix() << endl;
+	// Set end-effector states to solve for
+	tf2::Vector3 position1 = tf2::Vector3(0.1, 0.1, 1.95);
+	tf2::Quaternion orientation;
+	orientation.setRPY(2.952052, 1.311528, -1.750799);
+	tf2::Transform pose1_tf = tf2::Transform(orientation, position1);
+	geometry_msgs::Pose pose1, pose2;
+	tf2::toMsg(pose1_tf, pose1);
+	tf2::Vector3 position2 = tf2::Vector3(0.4, 0.1, 1.95);
+	tf2::Transform pose2_tf = tf2::Transform(orientation, position2);
+	tf2::toMsg(pose2_tf, pose2);
 
-	// Solve Inverse Kinematics
-	double timeout = 0.1;
-	bool found_ik = kinematic_state->setFromIK(joint_model_group, end_effector_state, timeout);
-
+	// Prepare and initialize JointTrajectory ROS message
 	trajectory_msgs::JointTrajectory kuka_msg;
 	kuka_msg.header.seq = 0;
 	kuka_msg.header.stamp.sec = 0;
 	kuka_msg.header.stamp.nsec = 0;
 	kuka_msg.header.frame_id = "";
 	kuka_msg.joint_names = joint_model_group->getVariableNames();
-	kuka_msg.points.resize(1);
 
-	// Now, we can print out the IK solution (if found):
-	std::vector<double> joint_values;
-	if (found_ik) {
-		kinematic_state->copyJointGroupPositions(joint_model_group, joint_values);
-		kuka_msg.points[0].positions.resize(kuka_msg.joint_names.size());
-		kuka_msg.points[0].velocities.resize(kuka_msg.joint_names.size());
-		kuka_msg.points[0].effort.resize(kuka_msg.joint_names.size());
+	// Solve Inverse Kinematics
+	double timeout = 5.0;
+	bool found_ik1 = kinematic_state->setFromIK(joint_model_group, pose1, timeout);
+	std::vector<double> joint_values1, joint_values2;
+	if (found_ik1) {
+		kinematic_state->copyJointGroupPositions(joint_model_group, joint_values1);
+	}
+	bool found_ik2 = kinematic_state->setFromIK(joint_model_group, pose2, timeout);
+	if (found_ik2) {
+		kinematic_state->copyJointGroupPositions(joint_model_group, joint_values2);
+	}
+
+	if (found_ik1 && found_ik2) {
+		vector<Polynomial5SingleJointTrajectory*> joint_trajectories;
 		for (int j = 0; j < 7; ++j) {
-			kuka_msg.points[0].positions[j] = joint_values[j];
-			kuka_msg.points[0].velocities[j] = 0.0;
-			kuka_msg.points[0].effort[j] = 0.0;
+			double q1 = joint_values1[j];
+			double q2 = joint_values2[j];
+			double qd1, qd2, qdd1, qdd2;
+			qd1 = qd2 = 0.0;
+			qdd1 = qdd2 = 0.0;
+			Polynomial5SingleJointTrajectory* trajectory = new Polynomial5SingleJointTrajectory();
+			trajectory->setPositions(q1, q2);
+			trajectory->setVelocities(qd1, qd2);
+			trajectory->setAccelerations(qdd1, qdd2);
+			trajectory->computeTrajectory(60);
+			joint_trajectories.push_back(trajectory);
 		}
-		// To be reached 1 second after starting along the trajectory
-		kuka_msg.points[0].time_from_start = ros::Duration(3*(0+1));
 
-		for (std::size_t i = 0; i < kuka_msg.joint_names.size(); ++i) {
-			ROS_INFO("Joint %s: %f", kuka_msg.joint_names[i].c_str(), joint_values[i]);
+		int waypoints_num = joint_trajectories.at(0)->position_waypoints.size();
+		// int waypoints_num = 5;
+		kuka_msg.points.resize(waypoints_num);
+		for (int k = 0; k < waypoints_num; ++k) {
+			kuka_msg.points[k].positions.resize(kuka_msg.joint_names.size());
+			kuka_msg.points[k].velocities.resize(kuka_msg.joint_names.size());
+			kuka_msg.points[k].accelerations.resize(kuka_msg.joint_names.size());
+			kuka_msg.points[k].effort.resize(kuka_msg.joint_names.size());
+
+			for (int j = 0; j < 7; ++j) {
+				kuka_msg.points[k].positions[j] = joint_trajectories.at(j)->position_waypoints.at(k);
+				kuka_msg.points[k].velocities[j] = joint_trajectories.at(j)->velocity_waypoints.at(k);
+				kuka_msg.points[k].accelerations[j] = joint_trajectories.at(j)->acceleration_waypoints.at(k);
+				// kuka_msg.points[k].accelerations[j] = 0.0;
+				kuka_msg.points[k].effort[j] = 0.0;
+			}
+			// To be reached 1 second after starting along the trajectory
+			kuka_msg.points[k].time_from_start = ros::Duration(k+1);
 		}
 
-		// kuka_publisher.publish(kuka_msg);
+		kuka_publisher.publish(kuka_msg);
+
 	} else {
 		ROS_INFO("Did not find IK solution");
 	}
-
-	kuka_publisher.publish(kuka_msg);
 
 
 	ros::shutdown();
