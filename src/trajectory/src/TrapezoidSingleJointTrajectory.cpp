@@ -24,7 +24,8 @@ void TrapezoidSingleJointTrajectory::setVelocityProfile(double _t1, double _t2, 
 }
 
 
-void TrapezoidSingleJointTrajectory::computeTrajectory(int samples) {
+void TrapezoidSingleJointTrajectory::computeTrajectory(int _samples) {
+	samples = _samples;
 	double step = (t2 - t1) / samples;
 
 	// Clear waypoints, in case that these arrays have data from previous calls of this method
@@ -43,19 +44,25 @@ void TrapezoidSingleJointTrajectory::computeTrajectory(int samples) {
 }
 
 double TrapezoidSingleJointTrajectory::getJointPosition(double t) {
-	double qi;
-	if (t1 <= t && t < ta) {
-		qi = q1 + a*pow(t - t1, 2);
-	} else if (ta <= t && t < td) {
-		double qh = 0.5*(q1 + q2);
-		qi = qh - qdc*(0.5*t2 - ta) + qdc*(t - ta);
-		// double prev_qi = q1 + a*pow(ta - t1, 2);
-		// qi = prev_qi + qdc*(t - ta);
-	} else {
-		//	td <= t <= t2
-		qi = q2 - a*pow(t - t2, 2);
-		// double prev_qi = q1 + a*pow(ta - t1, 2) + qdc*(t - ta);
-		// qi = q2 - a*pow(t - t2, 2);
+	double qi = q1;
+	// if (t1 <= t && t < ta) {
+	// 	qi = q1 + a*pow(t - t1, 2);
+	// } else if (ta <= t && t < td) {
+	// 	double qh = 0.5*(q1 + q2);
+	// 	qi = qh - qdc*(0.5*t2 - ta) + qdc*(t - ta);
+	// 	// double prev_qi = q1 + a*pow(ta - t1, 2);
+	// 	// qi = prev_qi + qdc*(t - ta);
+	// } else {
+	// 	//	td <= t <= t2
+	// 	qi = q2 - a*pow(t - t2, 2);
+	// 	// double prev_qi = q1 + a*pow(ta - t1, 2) + qdc*(t - ta);
+	// 	// qi = q2 - a*pow(t - t2, 2);
+	// }
+	double step = (t2 - t1) / samples;
+	double _t = t1;
+	while (_t <= t) {
+		qi += getJointVelocity(_t)*step;
+		_t += step;
 	}
 	return qi;
 }

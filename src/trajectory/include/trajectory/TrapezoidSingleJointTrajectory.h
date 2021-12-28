@@ -55,6 +55,7 @@ private:
 	double td = 0.75;
 	double t2 = 1.0;
 	double tau = 0.25;
+	int samples;
 
 	/**
 	 * Evaluate joint position at time t
