@@ -136,6 +136,7 @@ add_library(${PROJECT_NAME}
     src/BSplineTrajectory.cpp
     src/HelixTrajectory.cpp
     src/Polynomial5SingleJointTrajectory.cpp
+    src/TrapezoidSingleJointTrajectory.cpp
 )
 
 ## Add cmake target dependencies of the library
