@@ -59,10 +59,16 @@ int main(int argc, char** argv)
 	std::vector<double> joint_values1, joint_values2;
 	if (found_ik1) {
 		kinematic_state->copyJointGroupPositions(joint_model_group, joint_values1);
+		for (std::size_t i = 0; i < kuka_msg.joint_names.size(); i++) {
+			ROS_INFO("IK Solution, Point1, Joint %s: %f", kuka_msg.joint_names[i].c_str(), joint_values1[i]);
+		}
 	}
 	bool found_ik2 = kinematic_state->setFromIK(joint_model_group, pose2, timeout);
 	if (found_ik2) {
 		kinematic_state->copyJointGroupPositions(joint_model_group, joint_values2);
+		for (std::size_t i = 0; i < kuka_msg.joint_names.size(); i++) {
+			ROS_INFO("IK Solution, Point2, Joint %s: %f", kuka_msg.joint_names[i].c_str(), joint_values2[i]);
+		}
 	}
 
 	if (found_ik1 && found_ik2) {
