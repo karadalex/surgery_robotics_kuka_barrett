@@ -32,6 +32,9 @@ void SCurveSingleJointTrajectory::computeTrajectory(int _samples) {
 	samples = _samples;
 	double step = (t2 - t1) / samples;
 
+	q1c = getJointPosition(t1);
+	q2c = getJointPosition(t2);
+
 	// Clear waypoints, in case that these arrays have data from previous calls of this method
 	position_waypoints.clear();
 	velocity_waypoints.clear();
@@ -40,7 +43,8 @@ void SCurveSingleJointTrajectory::computeTrajectory(int _samples) {
 	double t;
 	for (int i = 0; i < samples; ++i) {
 		t = t1 + i*step;
-		position_waypoints.push_back(getJointPosition(t));
+		double qi = ((getJointPosition(t) - q1) / (q2c - q1c)) * (q2 - q1) + q1;
+		position_waypoints.push_back(qi);
 		velocity_waypoints.push_back(getJointVelocity(t));
 		acceleration_waypoints.push_back(getJointAcceleration(t));
 		time_waypoints.push_back(t);
@@ -55,6 +59,7 @@ double SCurveSingleJointTrajectory::getJointPosition(double t) {
 		qi += getJointVelocity(_t)*step;
 		_t += step;
 	}
+
 	return qi;
 }
 
@@ -66,6 +71,7 @@ double SCurveSingleJointTrajectory::getJointVelocity(double t) {
 		qdi += getJointAcceleration(_t)*step;
 		_t += step;
 	}
+
 	return qdi;
 }
 

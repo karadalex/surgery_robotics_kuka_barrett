@@ -64,6 +64,8 @@ private:
 	double tg = 0.95;
 	double t2 = 1.0;
 	int samples;
+	// joint positions used for correction
+	double q1c, q2c;
 
 	/**
 	 * Evaluate joint position at time t

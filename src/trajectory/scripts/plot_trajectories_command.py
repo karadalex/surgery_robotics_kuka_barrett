@@ -33,7 +33,7 @@ def callback(data):
     ax.clear()
     ax.set_title("Joint "+str(j+1))
     ax.set(xlabel='seconds', ylabel='angle')
-    ax.label_outer()
+    # ax.label_outer()
 
     ax.plot(t[0, :], q[j, :], label="q"+str(j+1), marker="o", ms=3, color="tab:blue")
     ax.legend()
