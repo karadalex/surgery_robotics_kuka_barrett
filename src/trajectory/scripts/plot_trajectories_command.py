@@ -11,6 +11,8 @@ from trajectory_msgs.msg import JointTrajectory
 # fig, axs = plt.subplots(4, 2)
 fig = plt.figure()
 
+trapezoid = False
+
 def callback(data):
   waypoints_num = len(data.points)
 
@@ -18,6 +20,7 @@ def callback(data):
   q = np.zeros((7, waypoints_num))
   qd = np.zeros((7, waypoints_num))
   qdd = np.zeros((7, waypoints_num))
+  qddd = np.zeros((7, waypoints_num))
 
   for i in range(waypoints_num):
     point = data.points[i]
@@ -27,23 +30,37 @@ def callback(data):
       qd[j, i] = point.velocities[j]
       qdd[j, i] = point.accelerations[j]
 
+      if i == 0:
+        qddd_i = qdd[j, i] / t[0, i]
+      elif i == waypoints_num-1:
+        qddd_i = (0 - qdd[j, i]) / (t[0, i] - t[0, i-1])
+      else:
+        qddd_i = (qdd[j, i] - qdd[j, i-1]) / (t[0, i] - t[0, i-1])
+      qddd[j, i] = qddd_i
+
   for j in range(7):
     ax = plt.subplot(4, 2, j + 1)
 
     ax.clear()
     ax.set_title("Joint "+str(j+1))
-    ax.set(xlabel='seconds', ylabel='angle')
+    # ax.set(xlabel='seconds', ylabel='angle')
     # ax.label_outer()
 
     ax.plot(t[0, :], q[j, :], label="q"+str(j+1), marker="o", ms=3, color="tab:blue")
     ax.legend()
 
     qdax = ax.twinx()
-    qdax.set(xlabel='seconds', ylabel='velocity/acceleration')
+    # qdax.set(xlabel='seconds', ylabel='velocity/acceleration')
     qdax.plot(t[0, :], qd[j, :], label="qd"+str(j+1), marker="o", ms=3, color="tab:orange", alpha=0.2)
     qdax.legend()
 
-    qdax.plot(t[0, :], qdd[j, :], label="qdd"+str(j+1), marker="o", ms=3, color="tab:red", alpha=0.2)
+    if trapezoid:
+      qdax.step(t[0, :], qdd[j, :], label="qdd"+str(j+1), marker="o", ms=3, color="tab:red", alpha=0.2)
+    else:
+      qdax.plot(t[0, :], qdd[j, :], label="qdd"+str(j+1), marker="o", ms=3, color="tab:red", alpha=0.2)
+    qdax.legend()
+
+    qdax.step(t[0, :], qddd[j, :], label="qddd"+str(j+1), marker="o", ms=3, color="tab:green", alpha=0.2)
     qdax.legend()
 
   fig.canvas.draw()
@@ -61,4 +78,7 @@ def main(args):
 
 
 if __name__ == '__main__':
+    if "--trapezoid" in sys.argv:
+      trapezoid = True
+
     main(sys.argv)
