@@ -137,6 +137,7 @@ add_library(${PROJECT_NAME}
     src/HelixTrajectory.cpp
     src/Polynomial5SingleJointTrajectory.cpp
     src/TrapezoidSingleJointTrajectory.cpp
+    src/SCurveSingleJointTrajectory.cpp
 )
 
 ## Add cmake target dependencies of the library

@@ -17,7 +17,7 @@ using namespace std;
 
 int main(int argc, char** argv)
 {
-	ros::init(argc, argv, "robot_planner3e");
+	ros::init(argc, argv, "robot_planner3f");
 	ros::NodeHandle node_handle;
 	ros::AsyncSpinner spinner(1);
 	spinner.start();
