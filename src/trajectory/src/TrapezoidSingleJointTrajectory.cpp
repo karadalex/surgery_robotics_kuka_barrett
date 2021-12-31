@@ -28,6 +28,9 @@ void TrapezoidSingleJointTrajectory::computeTrajectory(int _samples) {
 	samples = _samples;
 	double step = (t2 - t1) / samples;
 
+	q1c = getJointPosition(t1);
+	q2c = getJointPosition(t2);
+
 	// Clear waypoints, in case that these arrays have data from previous calls of this method
 	position_waypoints.clear();
 	velocity_waypoints.clear();
@@ -36,6 +39,7 @@ void TrapezoidSingleJointTrajectory::computeTrajectory(int _samples) {
 	double t;
 	for (int i = 0; i < samples; ++i) {
 		t = t1 + i*step;
+		double qi = ((getJointPosition(t) - q1) / (q2c - q1c)) * (q2 - q1) + q1;
 		position_waypoints.push_back(getJointPosition(t));
 		velocity_waypoints.push_back(getJointVelocity(t));
 		acceleration_waypoints.push_back(getJointAcceleration(t));
@@ -44,39 +48,43 @@ void TrapezoidSingleJointTrajectory::computeTrajectory(int _samples) {
 }
 
 double TrapezoidSingleJointTrajectory::getJointPosition(double t) {
-	// double qi;
-	// if (t1 <= t && t < ta) {
-	// 	qi = q1 + a*pow(t - t1, 2);
-	// } else if (ta <= t && t < td) {
-	// 	double prev_qi = q1 + a*pow(ta - t1, 2);
-	// 	qi = prev_qi + qdc*(t - ta);
-	// } else {
-	// 	//	td <= t <= t2
-	// 	qi = q2 - a*pow(t - t2, 2);
-	// 	// double prev_qi = q1 + a*pow(ta - t1, 2) + qdc*(t - ta);
-	// 	// qi = q2 - a*pow(t - t2, 2);
-	// }
+	double qi;
+	if (t1 <= t && t <= ta) {
+		qi = q1 + 0.5*a*pow(t - t1, 2);
+	} else if (ta < t && t <= td) {
+		qi = getJointPosition(ta) + qdc*(t - ta);
+	} else {
+		//	td < t <= t2
+		// qi = q2 - 0.5*a*pow(t - t2, 2);
+		qi = getJointPosition(td);
+		double step = (t2 - t1) / samples;
+		double _t = td;
+		while (_t <= t) {
+			qi += getJointVelocity(_t)*step;
+			_t += step;
+		}
+	}
 
 	// Integration solution: slower, TODO: prefer above analytical solution
-	double qi = q1;
-	double step = (t2 - t1) / samples;
-	double _t = t1;
-	while (_t <= t) {
-		qi += getJointVelocity(_t)*step;
-		_t += step;
-	}
+	// double qi = q1;
+	// double step = (t2 - t1) / samples;
+	// double _t = t1;
+	// while (_t <= t) {
+	// 	qi += getJointVelocity(_t)*step;
+	// 	_t += step;
+	// }
 	return qi;
 }
 
 double TrapezoidSingleJointTrajectory::getJointVelocity(double t) {
 	double qdi;
-	if (t1 <= t && t < ta) {
-		qdi = 2*a*t;
-	} else if (ta <= t && t < td) {
+	if (t1 <= t && t <= ta) {
+		qdi = a*t;
+	} else if (ta < t && t <= td) {
 		qdi = qdc;
 	} else {
-		//	td <= t <= t2
-		qdi = -2*a*(t - t2);
+		//	td < t <= t2
+		qdi = -a*(t - t2);
 	}
 
 	// Integration solution: slower, avoid
@@ -93,12 +101,12 @@ double TrapezoidSingleJointTrajectory::getJointVelocity(double t) {
 
 double TrapezoidSingleJointTrajectory::getJointAcceleration(double t) {
 	if (t1 <= t && t < ta) {
-		return 2*a;
+		return a;
 	} else if (ta <= t && t < td) {
 		return 0;
 	} else {
 		//	td <= t <= t2
-		return -2*a;
+		return -a;
 	}
 }
 
@@ -115,7 +123,7 @@ void TrapezoidSingleJointTrajectory::computeConstants() {
 		}
 	}
 
-	a = qdc / (2.0 * ta);
+	a = qdc / ta;
 	ta = t1 + tau;
 	td = t2 - tau;
 }

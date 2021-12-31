@@ -56,6 +56,8 @@ private:
 	double t2 = 1.0;
 	double tau = 0.25;
 	int samples;
+	// joint positions used for correction
+	double q1c, q2c;
 
 	/**
 	 * Evaluate joint position at time t
