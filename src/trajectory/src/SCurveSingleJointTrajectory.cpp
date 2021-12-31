@@ -52,12 +52,27 @@ void SCurveSingleJointTrajectory::computeTrajectory(int _samples) {
 }
 
 double SCurveSingleJointTrajectory::getJointPosition(double t) {
-	double qi = q1;
-	double step = (t2 - t1) / samples;
-	double _t = t1;
-	while (_t <= t) {
-		qi += getJointVelocity(_t)*step;
-		_t += step;
+	double qi;
+	if (t1 <= t && t <= ta) {
+		qi = q1 + qddc/(6*ta)*pow(t, 3);
+	} else if (ta < t && t <= tb) {
+		qi = getJointPosition(ta) + getJointVelocity(ta)*(t-ta) + qddc/2*pow(t-ta, 2);
+	} else if (tb < t && t <= tc) {
+		qi = getJointPosition(tb) + getJointVelocity(tb)*(t-tb) + 0.5*qddc*pow(t-tb, 2) - qddc/(6*ta)*pow(t-tb, 3);
+	} else if (tc < t && t <= td) {
+		qi = getJointPosition(tc) + getJointVelocity(tc)*(t-tc);
+	} else if (td < t && t <= te) {
+		qi = getJointPosition(td) + getJointVelocity(tc)*(t-td) - qddc/(6*ta)*pow(t-td, 3);
+	} else if (te < t && t <= tg) {
+		qi = getJointPosition(te) + getJointVelocity(te)*(t-te) - 0.5*qddc*pow(t-te, 2);
+	} else {
+		qi = getJointPosition(tg);
+		double step = (t2 - t1) / samples;
+		double _t = tg;
+		while (_t <= t) {
+			qi += getJointVelocity(_t)*step;
+			_t += step;
+		}
 	}
 
 	return qi;

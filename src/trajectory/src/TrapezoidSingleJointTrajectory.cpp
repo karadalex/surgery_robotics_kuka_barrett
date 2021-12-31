@@ -40,7 +40,7 @@ void TrapezoidSingleJointTrajectory::computeTrajectory(int _samples) {
 	for (int i = 0; i < samples; ++i) {
 		t = t1 + i*step;
 		double qi = ((getJointPosition(t) - q1) / (q2c - q1c)) * (q2 - q1) + q1;
-		position_waypoints.push_back(getJointPosition(t));
+		position_waypoints.push_back(qi);
 		velocity_waypoints.push_back(getJointVelocity(t));
 		acceleration_waypoints.push_back(getJointAcceleration(t));
 		time_waypoints.push_back(t);
