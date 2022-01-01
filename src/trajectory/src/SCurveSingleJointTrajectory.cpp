@@ -64,16 +64,19 @@ double SCurveSingleJointTrajectory::getJointPosition(double t) {
 	} else if (td < t && t <= te) {
 		qi = getJointPosition(td) + getJointVelocity(tc)*(t-td) - qddc/(6*ta)*pow(t-td, 3);
 	} else if (te < t && t <= tg) {
-		qi = getJointPosition(te) + getJointVelocity(te)*(t-te) - 0.5*qddc*pow(t-te, 2);
+		qi = getJointPosition(te) + getJointVelocity(te)*(t - te) - 0.5*qddc*pow(t - te, 2);
 	} else {
-		qi = getJointPosition(tg);
-		double step = (t2 - t1) / samples;
-		double _t = tg;
-		while (_t <= t) {
-			qi += getJointVelocity(_t)*step;
-			_t += step;
-		}
+		qi = getJointPosition(tg) + getJointVelocity(tg)*(t-tg) - 0.5*qddc*pow(t-tg, 2) + qddc/(6*ta)*pow(t-tg, 3);
 	}
+	// } else {
+	// 	qi = getJointPosition(tg);
+	// 	double step = (t2 - t1) / samples;
+	// 	double _t = tg;
+	// 	while (_t <= t) {
+	// 		qi += getJointVelocity(_t)*step;
+	// 		_t += step;
+	// 	}
+	// }
 
 	return qi;
 }
