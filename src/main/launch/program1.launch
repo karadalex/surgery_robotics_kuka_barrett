@@ -27,6 +27,8 @@
     <node name="KinematicStateNode" pkg="kinematics" type="KinematicStateNode"/>
     <node name="DesiredForwardKinematicsTrajectoryNode" pkg="kinematics" type="DesiredForwardKinematicsTrajectoryNode"/>
 
+    <node name="fulcrum_frames_estimator" pkg="taskspace" type="fulcrum_frames_estimator.py"/>
+
     <!-- <node name="robot_planner1" pkg="kuka_barrett" type="robot_planner1"/> -->
 
     <!-- OpenCV - Computer Vision -->
