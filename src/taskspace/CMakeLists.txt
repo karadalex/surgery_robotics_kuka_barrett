@@ -8,11 +8,15 @@ project(taskspace)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
-  control_msgs
-  roscpp
-  rospy
-  std_msgs
-  geometry_msgs
+    control_msgs
+    roscpp
+    rospy
+    std_msgs
+    geometry_msgs
+    moveit_core
+    moveit_ros_planning_interface
+    moveit_ros_planning
+    moveit_visual_tools
 )
 
 ## System dependencies are found with CMake's conventions
@@ -105,9 +109,9 @@ find_package(catkin REQUIRED COMPONENTS
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES taskspace
-#  CATKIN_DEPENDS control_msgs roscpp rospy std_msgs
+  INCLUDE_DIRS include
+  LIBRARIES taskspace
+  CATKIN_DEPENDS control_msgs roscpp rospy std_msgs moveit_core moveit_ros_planning_interface
 #  DEPENDS system_lib
 )
 
@@ -118,7 +122,7 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-# include
+  include
   ${catkin_INCLUDE_DIRS}
 )
 
@@ -206,3 +210,6 @@ include_directories(
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
+
+add_executable(fulcrum_state_node src/fulcrum_state_node.cpp)
+target_link_libraries(fulcrum_state_node ${catkin_LIBRARIES})
