@@ -21,6 +21,7 @@ find_package(catkin REQUIRED COMPONENTS
     trajectory
     control_msgs
     genmsg
+    geometry_msgs
 )
 
 ## System dependencies are found with CMake's conventions
