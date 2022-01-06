@@ -12,16 +12,21 @@
 #include <string>
 #include <iostream>
 #include <std_msgs/Float64.h>
+#include <geometry_msgs/PoseWithCovarianceStamped.h>
+
 
 using namespace Eigen;
 
+typedef geometry_msgs::PoseWithCovarianceStamped covPose;
 
 std::vector<double> joint_values = std::vector<double>(7, 0.0);
 
 using Line3 = Hyperplane<float, 3>;
 using Vec3 = Vector3f;
 
-ros::Subscriber sub;
+Vec3 f2;
+
+ros::Subscriber sub, sub_fulcrum;
 ros::Publisher pub;
 
 robot_model_loader::RobotModelLoader* _robot_model_loader;
@@ -55,7 +60,7 @@ void jointStateCallback(const sensor_msgs::JointState &msg) {
 
 		Vec3 a(x,y,z);
 		Vec3 b(x+ix, y+iy, z+iz);
-		Vec3 f2(0.529996, 0.059271, 1.398114);
+		// Vec3 f2(0.529996, 0.059271, 1.398114);
 
 		Line3 ab = Line3::Through(a, b);
 		float xy_dist_error = ab.absDistance(f2);
@@ -69,17 +74,33 @@ void jointStateCallback(const sensor_msgs::JointState &msg) {
 	}
 }
 
+void fulcrumFrameUpdate(const covPose::ConstPtr &msg) {
+	// TODO
+}
+
 int main(int argc, char **argv)
 {
 	ros::init(argc, argv, "fulcrum_state_node");
 	ros::NodeHandle n;
 	ros::Rate loop_rate(10);
 
+	// Wait to first get the fulcrum reference frame 2
+	// before the jointStateCallback above is executed
+	boost::shared_ptr<covPose const> sharedPoseMsg;
+	covPose pose_msg;
+	sharedPoseMsg = ros::topic::waitForMessage<covPose>("fulcrum/estimated/frame2", n);
+	if(sharedPoseMsg != nullptr){
+		pose_msg = *sharedPoseMsg;
+		auto fp = pose_msg.pose.pose.position;
+		f2 = Vec3(fp.x, fp.y, fp.x);
+	}
+
 	_robot_model_loader = new robot_model_loader::RobotModelLoader("robot_description");
 	kinematic_model = _robot_model_loader->getModel();
 	joint_model_group = kinematic_model->getJointModelGroup("iiwa_arm");
 
 	sub = n.subscribe("joint_states", 1000, jointStateCallback);
+	sub_fulcrum = n.subscribe("fulcrum/estimated/frame2", 1000, fulcrumFrameUpdate);
 	pub = n.advertise<std_msgs::Float64>("/fulcrum/error", 5);
 
 	while (ros::ok()) {
