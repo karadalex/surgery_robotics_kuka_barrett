@@ -11,6 +11,7 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <std_msgs/Float64.h>
 
 using namespace Eigen;
 
@@ -19,6 +20,9 @@ std::vector<double> joint_values = std::vector<double>(7, 0.0);
 
 using Line3 = Hyperplane<float, 3>;
 using Vec3 = Vector3f;
+
+ros::Subscriber sub;
+ros::Publisher pub;
 
 robot_model_loader::RobotModelLoader* _robot_model_loader;
 moveit::core::RobotModelPtr kinematic_model;
@@ -57,7 +61,11 @@ void jointStateCallback(const sensor_msgs::JointState &msg) {
 		float xy_dist_error = ab.absDistance(f2);
 		// std::cout << "Transformation:\n" << end_effector_state.matrix() << '\n';
 		// std::cout << "Distance from Fulcrum2: " << xy_dist_error << '\n';
-		ROS_INFO("Line distance from fulcrum point 2: %f", xy_dist_error);
+		ROS_DEBUG("Line distance from fulcrum point 2: %f", xy_dist_error);
+
+		std_msgs::Float64 xy_dist_error_msg;
+		xy_dist_error_msg.data = xy_dist_error;
+		pub.publish(xy_dist_error_msg);
 	}
 }
 
@@ -71,7 +79,8 @@ int main(int argc, char **argv)
 	kinematic_model = _robot_model_loader->getModel();
 	joint_model_group = kinematic_model->getJointModelGroup("iiwa_arm");
 
-	ros::Subscriber sub = n.subscribe("joint_states", 1000, jointStateCallback);
+	sub = n.subscribe("joint_states", 1000, jointStateCallback);
+	pub = n.advertise<std_msgs::Float64>("/fulcrum/error", 5);
 
 	while (ros::ok()) {
 		ros::spinOnce();
