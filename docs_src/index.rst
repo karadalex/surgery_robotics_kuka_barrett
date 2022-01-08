@@ -45,6 +45,12 @@ Surgery Robotics with KUKA iiwa and Barrett hand's documentation!
    /vision/detection
 
 .. toctree::
+   :maxdepth: 3
+   :caption: API Reference
+
+   /api/index
+
+.. toctree::
    :maxdepth: 2
    :caption: Troubleshooting
 

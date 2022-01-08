@@ -20,4 +20,5 @@ help:
 
 github:
 	@make html
+	@rm -r ../docs/_static/kinematics_doc && cp -r ../src/kinematics/doc ../docs/_static/kinematics_doc
 	@cp -a _build/html/. ../docs

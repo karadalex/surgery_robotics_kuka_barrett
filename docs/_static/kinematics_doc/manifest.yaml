@@ -1,0 +1,24 @@
+actions: []
+authors: ''
+brief: ''
+bugtracker: ''
+depends:
+- moveit_core
+- catkin
+- roscpp
+- moveit_visual_tools
+- message_runtime
+- std_msgs
+- rospy
+- message_generation
+- moveit_ros_planning_interface
+description: The kinematics package
+license: TODO
+maintainers: karadalex <karadalex@gmail.com>
+msgs:
+- DesiredForwardKinematicsTrajectory
+- KinematicState
+package_type: package
+repo_url: ''
+srvs: []
+url: ''
