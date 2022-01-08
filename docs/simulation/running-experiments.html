@@ -1,0 +1,390 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Running experiments &mdash; Surgery Robotics with KUKA iiwa and Barrett hand  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Getting Started" href="../vision/getting-started.html" />
+    <link rel="prev" title="Robot Description" href="robot.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> Surgery Robotics with KUKA iiwa and Barrett hand
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../requirements.html">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install-instructions.html">Installation Instructions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Running the simulation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">ROS</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../ros/nodes.html">Node Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ros/tf.html">Transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ros/topics.html">Topics</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Kinematics</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../kinematics/moveit.html">Moveit Framework</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../kinematics/trajectories.html">Trajectory Planning</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Simulation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting-started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="robot.html">Robot Description</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Running experiments</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#robot-planner-1-simple-moveit-planning">Robot planner 1: Simple MoveIt planning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#robot-planner-2-simulation-layout-and-reachability-experiments">Robot Planner 2: Simulation layout and reachability experiments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#robot-planner-3-trajectory-planning">Robot Planner 3: Trajectory planning</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#a-circular-trajectories-in-task-space">3a: Circular trajectories in task space</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#b-line-segment-trajectories-in-task-space">3b: Line segment trajectories in task space</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#c-cubic-spline-trajectories-in-task-space">3c: Cubic Spline trajectories in task space</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#d-b-spline-trajectories-in-task-space">3d: B-Spline trajectories in task space</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#e-polynomial-trajectories-in-joint-space">3e: Polynomial trajectories in joint space</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#f-trajectories-in-joint-space-with-trapezoidal-velocity-profile">3f: Trajectories in joint space with trapezoidal velocity profile</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#g-trajectories-in-joint-space-with-s-curve-velocity-profile">3g: Trajectories in joint space with s-curve velocity profile</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#h-helical-trajectories-in-task-space">3h: Helical trajectories in task space</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#robot-planner-4-simple-cube-pick-and-place-experiment">Robot Planner 4: Simple cube pick-and-place experiment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#robot-planner-5-visual-servoing">Robot Planner 5: Visual servoing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#robot-planner-6-rcm-alignment-error-in-insertion-and-retraction">Robot Planner 6: RCM alignment error in insertion and retraction</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Vision</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../vision/getting-started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vision/detection.html">Surgical Tool Detection</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Troubleshooting</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
+</ul>
+<p class="caption"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../references.html">References</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Surgery Robotics with KUKA iiwa and Barrett hand</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Running experiments</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/simulation/running-experiments.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="running-experiments">
+<h1>Running experiments<a class="headerlink" href="#running-experiments" title="Permalink to this headline">¶</a></h1>
+<p>This documentation section shows how to run the experiments that are described in the thesis of this project.</p>
+<div class="section" id="robot-planner-1-simple-moveit-planning">
+<h2>Robot planner 1: Simple MoveIt planning<a class="headerlink" href="#robot-planner-1-simple-moveit-planning" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>roslaunch main program1.launch
+rosrun kuka_barrett robot_planner1
+</pre></div>
+</div>
+</div>
+<div class="section" id="robot-planner-2-simulation-layout-and-reachability-experiments">
+<h2>Robot Planner 2: Simulation layout and reachability experiments<a class="headerlink" href="#robot-planner-2-simulation-layout-and-reachability-experiments" title="Permalink to this headline">¶</a></h2>
+<p>To run the experiment 2a:
+.. code-block:: bash</p>
+<blockquote>
+<div><p>roslaunch main program1.launch
+rosrun kuka_barrett robot_planner2a</p>
+</div></blockquote>
+<p>and to run the experiment 2b run the following commands in different terminals
+.. code-block:: bash</p>
+<blockquote>
+<div><p>roslaunch main program3.launch
+rosrun kuka_barrett robot_planner2b</p>
+</div></blockquote>
+</div>
+<div class="section" id="robot-planner-3-trajectory-planning">
+<h2>Robot Planner 3: Trajectory planning<a class="headerlink" href="#robot-planner-3-trajectory-planning" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="a-circular-trajectories-in-task-space">
+<h3>3a: Circular trajectories in task space<a class="headerlink" href="#a-circular-trajectories-in-task-space" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>roslaunch main program3.launch
+rosrun kuka_barrett robot_planner3a
+</pre></div>
+</div>
+</div>
+<div class="section" id="b-line-segment-trajectories-in-task-space">
+<h3>3b: Line segment trajectories in task space<a class="headerlink" href="#b-line-segment-trajectories-in-task-space" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>roslaunch main program3.launch
+rosrun kuka_barrett robot_planner3b
+</pre></div>
+</div>
+</div>
+<div class="section" id="c-cubic-spline-trajectories-in-task-space">
+<h3>3c: Cubic Spline trajectories in task space<a class="headerlink" href="#c-cubic-spline-trajectories-in-task-space" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>roslaunch main program3.launch
+rosrun kuka_barrett robot_planner3c
+</pre></div>
+</div>
+</div>
+<div class="section" id="d-b-spline-trajectories-in-task-space">
+<h3>3d: B-Spline trajectories in task space<a class="headerlink" href="#d-b-spline-trajectories-in-task-space" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>roslaunch main program3.launch
+rosrun kuka_barrett robot_planner3d
+</pre></div>
+</div>
+</div>
+<div class="section" id="e-polynomial-trajectories-in-joint-space">
+<h3>3e: Polynomial trajectories in joint space<a class="headerlink" href="#e-polynomial-trajectories-in-joint-space" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>roslaunch main program3.launch
+rosrun kuka_barrett robot_planner3e
+</pre></div>
+</div>
+</div>
+<div class="section" id="f-trajectories-in-joint-space-with-trapezoidal-velocity-profile">
+<h3>3f: Trajectories in joint space with trapezoidal velocity profile<a class="headerlink" href="#f-trajectories-in-joint-space-with-trapezoidal-velocity-profile" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>roslaunch main program3.launch
+rosrun kuka_barrett robot_planner3f
+</pre></div>
+</div>
+</div>
+<div class="section" id="g-trajectories-in-joint-space-with-s-curve-velocity-profile">
+<h3>3g: Trajectories in joint space with s-curve velocity profile<a class="headerlink" href="#g-trajectories-in-joint-space-with-s-curve-velocity-profile" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>roslaunch main program3.launch
+rosrun kuka_barrett robot_planner3g
+</pre></div>
+</div>
+</div>
+<div class="section" id="h-helical-trajectories-in-task-space">
+<h3>3h: Helical trajectories in task space<a class="headerlink" href="#h-helical-trajectories-in-task-space" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>roslaunch main program3.launch
+rosrun kuka_barrett robot_planner3h
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="robot-planner-4-simple-cube-pick-and-place-experiment">
+<h2>Robot Planner 4: Simple cube pick-and-place experiment<a class="headerlink" href="#robot-planner-4-simple-cube-pick-and-place-experiment" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>roslaunch main program2.launch
+rosrun kuka_barrett robot_planner4
+</pre></div>
+</div>
+</div>
+<div class="section" id="robot-planner-5-visual-servoing">
+<h2>Robot Planner 5: Visual servoing<a class="headerlink" href="#robot-planner-5-visual-servoing" title="Permalink to this headline">¶</a></h2>
+<p>To run the robot planner of this experiment first run the following commands in different terminals</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>roslaunch main program2.launch
+rosrun kuka_barrett robot_planner5
+</pre></div>
+</div>
+<p>to start the stereoscopic vision run the following launch file. Caution, the following launch files might be CPU and GPU intensive</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>roslaunch vision stereo.launch
+</pre></div>
+</div>
+<p>to run the visual servoing services run the following</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>roslaunch vision visual_servo.launch
+</pre></div>
+</div>
+</div>
+<div class="section" id="robot-planner-6-rcm-alignment-error-in-insertion-and-retraction">
+<h2>Robot Planner 6: RCM alignment error in insertion and retraction<a class="headerlink" href="#robot-planner-6-rcm-alignment-error-in-insertion-and-retraction" title="Permalink to this headline">¶</a></h2>
+<img alt="../_images/rcm-collision.png" src="../_images/rcm-collision.png" />
+<p>To run the experiment run the folloei g commands in different terminals</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>roslaunch main program2.launch
+rosrun kuka_barrett robot_planner6
+</pre></div>
+</div>
+<p>To run the node that calculates the fulcrum error in real time, run the following command</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rosrun taskspace fulcrum_state_node
+</pre></div>
+</div>
+<p>to plot the fulcrum error run the following</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rosrun rqt_plot rqt_plot /fulcrum/error
+</pre></div>
+</div>
+<p>to inspect the nodes and topics of this experiment run the following ROS package</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rosrun rqt_graph rqt_graph
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../vision/getting-started.html" class="btn btn-neutral float-right" title="Getting Started" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="robot.html" class="btn btn-neutral float-left" title="Robot Description" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Alexios Karadimos
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

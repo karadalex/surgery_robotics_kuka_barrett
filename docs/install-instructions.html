@@ -112,10 +112,12 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="simulation/getting-started.html">Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="simulation/robot.html">Robot Description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="simulation/running-experiments.html">Running experiments</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Vision</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="vision/getting-started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vision/detection.html">Surgical Tool Detection</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Troubleshooting</span></p>
 <ul>
@@ -194,8 +196,8 @@
 <div class="section" id="setup">
 <h2>Setup<a class="headerlink" href="#setup" title="Permalink to this headline">¶</a></h2>
 <p>Clone this repository with <strong>–recurse-submodules</strong> flag to download submodule repositories</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ catkin_make
-$ <span class="nb">source</span> devel/setup.bash <span class="c1"># or setup.sh, setup.zsh</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>catkin_make
+<span class="nb">source</span> devel/setup.bash <span class="c1"># or setup.sh, setup.zsh</span>
 </pre></div>
 </div>
 </div>
@@ -212,24 +214,24 @@ $ <span class="nb">source</span> devel/setup.bash <span class="c1"># or setup.sh
 <li><p>Make sure to have installed the necessary libraries. e.g. for <strong>tf2_sensor_msgs</strong> run <cite>sudo apt-get install ros-melodic-tf2-sensor-msgs</cite></p></li>
 <li><p>Create a new workspace</p></li>
 </ol>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">source</span> /opt/ros/melodic/setup.bash
-$ mkdir -p ~/vrep_ws/src
-$ <span class="nb">cd</span> ~/vrep_ws/
-$ catkin_make
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">source</span> /opt/ros/melodic/setup.bash
+mkdir -p ~/vrep_ws/src
+<span class="nb">cd</span> ~/vrep_ws/
+catkin_make
 </pre></div>
 </div>
 <ol class="arabic simple" start="4">
 <li><p>Install xsltproc <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">xsltproc</span></code></p></li>
 <li><p>Download plugin source code and build it</p></li>
 </ol>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">cd</span> src
-$ git clone --recursive https://github.com/CoppeliaRobotics/simExtROSInterface.git sim_ros_interface
-$ <span class="nb">source</span> devel/setup.bash
-$ <span class="nb">export</span> <span class="nv">COPPELIASIM_ROOT_DIR</span><span class="o">=</span>/home/user/path-to-your-vrep-installation-folder
-$ <span class="nb">cd</span> ~/vrep_ws/
-$ catkin_make
-$ <span class="nb">cd</span> devel/lib
-$ cp libsimExtROSInterface.so <span class="nv">$COPPELIASIM_ROOT_DIR</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> src
+git clone --recursive https://github.com/CoppeliaRobotics/simExtROSInterface.git sim_ros_interface
+<span class="nb">source</span> devel/setup.bash
+<span class="nb">export</span> <span class="nv">COPPELIASIM_ROOT_DIR</span><span class="o">=</span>/home/user/path-to-your-vrep-installation-folder
+<span class="nb">cd</span> ~/vrep_ws/
+catkin_make
+<span class="nb">cd</span> devel/lib
+cp libsimExtROSInterface.so <span class="nv">$COPPELIASIM_ROOT_DIR</span>
 </pre></div>
 </div>
 <p>6. Run VREP (after you have sourced your ROS workspace environment) <code class="docutils literal notranslate"><span class="pre">$COPPELIASIM_ROOT_DIR/coppeliaSim.sh</span></code>.

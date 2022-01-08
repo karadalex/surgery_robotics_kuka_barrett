@@ -35,6 +35,7 @@ Surgery Robotics with KUKA iiwa and Barrett hand's documentation!
 
    /simulation/getting-started
    /simulation/robot
+   /simulation/running-experiments
 
 .. toctree::
    :maxdepth: 2

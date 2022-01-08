@@ -8,7 +8,7 @@ Generate transformations tree:
 
 .. code-block:: bash
 
-  $ rosrun tf view_frames
-  $ evince frames.pdf
+  rosrun tf view_frames
+  evince frames.pdf
 
 .. graphviz:: frames.gv

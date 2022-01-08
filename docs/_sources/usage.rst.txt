@@ -9,8 +9,8 @@ List of available programs (launch files) to run:
 1. Testing some simple trajectories with the tool already attached to robot.
   .. code-block:: bash
 
-    $ roslaunch main program1.launch
-    $ rosrun kuka_barrett robot_planner1
+    roslaunch main program1.launch
+    rosrun kuka_barrett robot_planner1
 
 2. `main program2.launch` : Simple pick and place example program
 3. (Discontinued) ``roslaunch kuka_barrett_control computed_torque_controller_test.launch``

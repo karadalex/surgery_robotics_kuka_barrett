@@ -10,40 +10,40 @@ Requirements
 
   .. code-block:: bash
 
-    $ sudo apt-get install ros-melodic-moveit
+    sudo apt-get install ros-melodic-moveit
 
   * Moveit visual tools
 
   .. code-block:: bash
 
-    $ sudo apt-get install ros-melodic-moveit-visual-tools
+    sudo apt-get install ros-melodic-moveit-visual-tools
     
   * Moveit Grasps (As of 14/3/2020 this package is not available and must be installed from source see `instructions in official repository <https://github.com/ros-planning/moveit_grasps#install-from-source>`_
 
   .. code-block:: bash
   
-    $ sudo apt-get install ros-melodic-moveit-grasps
+    sudo apt-get install ros-melodic-moveit-grasps
 
   * Joint Trajectory controller package
 
   .. code-block:: bash
 
-    $ sudo apt-get install ros-melodic-joint-trajectory-controller
+    sudo apt-get install ros-melodic-joint-trajectory-controller
 
   * ROS Controllers
 
   .. code-block:: bash
 
-    $ sudo apt-get install ros-melodic-ros-controllers
+    sudo apt-get install ros-melodic-ros-controllers
 
   * Other dependencies
 
   .. code-block:: bash
 
-    $ sudo apt-get install ros-melodic-cv-camera ros-melodic-executive-smach ros-melodic-smach ros-melodic-smach-viewer
+    sudo apt-get install ros-melodic-cv-camera ros-melodic-executive-smach ros-melodic-smach ros-melodic-smach-viewer
 
   * Catkin tools (optional)
   
   .. code-block:: bash
 
-    $ sudo apt-get install ros-melodic-catkin python-catkin-tools  
+    sudo apt-get install ros-melodic-catkin python-catkin-tools  

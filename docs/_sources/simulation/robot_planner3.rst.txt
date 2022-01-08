@@ -1,0 +1,11 @@
+Robot Planner 3: Trajectory planning
+====================================
+
+3a: Circular trajectories in task space
+---------------------------------------
+
+3b: Line segment trajectories in task space
+-------------------------------------------
+
+3c: Cubic Spline trajectories in task space
+-------------------------------------------
