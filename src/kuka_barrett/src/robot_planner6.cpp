@@ -20,6 +20,10 @@ namespace rvt = rviz_visual_tools;
 typedef geometry_msgs::PoseWithCovarianceStamped covPose;
 
 
+void fulcrumFrameUpdate(const covPose::ConstPtr &msg) {
+	// TODO
+}
+
 int main(int argc, char** argv)
 {
 	ros::init(argc, argv, "robot_planner6");
@@ -35,6 +39,9 @@ int main(int argc, char** argv)
 	if(sharedPoseMsg != nullptr){
 		pose_msg = *sharedPoseMsg;
 	}
+
+	// Not yet used, added mostly so that the topic dependency appears in the rqt_graph
+	ros::Subscriber sub_fulcrum = node_handle.subscribe("fulcrum/estimated/frame2", 1000, fulcrumFrameUpdate);
 
 	// Setup Move group
 	static const std::string PLANNING_GROUP = "iiwa_arm";
