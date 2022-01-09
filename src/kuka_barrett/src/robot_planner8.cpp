@@ -1,7 +1,6 @@
 /**
- * Robot Planner 4:
- * Planning a simple pick and place program using the gazebo world 2 (run it using roslaunch main program2.launch)
- * Code based on http://docs.ros.org/en/melodic/api/moveit_tutorials/html/doc/pick_place/pick_place_tutorial.html
+ * Robot Planner 8:
+ * TODO
  *
  * Author: Alexios Karadimos
  */
@@ -54,7 +53,7 @@ void closedGripper(trajectory_msgs::JointTrajectory& posture)
 
 int main(int argc, char** argv)
 {
-	ros::init(argc, argv, "robot_planner7");
+	ros::init(argc, argv, "robot_planner8");
 	ros::NodeHandle node_handle;
 	ros::AsyncSpinner spinner(1);
 	spinner.start();
