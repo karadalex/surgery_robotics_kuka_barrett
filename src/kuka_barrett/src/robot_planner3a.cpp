@@ -91,7 +91,7 @@ int main(int argc, char** argv)
 	rot1.setRPY(0, M_PI_2, 0);
 
 	tf2::Matrix3x3 identity3x3 = tf2::Matrix3x3(1, 0, 0, 0, 1, 0, 0, 0, 1);
-	vector<geometry_msgs::Pose> circle_waypoints2, transformed_waypoints2;
+	vector<geometry_msgs::Pose> circle_waypoints2, transformed_waypoints2, transformed_waypoints3;
 	for (auto circle_point_pose: transformed_waypoints) {
 		geometry_msgs::Pose new_pose;
 		auto cp = circle_point_pose.position;
@@ -105,12 +105,29 @@ int main(int argc, char** argv)
 		rot2.setRPY(0, 0, phi);
 		tf2::Quaternion rot3 = tf2::Quaternion();
 		rot3.setRPY(0, M_PI-th, 0);
-		tf2::Quaternion rot4 = tf2::Quaternion();
-		// tf2::Transform Td = tf2::Transform(identity3x3, tf2::Vector3(0, - 0.094 - 0.022, -0.05)) * tf2::Transform(qa, pa) * tf2::Transform(rot2, dxa) * tf2::Transform(rot3, tf2::Vector3(0, 0, 0));
 		tf2::Transform Td = tf2::Transform(qa, pa) * tf2::Transform(rot2, dxa) * tf2::Transform(rot3, tf2::Vector3(0, 0, 0));
 		tf2::Transform tfa = Td;
 		tf2::toMsg(tfa, new_pose);
 		transformed_waypoints2.push_back(new_pose);
+	}
+
+	for (auto circle_point_pose: transformed_waypoints) {
+		geometry_msgs::Pose new_pose;
+		auto cp = circle_point_pose.position;
+		double px = circle_point_pose.position.x;
+		double py = circle_point_pose.position.y;
+		double pz = circle_point_pose.position.z;
+		tf2::Vector3 dxa = tf2::Vector3(px, py, pz);
+		double th = atan2(sqrt(px*px + py*py), pz);
+		double phi = atan2(py, px);
+		tf2::Quaternion rot2 = tf2::Quaternion();
+		rot2.setRPY(0, 0, phi);
+		tf2::Quaternion rot3 = tf2::Quaternion();
+		rot3.setRPY(0, M_PI-th, 0);
+		tf2::Transform Td = tf2::Transform(qa, pa) * tf2::Transform(rot2, dxa) * tf2::Transform(rot3, tf2::Vector3(0, 0, 0)) * tf2::Transform(identity3x3, tf2::Vector3(-0.05, 0, -0.094 - 0.022));
+		tf2::Transform tfa = Td;
+		tf2::toMsg(tfa, new_pose);
+		transformed_waypoints3.push_back(new_pose);
 	}
 
 	for (auto circle_point_pose: circle_waypoints) {
@@ -126,8 +143,6 @@ int main(int argc, char** argv)
 		rot2.setRPY(0, 0, phi);
 		tf2::Quaternion rot3 = tf2::Quaternion();
 		rot3.setRPY(0, -th, 0);
-		tf2::Quaternion rot4 = tf2::Quaternion();
-		// tf2::Transform Td = tf2::Transform(identity3x3, tf2::Vector3(0, - 0.094 - 0.022, -0.05)) * tf2::Transform(qa, pa) * tf2::Transform(rot2, dxa) * tf2::Transform(rot3, tf2::Vector3(0, 0, 0));
 		tf2::Transform Td = tf2::Transform(qa, pa) * tf2::Transform(rot2, dxa) * tf2::Transform(rot3, tf2::Vector3(0, 0, 0));
 		tf2::Transform tfa = Td;
 		tf2::toMsg(tfa, new_pose);
@@ -141,9 +156,10 @@ int main(int argc, char** argv)
 
 	// traj1.executePath(path3, "Path to circle");
 	traj1.moveToTarget(circle_waypoints2.at(0));
-	traj1.executeCartesianPath(transformed_waypoints2, "Circular Trajectory", true);
+	traj1.executeCartesianPath(transformed_waypoints3, "Circular Trajectory", true);
 
 	traj1.visualizeCartesianPath(circle_waypoints2, "Original taskspace circular trajectory", true);
+	traj1.visualizeCartesianPath(transformed_waypoints2, "Original taskspace circular trajectory", true);
 
 	ros::shutdown();
 	return 0;
