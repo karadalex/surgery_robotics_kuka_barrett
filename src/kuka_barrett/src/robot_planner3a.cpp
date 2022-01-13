@@ -16,6 +16,8 @@
 using namespace std;
 namespace rvt = rviz_visual_tools;
 
+typedef geometry_msgs::PoseWithCovarianceStamped covPose;
+
 
 int main(int argc, char** argv)
 {
@@ -65,35 +67,83 @@ int main(int argc, char** argv)
 	path2.push_back(fulcrumInsertedPose1);
 	traj1.executeCartesianPath(path2, "insertion movement");
 
-	// Get transformation matrix of reference frame {F} (Fulcrum reference frame) w.r.t. to the universal reference frame {U}
-	Pose* FPose = new Pose(0.529996, 0.059271, 1.398114, 0, 0.0, -0.271542);
-	// Publish axis of fulcrum reference frame, note the small difference in the rpy angles, because of a permutation of the axes from the end-effector to the TCP
-	visual_tools.publishAxisLabeled(getPoseFromPathPoint({0.529996, 0.059271, 1.398114, -0.271542, 0.0, 0}), "Fulcrum2", rvt::MEDIUM);
-	visual_tools.trigger();
-	Eigen::Matrix4d U_T_F = FPose->pose;
-	Eigen::Matrix4d T_7_TCP = Eigen::Matrix4d::Zero(4, 4);
-	T_7_TCP(0, 2) = 1; T_7_TCP(1, 0) = 1;
-	T_7_TCP(2, 1) = 1; T_7_TCP(3, 3) = 1;
-	Eigen::Matrix4d T_TCP_7 = T_7_TCP.inverse();
-
 	Eigen::Vector3f circleTrajCenter;
 	// Initialize vector with known values https://eigen.tuxfamily.org/dox/group__TutorialAdvancedInitialization.html
 	// values are given in x, y, z order
 	// circleTrajCenter << 0.259807, 0.689203, 1.174661;
 	circleTrajCenter << 0.0, 0.0, -0.1; // Coordinates of desired circle w.r.t. to {F} reference frame
 	CircleTrajectory* circleTrajectory = new CircleTrajectory(circleTrajCenter, 0.1);
-	vector<geometry_msgs::Pose> circle_waypoints = circleTrajectory->getCartesianWaypoints(20, U_T_F, T_TCP_7);
-	vector<geometry_msgs::Pose> transformed_waypoints = fulcrumEffectTransformation(circle_waypoints, 0.4, U_T_F, T_TCP_7);
+	vector<geometry_msgs::Pose> circle_waypoints = circleTrajectory->getCartesianWaypoints(20, Eigen::Matrix4d::Identity(), Eigen::Matrix4d::Identity());
+	vector<geometry_msgs::Pose> transformed_waypoints = fulcrumEffectTransformation(circle_waypoints, 0.4, Eigen::Matrix4d::Identity(), Eigen::Matrix4d::Identity());
+
+	boost::shared_ptr<covPose const> sharedPoseMsg;
+	covPose pose_msg;
+	sharedPoseMsg = ros::topic::waitForMessage<covPose>("fulcrum/estimated/frame2", node_handle);
+	if(sharedPoseMsg != nullptr){
+		pose_msg = *sharedPoseMsg;
+	}
+	auto fp = pose_msg.pose.pose;
+	auto _p = fp.position;
+	tf2::Vector3 pa = tf2::Vector3(_p.x, _p.y, _p.z);
+	auto _q = fp.orientation;
+	tf2::Quaternion qa = tf2::Quaternion(_q.x, _q.y, _q.z, _q.w);
+	tf2::Quaternion rot1 = tf2::Quaternion();
+	rot1.setRPY(0, M_PI_2, 0);
+
+	tf2::Matrix3x3 identity3x3 = tf2::Matrix3x3(1, 0, 0, 0, 1, 0, 0, 0, 1);
+	vector<geometry_msgs::Pose> circle_waypoints2, transformed_waypoints2;
+	for (auto circle_point_pose: transformed_waypoints) {
+		geometry_msgs::Pose new_pose;
+		auto cp = circle_point_pose.position;
+		double px = circle_point_pose.position.x;
+		double py = circle_point_pose.position.y;
+		double pz = circle_point_pose.position.z;
+		tf2::Vector3 dxa = tf2::Vector3(px, py, pz);
+		double th = atan2(sqrt(px*px + py*py), pz);
+		double phi = atan2(py, px);
+		tf2::Quaternion rot2 = tf2::Quaternion();
+		rot2.setRPY(0, 0, phi);
+		tf2::Quaternion rot3 = tf2::Quaternion();
+		rot3.setRPY(0, M_PI-th, 0);
+		tf2::Quaternion rot4 = tf2::Quaternion();
+		// tf2::Transform Td = tf2::Transform(identity3x3, tf2::Vector3(0, - 0.094 - 0.022, -0.05)) * tf2::Transform(qa, pa) * tf2::Transform(rot2, dxa) * tf2::Transform(rot3, tf2::Vector3(0, 0, 0));
+		tf2::Transform Td = tf2::Transform(qa, pa) * tf2::Transform(rot2, dxa) * tf2::Transform(rot3, tf2::Vector3(0, 0, 0));
+		tf2::Transform tfa = Td;
+		tf2::toMsg(tfa, new_pose);
+		transformed_waypoints2.push_back(new_pose);
+	}
+
+	for (auto circle_point_pose: circle_waypoints) {
+		geometry_msgs::Pose new_pose;
+		auto cp = circle_point_pose.position;
+		double px = circle_point_pose.position.x;
+		double py = circle_point_pose.position.y;
+		double pz = circle_point_pose.position.z;
+		tf2::Vector3 dxa = tf2::Vector3(px, py, pz);
+		double th = atan2(sqrt(px*px + py*py), pz);
+		double phi = atan2(py, px);
+		tf2::Quaternion rot2 = tf2::Quaternion();
+		rot2.setRPY(0, 0, phi);
+		tf2::Quaternion rot3 = tf2::Quaternion();
+		rot3.setRPY(0, -th, 0);
+		tf2::Quaternion rot4 = tf2::Quaternion();
+		// tf2::Transform Td = tf2::Transform(identity3x3, tf2::Vector3(0, - 0.094 - 0.022, -0.05)) * tf2::Transform(qa, pa) * tf2::Transform(rot2, dxa) * tf2::Transform(rot3, tf2::Vector3(0, 0, 0));
+		tf2::Transform Td = tf2::Transform(qa, pa) * tf2::Transform(rot2, dxa) * tf2::Transform(rot3, tf2::Vector3(0, 0, 0));
+		tf2::Transform tfa = Td;
+		tf2::toMsg(tfa, new_pose);
+		circle_waypoints2.push_back(new_pose);
+	}
 
 	// Path to circle
 	std::vector<geometry_msgs::Pose> path3;
 	path3.push_back(fulcrumInsertedPose1);
-	path3.push_back(transformed_waypoints.at(0));
+	path3.push_back(circle_waypoints2.at(0));
 
-	traj1.executeCartesianPath(path3, "Path to circle");
-	traj1.executeCartesianPath(transformed_waypoints, "Circular Trajectory", false);
+	// traj1.executePath(path3, "Path to circle");
+	traj1.moveToTarget(circle_waypoints2.at(0));
+	traj1.executeCartesianPath(transformed_waypoints2, "Circular Trajectory", true);
 
-	traj1.visualizeCartesianPath(circle_waypoints, "Original taskspace circular trajectory", false);
+	traj1.visualizeCartesianPath(circle_waypoints2, "Original taskspace circular trajectory", true);
 
 	ros::shutdown();
 	return 0;
