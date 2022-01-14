@@ -1,54 +1,27 @@
 /**
- * Robot Planner 8:
- * TODO
+ * Robot Planner 8
  *
  * Author: Alexios Karadimos
  */
 
 #include <moveit/planning_scene_interface/planning_scene_interface.h>
 #include <moveit_msgs/CollisionObject.h>
-#include <moveit/move_group_interface/move_group_interface.h>
-#include <tf2_geometry_msgs/tf2_geometry_msgs.h>
-#include <std_msgs/Float64.h>
 #include "kinematics/TrajectoryExecution.h"
-#include "kinematics/BarrettInv.h"
+#include "kinematics/Pose.h"
+#include <moveit_visual_tools/moveit_visual_tools.h>
+#include <geometry_msgs/PoseWithCovarianceStamped.h>
+#include <tf2_geometry_msgs/tf2_geometry_msgs.h>
+#include "trajectory/LineSegTrajectory.h"
 
 
 using namespace std;
+namespace rvt = rviz_visual_tools;
 
-void openGripper(trajectory_msgs::JointTrajectory& posture)
-{
-	posture.joint_names.resize(8);
-	posture.joint_names = {
-					"bh_j11_joint", "bh_j12_joint", "bh_j13_joint",
-					"bh_j21_joint", "bh_j22_joint", "bh_j23_joint",
-					"bh_j32_joint", "bh_j33_joint"
-	};
+typedef geometry_msgs::PoseWithCovarianceStamped covPose;
 
-	/* Set them as open, wide enough for the object to fit. */
-	posture.points.resize(1);
-	posture.points[0].positions.resize(8);
-	for (int j = 0; j < posture.joint_names.size(); ++j)
-		posture.points[0].positions[j] = 0.0;
-	posture.points[0].time_from_start = ros::Duration(0.5);
-}
 
-void closedGripper(trajectory_msgs::JointTrajectory& posture)
-{
-	/* Add both finger joints of panda robot. */
-	posture.joint_names.resize(8);
-	posture.joint_names = {
-					"bh_j11_joint", "bh_j12_joint", "bh_j13_joint",
-					"bh_j21_joint", "bh_j22_joint", "bh_j23_joint",
-					"bh_j32_joint", "bh_j33_joint"
-	};
-
-	/* Set them as closed. */
-	posture.points.resize(1);
-	posture.points[0].positions.resize(8);
-	for (int j = 0; j < posture.joint_names.size(); ++j)
-		posture.points[0].positions[j] = 0.8;
-	posture.points[0].time_from_start = ros::Duration(0.5);
+void fulcrumFrameUpdate(const covPose::ConstPtr &msg) {
+	// TODO
 }
 
 int main(int argc, char** argv)
@@ -58,149 +31,83 @@ int main(int argc, char** argv)
 	ros::AsyncSpinner spinner(1);
 	spinner.start();
 
-	ros::WallDuration(1.0).sleep();
-	moveit::planning_interface::PlanningSceneInterface planning_scene_interface;
-	moveit::planning_interface::MoveGroupInterface move_group("iiwa_arm");
-	move_group.setPlanningTime(45.0);
-	move_group.allowReplanning(true);
-	move_group.setNumPlanningAttempts(3);
+	// https://answers.ros.org/question/293890/how-to-use-waitformessage-properly/?answer=294479#post-id-294479
+	// https://answers.ros.org/question/191012/problem-with-subscribe-and-callback-function/?answer=191017#post-id-191017
+	boost::shared_ptr<covPose const> sharedPoseMsg;
+	covPose pose_msg;
+	sharedPoseMsg = ros::topic::waitForMessage<covPose>("fulcrum/estimated/frame2", node_handle);
+	if(sharedPoseMsg != nullptr){
+		pose_msg = *sharedPoseMsg;
+	}
 
-	ros::WallDuration(1.0).sleep();
+	// Not yet used, added mostly so that the topic dependency appears in the rqt_graph
+	ros::Subscriber sub_fulcrum = node_handle.subscribe("fulcrum/estimated/frame2", 1000, fulcrumFrameUpdate);
 
-	// // Setup Move group
-	// static const std::string PLANNING_GROUP = "iiwa_arm";
-	// double pos_tolerance = 0.00005;
-	// double orient_tolerance = 0.00005;
-	// int plan_time_sec = 5;
-	// bool replanning = true;
-	// int plan_attempts = 6;
-	// const string base_frame = "world";
-	// TrajectoryExecution traj1 = TrajectoryExecution(PLANNING_GROUP, pos_tolerance, orient_tolerance, plan_time_sec, replanning, plan_attempts, base_frame, node_handle);
-	//
-	// // X Y Z Roll Pitch Yaw
-	// vector<vector<float>> path1;
-	// // path.push_back({0, 0, 2.262, 0, 0, 0}); // For z >= 2.261 the robot reaches end of workspace, which is a signularity and cant be calculated from the numerical IK
-	// path1.push_back({0, 0, 2.26, 0, 0, 0}); // Home position
-	// // TCP position for point above cube
-	// path1.push_back({0.004149, -0.719461, 1.366577, 3.139543, 0.022613, -1.657719});
-	// traj1.executePath(path1);
-	//
-	// // Slowly approaching Cube
-	// // Move in a line segment while approaching cube
-	// geometry_msgs::Pose aboveCubePose = getPoseFromPathPoint(path1.at(path1.size()-1));
-	// std::vector<geometry_msgs::Pose> path2;
-	// path2.push_back(aboveCubePose);
-	// vector<float> onCubeFloatPose = {0.004149, -0.719461, 1.202148, 3.139543, 0.022613, -1.657719};
-	// geometry_msgs::Pose onCubePose = getPoseFromPathPoint(onCubeFloatPose);
-	// path2.push_back(onCubePose);
-	// traj1.executeCartesianPath(path2, "approaching cube");
+	// Setup Move group
+	static const std::string PLANNING_GROUP = "iiwa_arm";
+	double pos_tolerance = 0.000005;
+	double orient_tolerance = 0.000005;
+	int plan_time_sec = 5;
+	bool replanning = true;
+	int plan_attempts = 6;
+	const string base_frame = "world";
+	TrajectoryExecution traj1 = TrajectoryExecution(PLANNING_GROUP, pos_tolerance, orient_tolerance, plan_time_sec, replanning, plan_attempts, base_frame, node_handle);
 
-	// Create Collision Objects - Cube
-	std::vector<moveit_msgs::CollisionObject> collision_objects;
-	collision_objects.resize(1);
+	moveit_visual_tools::MoveItVisualTools visual_tools = moveit_visual_tools::MoveItVisualTools(base_frame);
 
-	collision_objects[0].header.frame_id = "world";
-	collision_objects[0].id = "cube";
+	// X Y Z Roll Pitch Yaw
+	vector<vector<float>> preparation_path;
+	// TCP pose around home position, such that the robot arm starts in an elbow-up configuration
+	preparation_path.push_back({0.1, 0.087249, 1.8, 2.952052, 1.311528, -1.750799});
+	traj1.moveToTarget(getPoseFromPathPoint(preparation_path.at(0)));
 
-/* Define the primitive and its dimensions. */
-	collision_objects[0].primitives.resize(1);
-	collision_objects[0].primitives[0].type = collision_objects[1].primitives[0].BOX;
-	collision_objects[0].primitives[0].dimensions.resize(3);
-	collision_objects[0].primitives[0].dimensions[0] = 0.1;
-	collision_objects[0].primitives[0].dimensions[1] = 0.1;
-	collision_objects[0].primitives[0].dimensions[2] = 0.1;
+	std::vector<geometry_msgs::Pose> path1;
+	preparation_path.push_back({0.1, 0.087249, 1.953192, 2.952052, 1.311528, -1.750799});
+	path1.push_back(getPoseFromPathPoint(preparation_path.at(0)));
+	path1.push_back(getPoseFromPathPoint(preparation_path.at(1)));
+	traj1.executeCartesianPath(path1, "elbow-up preparation path");
 
-/* Define the pose of the object. */
-	collision_objects[0].primitive_poses.resize(1);
-	collision_objects[0].primitive_poses[0].position.x = 0;
-	collision_objects[0].primitive_poses[0].position.y = -0.72;
-	collision_objects[0].primitive_poses[0].position.z = 1.0493;
+	// TCP pose for point above fulcrum 1
+	geometry_msgs::Pose trajStartPose;
+	auto _p = pose_msg.pose.pose.position;
+	tf2::Vector3 pa = tf2::Vector3(_p.x, _p.y, _p.z);
+	auto _q = pose_msg.pose.pose.orientation;
+	tf2::Quaternion qa = tf2::Quaternion(_q.x, _q.y, _q.z, _q.w);
+	tf2::Quaternion rot1 = tf2::Quaternion();
+	rot1.setRPY(0, M_PI_2, M_PI_2);
+	tf2::Quaternion rot2 = tf2::Quaternion();
+	rot2.setRPY(0, 0, M_PI_2);
+	tf2::Vector3 dxa = tf2::Vector3(-0.5 - 0.05, 0, - 0.094 - 0.022);
+	tf2::Transform Td = tf2::Transform(tf2::Matrix3x3(1, 0, 0, 0, 1, 0, 0, 0, 1), dxa);
+	tf2::Transform tfa = tf2::Transform(qa, pa) * tf2::Transform(rot1, tf2::Vector3(0, 0, 0)) * Td;
+	tf2::toMsg(tfa, trajStartPose);
 
-	collision_objects[0].operation = collision_objects[0].ADD;
-	planning_scene_interface.applyCollisionObjects(collision_objects);
+	path1.clear();
+	path1.push_back(getPoseFromPathPoint(preparation_path.at(1)));
+	path1.push_back(trajStartPose);
+	traj1.executeCartesianPath(path1, "movement towards above fulcrum point 1");
 
-	// ****************************************************************************
-	// Pick Pipeline
-	// ****************************************************************************
-	std::vector<moveit_msgs::Grasp> grasps;
-	grasps.resize(1);
+	// Approaching Fulcrum point 1 - Insertion motion Cartesian path
+	// Move in a line segment while approaching fulcrum point and entering body
+	geometry_msgs::Pose fulcrumAbovePose1 = path1.at(path1.size()-1); // Start insertion trajectory from last target point of previous trajectory
+	std::vector<geometry_msgs::Pose> path2;
+	path2.push_back(fulcrumAbovePose1);
+	geometry_msgs::Pose fulcrumInsertedPose1;
+	tf2::Vector3 dxb = tf2::Vector3(0.2, 0, 0);
+	tf2::Transform Tdb = tf2::Transform(tf2::Matrix3x3(1, 0, 0, 0, 1, 0, 0, 0, 1), dxb);
+	tf2::Transform tfb = tfa * Tdb;
+	tf2::toMsg(tfb, fulcrumInsertedPose1);
+	path2.push_back(fulcrumInsertedPose1);
+	traj1.executeCartesianPath(path2, "insertion movement");
 
-	// Setting grasp pose
-	grasps[0].grasp_pose.header.frame_id = "world";
-	tf2::Quaternion orientation;
-	orientation.setRPY(3.139543, 0.022613, -1.657719);
-	grasps[0].grasp_pose.pose.orientation = tf2::toMsg(orientation);
-	grasps[0].grasp_pose.pose.position.x = 0.004149;
-	grasps[0].grasp_pose.pose.position.y = -0.719461;
-	grasps[0].grasp_pose.pose.position.z = 1.202148;
+	ros::Duration(1).sleep();
 
-	// Setting pre-grasp approach
-	// Defined with respect to frame_id
-	grasps[0].pre_grasp_approach.direction.header.frame_id = "world";
-	// Direction is set as positive x axis
-	grasps[0].pre_grasp_approach.direction.vector.z = -1.0;
-	grasps[0].pre_grasp_approach.min_distance = 0.05;
-	grasps[0].pre_grasp_approach.desired_distance = 0.1;
-
-	// Setting post-grasp retreat
-	// Defined with respect to frame_id
-	grasps[0].post_grasp_retreat.direction.header.frame_id = "world";
-	// Direction is set as positive z axis
-	grasps[0].post_grasp_retreat.direction.vector.z = 1.0;
-	grasps[0].post_grasp_retreat.min_distance = 0.1;
-	grasps[0].post_grasp_retreat.desired_distance = 0.25;
-
-	// Setting posture of eef before grasp
-	openGripper(grasps[0].pre_grasp_posture);
-
-	// Setting posture of eef during grasp
-	closedGripper(grasps[0].grasp_posture);
-
-	// Set support surface as table1.
-	move_group.setSupportSurfaceName("table1");
-	// Call pick to pick up the object using the grasps given
-	move_group.pick("cube", grasps);
-
-	// ****************************************************************************
-	// Place Pipeline
-	// ****************************************************************************
-	std::vector<moveit_msgs::PlaceLocation> place_location;
-	place_location.resize(1);
-
-	// Setting place location pose
-	place_location[0].place_pose.header.frame_id = "world";
-	orientation.setRPY(0, 0, M_PI / 2);
-	place_location[0].place_pose.pose.orientation = tf2::toMsg(orientation);
-	// While placing it is the exact location of the center of the object.
-	place_location[0].place_pose.pose.position.x = -0.08149;
-	place_location[0].place_pose.pose.position.y = 0.719461;
-	place_location[0].place_pose.pose.position.z = 1.202148;
-
-	// Setting pre-place approach
-	// Defined with respect to frame_id
-	place_location[0].pre_place_approach.direction.header.frame_id = "world";
-	// Direction is set as negative z axis
-	place_location[0].pre_place_approach.direction.vector.z = -1.0;
-	place_location[0].pre_place_approach.min_distance = 0.1;
-	place_location[0].pre_place_approach.desired_distance = 0.5;
-
-	// Setting post-grasp retreat
-	// Defined with respect to frame_id
-	place_location[0].post_place_retreat.direction.header.frame_id = "world";
-	// Direction is set as negative y axis
-	place_location[0].post_place_retreat.direction.vector.z = 1.0;
-	place_location[0].post_place_retreat.min_distance = 0.1;
-	place_location[0].post_place_retreat.desired_distance = 0.25;
-
-	// Setting posture of eef after placing object
-	// Similar to the pick case
-	openGripper(place_location[0].post_place_posture);
-
-	move_group.setSupportSurfaceName("table1");
-	move_group.place("cube", place_location);
+	// Retraction
+	path2.clear();
+	path2.push_back(fulcrumInsertedPose1);
+	path2.push_back(trajStartPose);
+	traj1.executeCartesianPath(path2, "retraction movement");
 
 	ros::shutdown();
 	return 0;
 }
-
-
