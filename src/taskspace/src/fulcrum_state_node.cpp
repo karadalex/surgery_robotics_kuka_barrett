@@ -8,9 +8,8 @@
 #include <moveit/robot_model_loader/robot_model_loader.h>
 #include <moveit/robot_model/robot_model.h>
 #include <moveit/robot_state/robot_state.h>
+#include <moveit_visual_tools/moveit_visual_tools.h>
 #include <vector>
-#include <string>
-#include <iostream>
 #include <std_msgs/Float64.h>
 #include <geometry_msgs/PoseWithCovarianceStamped.h>
 
@@ -21,8 +20,8 @@ typedef geometry_msgs::PoseWithCovarianceStamped covPose;
 
 std::vector<double> joint_values = std::vector<double>(7, 0.0);
 
-using Line3 = Hyperplane<float, 3>;
-using Vec3 = Vector3f;
+using Line3 = Hyperplane<double, 3>;
+using Vec3 = Vector3d;
 
 Vec3 f2;
 
@@ -34,6 +33,8 @@ moveit::core::RobotModelPtr kinematic_model;
 const robot_state::JointModelGroup* joint_model_group;
 
 void jointStateCallback(const sensor_msgs::JointState &msg) {
+	moveit_visual_tools::MoveItVisualTools visual_tools = moveit_visual_tools::MoveItVisualTools("world");
+
 	const double* all_joint_values = msg.position.data();
 	// Joint names are the following with the following order
 	// name: [bh_j11_joint, bh_j12_joint, bh_j13_joint, bh_j21_joint, bh_j22_joint, bh_j23_joint,
@@ -50,9 +51,10 @@ void jointStateCallback(const sensor_msgs::JointState &msg) {
 	auto translation = end_effector_state.translation();
 	// Take into consideration only poses away from home position where z=2.26
 	if (translation.z() < 2.2) {
-		double x = translation.x();
+		double x = translation.x() + 0.094 + 0.022;
 		double y = translation.y();
-		double z = translation.z() - 0.094 - 0.022 - 0.008;
+		// double z = translation.z() - 0.094 - 0.022 - 0.008;
+		double z = translation.z();
 		auto rotation = end_effector_state.rotation();
 		double ix = rotation.coeff(0,0);
 		double iy = rotation.coeff(1,0);
@@ -61,6 +63,11 @@ void jointStateCallback(const sensor_msgs::JointState &msg) {
 		Vec3 a(x,y,z);
 		Vec3 b(x+ix, y+iy, z+iz);
 		// Vec3 f2(0.529996, 0.059271, 1.398114);
+
+		// Show calculated line in rviz, uncomment for debugging
+		// TODO: Instead of comment toggling enable/disable with topic or a parameter
+		// visual_tools.publishLine(a, b);
+		// visual_tools.trigger();
 
 		Line3 ab = Line3::Through(a, b);
 		float xy_dist_error = ab.absDistance(f2);
