@@ -18,6 +18,9 @@ namespace rvt = rviz_visual_tools;
 
 typedef geometry_msgs::PoseWithCovarianceStamped covPose;
 
+void fulcrumFrameUpdate(const covPose::ConstPtr &msg) {
+	// TODO
+}
 
 int main(int argc, char** argv)
 {
@@ -25,6 +28,16 @@ int main(int argc, char** argv)
 	ros::NodeHandle node_handle;
 	ros::AsyncSpinner spinner(1);
 	spinner.start();
+
+	boost::shared_ptr<covPose const> sharedPoseMsg;
+	covPose pose_msg;
+	sharedPoseMsg = ros::topic::waitForMessage<covPose>("fulcrum/estimated/frame2", node_handle);
+	if(sharedPoseMsg != nullptr){
+		pose_msg = *sharedPoseMsg;
+	}
+
+	// Not yet used, added mostly so that the topic dependency appears in the rqt_graph
+	ros::Subscriber sub_fulcrum = node_handle.subscribe("fulcrum/estimated/frame2", 1000, fulcrumFrameUpdate);
 
 	// Setup Move group
 	static const std::string PLANNING_GROUP = "iiwa_arm";
@@ -51,21 +64,37 @@ int main(int argc, char** argv)
 	traj1.executeCartesianPath(path1, "elbow-up preparation path");
 
 	// TCP pose for point above fulcrum 1
-	preparation_path.push_back({0.552931, 0.087249, 1.953192, 2.952052, 1.311528, -1.750799});
+	geometry_msgs::Pose trajStartPose;
+	auto _p = pose_msg.pose.pose.position;
+	tf2::Vector3 pa = tf2::Vector3(_p.x, _p.y, _p.z);
+	auto _q = pose_msg.pose.pose.orientation;
+	tf2::Quaternion qa = tf2::Quaternion(_q.x, _q.y, _q.z, _q.w);
+	tf2::Quaternion rot1 = tf2::Quaternion();
+	rot1.setRPY(0, M_PI_2, 0);
+	tf2::Quaternion rot2 = tf2::Quaternion();
+	rot2.setRPY(0, 0, M_PI_2);
+	tf2::Vector3 dxa = tf2::Vector3(-0.5 - 0.05, 0, - 0.094 - 0.022);
+	tf2::Transform Td = tf2::Transform(tf2::Matrix3x3(1, 0, 0, 0, 1, 0, 0, 0, 1), dxa);
+	tf2::Transform tfa = tf2::Transform(qa, pa) * tf2::Transform(rot1, tf2::Vector3(0, 0, 0)) * Td;
+	tf2::toMsg(tfa, trajStartPose);
+
 	path1.clear();
 	path1.push_back(getPoseFromPathPoint(preparation_path.at(1)));
-	path1.push_back(getPoseFromPathPoint(preparation_path.at(2)));
-	// traj1.executeCartesianPath(path1, "movement towards above fulcrum point 1");
+	path1.push_back(trajStartPose);
+	traj1.executeCartesianPath(path1, "movement towards above fulcrum point 1");
 
 	// Approaching Fulcrum point 1 - Insertion motion Cartesian path
 	// Move in a line segment while approaching fulcrum point and entering body
 	geometry_msgs::Pose fulcrumAbovePose1 = path1.at(path1.size()-1); // Start insertion trajectory from last target point of previous trajectory
 	std::vector<geometry_msgs::Pose> path2;
 	path2.push_back(fulcrumAbovePose1);
-	vector<float> fulcrumInsertedPoseFloat1 = {0.544067, 0.038585, 1.756649, 2.951693, 1.311653, -1.751226};
-	geometry_msgs::Pose fulcrumInsertedPose1 = getPoseFromPathPoint(fulcrumInsertedPoseFloat1);
+	geometry_msgs::Pose fulcrumInsertedPose1;
+	tf2::Vector3 dxb = tf2::Vector3(0.2, 0, 0);
+	tf2::Transform Tdb = tf2::Transform(tf2::Matrix3x3(1, 0, 0, 0, 1, 0, 0, 0, 1), dxb);
+	tf2::Transform tfb = tfa * Tdb;
+	tf2::toMsg(tfb, fulcrumInsertedPose1);
 	path2.push_back(fulcrumInsertedPose1);
-	traj1.executeCartesianPath(path2, "insertion movement", false);
+	traj1.executeCartesianPath(path2, "insertion movement");
 
 	Eigen::Vector3f start, end;
 	// Initialize vector with known values https://eigen.tuxfamily.org/dox/group__TutorialAdvancedInitialization.html
@@ -78,20 +107,6 @@ int main(int argc, char** argv)
 	LineSegTrajectory* lineSegTrajectory = new LineSegTrajectory(start, end);
 	vector<geometry_msgs::Pose> line_seg_waypoints = lineSegTrajectory->getCartesianWaypoints(10);
 	vector<geometry_msgs::Pose> transformed_waypoints = fulcrumEffectTransformation(line_seg_waypoints, 0.4);
-
-	boost::shared_ptr<covPose const> sharedPoseMsg;
-	covPose pose_msg;
-	sharedPoseMsg = ros::topic::waitForMessage<covPose>("fulcrum/estimated/frame2", node_handle);
-	if(sharedPoseMsg != nullptr){
-		pose_msg = *sharedPoseMsg;
-	}
-	auto fp = pose_msg.pose.pose;
-	auto _p = fp.position;
-	tf2::Vector3 pa = tf2::Vector3(_p.x, _p.y, _p.z);
-	auto _q = fp.orientation;
-	tf2::Quaternion qa = tf2::Quaternion(_q.x, _q.y, _q.z, _q.w);
-	tf2::Quaternion rot1 = tf2::Quaternion();
-	rot1.setRPY(0, M_PI_2, 0);
 
 	tf2::Matrix3x3 identity3x3 = tf2::Matrix3x3(1, 0, 0, 0, 1, 0, 0, 0, 1);
 	vector<geometry_msgs::Pose> line_seg_waypoints2, transformed_waypoints2, transformed_waypoints3;
@@ -164,11 +179,11 @@ int main(int argc, char** argv)
 	path3.push_back(fulcrumInsertedPose1);
 	path3.push_back(transformed_waypoints3.at(0));
 
-	traj1.executeCartesianPath(path3, "Path approaching line segment start", false);
-	traj1.executeCartesianPath(transformed_waypoints3, "Line Segment transformed Trajectory", true);
-
-	traj1.visualizeCartesianPath(transformed_waypoints2, "Fulcrum transformed line segment trajectory", true);
 	traj1.visualizeCartesianPath(line_seg_waypoints2, "Original taskspace line segment trajectory", true);
+	traj1.visualizeCartesianPath(transformed_waypoints2, "Fulcrum transformed line segment trajectory", true);
+
+	// traj1.executeCartesianPath(path3, "Path approaching line segment start");
+	traj1.executeCartesianPath(transformed_waypoints3, "Line Segment transformed Trajectory", true);
 
 	ros::shutdown();
 	return 0;
