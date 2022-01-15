@@ -11,8 +11,11 @@
 #include <trajectory_msgs/JointTrajectory.h>
 #include "kinematics/utils.h"
 #include <moveit_visual_tools/moveit_visual_tools.h>
+#include <chrono>
 
 
+
+using namespace std::chrono;
 using namespace std;
 namespace rvt = rviz_visual_tools;
 
@@ -55,7 +58,7 @@ int main(int argc, char** argv)
 	vector<vector<float>> preparation_path;
 	// TCP pose around home position, such that the robot arm starts in an elbow-up configuration
 	preparation_path.push_back({0.1, 0.087249, 1.8, 2.952052, 1.311528, -1.750799});
-	traj1.moveToTarget(getPoseFromPathPoint(preparation_path.at(0)));
+	traj1.moveToTarget(getPoseFromPathPoint(preparation_path.at(0)), "elbow-up start pose");
 
 	std::vector<geometry_msgs::Pose> path1;
 	preparation_path.push_back({0.1, 0.087249, 1.953192, 2.952052, 1.311528, -1.750799});
@@ -81,9 +84,9 @@ int main(int argc, char** argv)
 	path1.clear();
 	path1.push_back(getPoseFromPathPoint(preparation_path.at(1)));
 	path1.push_back(trajStartPose);
-	traj1.executeCartesianPath(path1, "movement towards above fulcrum point 1");
+	traj1.executeCartesianPath(path1, "movement towards above fulcrum point 2");
 
-	// Approaching Fulcrum point 1 - Insertion motion Cartesian path
+	// Approaching Fulcrum point 2 - Insertion motion Cartesian path
 	// Move in a line segment while approaching fulcrum point and entering body
 	geometry_msgs::Pose fulcrumAbovePose1 = path1.at(path1.size()-1); // Start insertion trajectory from last target point of previous trajectory
 	std::vector<geometry_msgs::Pose> path2;
@@ -95,6 +98,9 @@ int main(int argc, char** argv)
 	tf2::toMsg(tfb, fulcrumInsertedPose1);
 	path2.push_back(fulcrumInsertedPose1);
 	traj1.executeCartesianPath(path2, "insertion movement");
+
+	// Start measuring time duration of the trajectory generation
+	auto traj_time_begin = high_resolution_clock::now();
 
 	Eigen::Vector3f start, end;
 	// Initialize vector with known values https://eigen.tuxfamily.org/dox/group__TutorialAdvancedInitialization.html
@@ -174,6 +180,10 @@ int main(int argc, char** argv)
 		line_seg_waypoints2.push_back(new_pose);
 	}
 
+	auto traj_time_end = high_resolution_clock::now();;
+	auto traj_duration = duration_cast<microseconds>(traj_time_end - traj_time_begin);
+	ROS_INFO("Line segment trajectory generation calculated in %ld microseconds", traj_duration.count());
+
 	// Path to circle
 	std::vector<geometry_msgs::Pose> path3;
 	path3.push_back(fulcrumInsertedPose1);
@@ -184,6 +194,18 @@ int main(int argc, char** argv)
 
 	// traj1.executeCartesianPath(path3, "Path approaching line segment start");
 	traj1.executeCartesianPath(transformed_waypoints3, "Line Segment transformed Trajectory", true);
+
+	ros::Duration(1).sleep();
+
+	// Plan reverse execution of trajectory
+	// reverse the trajectory array
+	reverse(transformed_waypoints3.begin(), transformed_waypoints3.end());
+	// Erase first waypoint (bacuase robot is already there) so that the error:
+	// "Trajectory message contains waypoints that are not strictly increasing in time." is fixed
+	transformed_waypoints3.erase(transformed_waypoints3.begin());
+	traj1.executeCartesianPath(transformed_waypoints3, "Reverse Line Segment transformed Trajectory", false);
+
+	ros::Duration(0.5).sleep();
 
 	ros::shutdown();
 	return 0;
