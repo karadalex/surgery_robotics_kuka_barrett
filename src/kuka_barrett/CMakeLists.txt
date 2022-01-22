@@ -271,6 +271,6 @@ target_link_libraries(simple_circular_traj ${catkin_LIBRARIES})
 
 
 # ACTION SERVERS
+
 add_executable(GoToHomePositionAS src/actions/GoToHomePositionAS.cpp)
 target_link_libraries(GoToHomePositionAS ${catkin_LIBRARIES})
-add_dependencies(GoToHomePositionAS ${actionlib_tutorials_EXPORTED_TARGETS})

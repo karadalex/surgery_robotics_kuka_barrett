@@ -1,6 +1,7 @@
 #include <ros/ros.h>
 #include <actionlib/server/simple_action_server.h>
 #include <kuka_barrett/GoToHomePositionAction.h>
+#include "kinematics/TrajectoryExecution.h"
 
 
 class GoToHomePositionAS {
@@ -13,6 +14,15 @@ protected:
   // create messages that are used to published feedback/result
   kuka_barrett::GoToHomePositionFeedback feedback_;
   kuka_barrett::GoToHomePositionResult result_;
+
+  const std::string PLANNING_GROUP = "iiwa_arm";
+  double pos_tolerance = 0.000005;
+  double orient_tolerance = 0.000005;
+  int plan_time_sec = 5;
+  bool replanning = true;
+  int plan_attempts = 6;
+  const string base_frame = "world";
+  const string plannerId = "RRTConnect";
 
 public:
 
@@ -32,6 +42,8 @@ public:
 
     // start executing the action
     ROS_INFO("Executing GoToHomePosition action");
+    TrajectoryExecution traj = TrajectoryExecution(PLANNING_GROUP, pos_tolerance, orient_tolerance, plan_time_sec, replanning, plan_attempts, base_frame, nh_, plannerId);
+    traj.moveToTarget(getPoseFromPathPoint({0, 0, 2.26, 0, 0, 0}));
 
     // publish the feedback
     feedback_.percent_complete = 100.0f;
