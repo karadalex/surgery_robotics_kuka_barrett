@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<robot name="surgical_tool">
+
+  <link name="link3_L">
+    <visual>
+      <geometry>
+        <mesh filename="package://surgical_tools_description/meshes/link3.dae" />
+      </geometry>
+      <origin rpy="1.9385216811679049 -0.64486672178728399 1.5704503011280697" xyz="0 0 0" />
+    </visual>
+    <inertial>
+      <mass value="1e-5" />
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+    <kinematic>0</kinematic>    
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://surgical_tools_description/meshes/link3.dae"/>
+      </geometry>
+      <material name="red"/>
+    </collision>
+  </link>
+  <gazebo reference="link3_L">
+    <material>Gazebo/Blue</material>
+  </gazebo>
+
+  <joint name="tool_roll_L" type="revolute">
+    <axis xyz="0 0 -1" />
+    <limit effort="1000.0" lower="-3.1415" upper="3.1415" velocity="0.5" />
+    <origin rpy="0 0 -3.141592653589793" xyz="0 0 0" />
+    <parent link="link3_L" />
+    <child link="instrument_shaft_L" />
+  </joint>
+
+  <link name="instrument_shaft_L">
+    <visual>
+      <geometry>
+        <mesh filename="package://surgical_tools_description/meshes/instrument_shaft.dae" />
+      </geometry>
+      <origin rpy="1.93852578511 -0.644866720652 -0.7857441885125518" xyz="0.0 0.0 0.0" />
+    </visual>
+    <inertial>
+      <mass value="1e-5" />
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+    <kinematic>0</kinematic>    
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://surgical_tools_description/meshes/instrument_shaft.dae"/>
+      </geometry>
+      <material name="red"/>
+    </collision>
+  </link>
+  <gazebo reference="instrument_shaft_L">
+    <material>Gazebo/Blue</material>
+  </gazebo>
+
+  <joint name="wrist_joint_L" type="revolute">
+    <axis xyz="0 0 -1" />
+    <limit effort="1000.0" lower="-2" upper="2" velocity="0.5" />
+    <origin rpy="1.5707963267948966 -1.5707963267948966 1.5707963267948966" xyz="0 0 0" />
+    <parent link="instrument_shaft_L" />
+    <child link="wrist_L" />
+  </joint>
+
+  <link name="wrist_L">
+    <visual>
+      <geometry>
+        <mesh filename="package://surgical_tools_description/meshes/wrist.dae" />
+      </geometry>
+      <origin rpy="0.90864182988948561 0.60032410882593512 -0.75472267005191318" xyz="0 0 0" />
+    </visual>
+    <inertial>
+      <mass value="1e-5" />
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+    <kinematic>0</kinematic>    
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://surgical_tools_description/meshes/wrist.dae"/>
+      </geometry>
+      <material name="red"/>
+    </collision>
+  </link>
+  <gazebo reference="wrist_L">
+    <material>Gazebo/Blue</material>
+  </gazebo>
+
+  <joint name="grasper_joint_1_L" type="revolute">
+    <axis xyz="0 0 -1" />
+    <limit effort="1000.0" lower="-2" upper="2" velocity=".5" />
+    <origin rpy="-1.5707963267948966 0 0" xyz="0.012 0 0" />
+    <parent link="wrist_L" />
+    <child link="grasper1_L" />
+  </joint>
+
+  <link name="grasper1_L">
+    <visual>
+      <geometry>
+        <mesh filename="package://surgical_tools_description/meshes/grasper_1.dae" />
+      </geometry>
+      <origin rpy="-0.17380227661240275 -0.60079813692467054 -0.75437730271855163" xyz="-0.0120 0 0" />
+    </visual>
+    <inertial>
+      <mass value="1e-5" />
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+    <kinematic>0</kinematic>    
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://surgical_tools_description/meshes/grasper_1.dae"/>
+      </geometry>
+      <material name="red"/>
+    </collision>
+  </link>
+  <gazebo reference="grasper1_L">
+    <material>Gazebo/Blue</material>
+  </gazebo>
+
+  <joint name="grasper_joint_2_L" type="revolute">
+    <axis xyz="0 0 1" />
+    <limit effort="1000.0" lower="-2" upper="2" velocity=".5" />
+    <origin rpy="-1.5707963267948966 0 0" xyz="0.012 0 0" />
+    <parent link="wrist_L" />
+    <child link="grasper2_L" />
+  </joint>
+
+  <link name="grasper2_L">
+    <visual>
+      <geometry>
+        <mesh filename="package://surgical_tools_description/meshes/grasper_2.dae" />
+      </geometry>
+      <origin rpy="-0.17380227661240275 -0.60079813692467054 -0.75437730271855163" xyz="-0.0120 0 0" />
+    </visual>
+    <inertial>
+      <mass value="1e-5" />
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+    <kinematic>0</kinematic>    
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://surgical_tools_description/meshes/grasper_2.dae"/>
+      </geometry>
+      <material name="red"/>
+    </collision>
+  </link>
+  <gazebo reference="grasper2_L">
+    <material>Gazebo/Blue</material>
+  </gazebo>
+
+  <joint name="grasper_yaw_L" type="revolute">
+    <axis xyz="0 0 1" />
+    <limit effort="1000.0" lower="-2" upper="2" velocity=".5" />
+    <origin rpy="-1.5707963267948966 0 0" xyz="0.012 0 0" />
+    <parent link="wrist_L" />
+    <child link="tool_base_L" />
+  </joint>
+
+  <link name="tool_base_L"></link>
+
+  <joint name="tool_base_to_tool_L" type="fixed">
+
+    <limit effort="1000.0" lower="0.0" upper="3.1415" velocity="0.5" />
+    <origin rpy="0 0 0" xyz="0.01 0 0" />
+    <parent link="tool_base_L" />
+    <child link="tool_L" />
+  </joint>
+
+  <link name="tool_L"></link>
+
+  <joint name="tool_base_to_tool_tip_L" type="fixed">
+
+    <limit effort="1000.0" lower="0.0" upper="3.1415" velocity="0.5" />
+    <origin rpy="0 0 0" xyz="0.02 0 0" />
+    <parent link="tool_base_L" />
+    <child link="tool_tip_L" />
+  </joint>
+
+  <link name="tool_tip_L"></link>
+
+  <joint name="grasper1_tip_L" type="fixed">
+
+    <limit effort="1000.0" lower="0.0" upper="3.1415" velocity="0.5" />
+    <origin rpy="0 0 0" xyz="0.02 0 0" />
+    <parent link="grasper1_L" />
+    <child link="grasper1_tip_L" />
+  </joint>
+
+  <link name="grasper1_tip_L"></link>
+
+  <joint name="grasper2_tip_L" type="fixed">
+
+    <limit effort="1000.0" lower="0.0" upper="3.1415" velocity="0.5" />
+    <origin rpy="0 0 0" xyz="0.02 0 0" />
+    <parent link="grasper2_L" />
+    <child link="grasper2_tip_L" />
+  </joint>
+
+  <link name="grasper2_tip_L"></link>
+
+
+</robot>
