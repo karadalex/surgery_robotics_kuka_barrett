@@ -60,14 +60,26 @@ class ToolHomePosition(smach.State):
         smach.State.__init__(self, outcomes=[failed, success, abort])
         self.counter = 0
 
+    def action_client(self):
+        # Creates the SimpleActionClient, passing the type of the action to the constructor.
+        client = actionlib.SimpleActionClient('GoToToolHomePosition', GoToToolHomePositionAction)
+        rospy.loginfo("Waiting for GoToToolHomePositionAction server")
+        client.wait_for_server()
+        goal = GoToToolHomePositionGoal(goal=0)
+        client.send_goal(goal)
+        rospy.loginfo("Waiting for GoToToolHomePositionAction result")
+        client.wait_for_result()
+        response = client.get_result()
+        return response.result
+
     def execute(self, userdata):
         rospy.loginfo('Executing state %s', TOOL_HOME_POSITION)
-        time.sleep(2)
-        if self.counter < 3:
-            self.counter += 1
-            return failed
-        else:
+        result = self.action_client()
+        rospy.loginfo('GoToToolHomePositionAction result was %s', result)
+        if result == 1:
             return success
+        else:
+            return failed
 
 
 class ToolTableScanning(smach.State):
