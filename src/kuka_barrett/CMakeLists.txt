@@ -75,14 +75,15 @@ include_directories(${Eigen3_INCLUDE_DIRS})
 # )
 
 ## Generate actions in the 'action' folder
-# add_action_files(
-#   FILES
-# )
+add_action_files(
+  DIRECTORY action
+  FILES GoToHomePosition.action
+)
 
 ## Generate added messages and services with any dependencies listed here
  generate_messages(
    DEPENDENCIES
-   actionlib_msgs
+   actionlib_msgs std_msgs
  )
 
 ################################################
@@ -117,7 +118,7 @@ include_directories(${Eigen3_INCLUDE_DIRS})
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES kuka_barrett
-  CATKIN_DEPENDS roscpp kinematics trajectory
+  CATKIN_DEPENDS roscpp kinematics trajectory actionlib_msgs
 #  DEPENDS system_lib
 )
 
@@ -267,3 +268,9 @@ target_link_libraries(scene_objects2 ${catkin_LIBRARIES})
 
 add_executable(simple_circular_traj src/simple_circular_traj.cpp)
 target_link_libraries(simple_circular_traj ${catkin_LIBRARIES})
+
+
+# ACTION SERVERS
+add_executable(GoToHomePositionAS src/actions/GoToHomePositionAS.cpp)
+target_link_libraries(GoToHomePositionAS ${catkin_LIBRARIES})
+add_dependencies(GoToHomePositionAS ${actionlib_tutorials_EXPORTED_TARGETS})
