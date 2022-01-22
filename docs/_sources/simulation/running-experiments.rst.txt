@@ -157,3 +157,11 @@ to inspect the nodes and topics of this experiment run the following ROS package
 .. code-block:: bash
 
   rosrun rqt_graph rqt_graph
+
+
+Spawn Surgical tool URDF
+------------------------
+
+.. code-block:: bash
+
+  rosrun gazebo_ros spawn_model -file $(rospack find surgical_tools_description)/urdf/surgical_tool.urdf -urdf -x 1.0 -y 1.0 -z 1.2 -model surgical_tool_test

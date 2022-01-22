@@ -121,6 +121,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#robot-planner-4-simple-cube-pick-and-place-experiment">Robot Planner 4: Simple cube pick-and-place experiment</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#robot-planner-5-visual-servoing">Robot Planner 5: Visual servoing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#robot-planner-6-rcm-alignment-error-in-insertion-and-retraction">Robot Planner 6: RCM alignment error in insertion and retraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#spawn-surgical-tool-urdf">Spawn Surgical tool URDF</a></li>
 </ul>
 </li>
 </ul>
@@ -330,6 +331,12 @@ rosrun kuka_barrett robot_planner6
 </div>
 <p>to inspect the nodes and topics of this experiment run the following ROS package</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rosrun rqt_graph rqt_graph
+</pre></div>
+</div>
+</div>
+<div class="section" id="spawn-surgical-tool-urdf">
+<h2>Spawn Surgical tool URDF<a class="headerlink" href="#spawn-surgical-tool-urdf" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rosrun gazebo_ros spawn_model -file <span class="k">$(</span>rospack find surgical_tools_description<span class="k">)</span>/urdf/surgical_tool.urdf -urdf -x <span class="m">1</span>.0 -y <span class="m">1</span>.0 -z <span class="m">1</span>.2 -model surgical_tool_test
 </pre></div>
 </div>
 </div>
