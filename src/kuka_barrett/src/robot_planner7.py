@@ -137,16 +137,27 @@ class ToolPicking(smach.State):
 class ToolPlacing(smach.State):
     def __init__(self):
         smach.State.__init__(self, outcomes=[failed, success, abort])
-        self.counter = 0
+    
+    def action_client(self):
+        # Creates the SimpleActionClient, passing the type of the action to the constructor.
+        client = actionlib.SimpleActionClient('PlaceSurgicalTool', PlaceSurgicalToolAction)
+        rospy.loginfo("Waiting for PlaceSurgicalToolAction server")
+        client.wait_for_server()
+        goal = PlaceSurgicalToolGoal(trocar_id=2)
+        client.send_goal(goal)
+        rospy.loginfo("Waiting for PlaceSurgicalToolAction result")
+        client.wait_for_result()
+        response = client.get_result()
+        return response.result
 
     def execute(self, userdata):
         rospy.loginfo('Executing state %s', TOOL_PLACING)
-        time.sleep(2)
-        if self.counter < 3:
-            self.counter += 1
-            return failed
-        else:
+        result = self.action_client()
+        rospy.loginfo('PlaceSurgicalToolAction result was %s', result)
+        if result == 1:
             return success
+        else:
+            return failed
 
 
 class PivotMotionPlanning(smach.State):

@@ -1,6 +1,5 @@
 # Define the goal
-float32 z_offset
-uint32 tool # which tool to pick
+uint32 trocar_id # which trocar to place the tool into
 ---
 # Define the result
 uint32 result
