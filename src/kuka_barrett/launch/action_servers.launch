@@ -4,4 +4,5 @@
   <node name="ScanToolTableVisualServoAS" pkg="kuka_barrett" type="ScanToolTableVisualServoAS"/>
   <node name="PickSurgicalToolAS" pkg="kuka_barrett" type="PickSurgicalToolAS"/>
   <node name="PlaceSurgicalToolAS" pkg="kuka_barrett" type="PlaceSurgicalToolAS"/>
+  <node name="ExecutePivotMotionAS" pkg="kuka_barrett" type="ExecutePivotMotionAS"/>
 </launch>

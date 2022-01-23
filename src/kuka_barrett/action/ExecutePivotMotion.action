@@ -1,0 +1,13 @@
+# Define the goal
+uint32 trocar_id # which trocar the tool is inserted into
+# which trajectory to execute
+# 1: line segment
+# 2: circle
+uint32 trajectory_type
+float32[] trajectory_parameters # TODO
+---
+# Define the result
+uint32 result
+---
+# Define a feedback message
+float32 percent_complete

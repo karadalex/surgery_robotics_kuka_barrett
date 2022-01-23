@@ -83,6 +83,7 @@ add_action_files(
   ScanToolTableVisualServo.action 
   PickSurgicalTool.action
   PlaceSurgicalTool.action
+  ExecutePivotMotion.action
 )
 
 ## Generate added messages and services with any dependencies listed here
@@ -291,3 +292,6 @@ target_link_libraries(PickSurgicalToolAS ${catkin_LIBRARIES})
 
 add_executable(PlaceSurgicalToolAS src/actions/PlaceSurgicalToolAS.cpp)
 target_link_libraries(PlaceSurgicalToolAS ${catkin_LIBRARIES})
+
+add_executable(ExecutePivotMotionAS src/actions/ExecutePivotMotionAS.cpp)
+target_link_libraries(ExecutePivotMotionAS ${catkin_LIBRARIES})

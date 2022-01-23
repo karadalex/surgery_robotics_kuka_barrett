@@ -163,16 +163,27 @@ class ToolPlacing(smach.State):
 class PivotMotionPlanning(smach.State):
     def __init__(self):
         smach.State.__init__(self, outcomes=[failed, success, abort])
-        self.counter = 0
+    
+    def action_client(self):
+        # Creates the SimpleActionClient, passing the type of the action to the constructor.
+        client = actionlib.SimpleActionClient('ExecutePivotMotion', ExecutePivotMotionAction)
+        rospy.loginfo("Waiting for ExecutePivotMotionAction server")
+        client.wait_for_server()
+        goal = ExecutePivotMotionGoal(trocar_id=2, trajectory_type=1, trajectory_parameters=[])
+        client.send_goal(goal)
+        rospy.loginfo("Waiting for ExecutePivotMotionAction result")
+        client.wait_for_result()
+        response = client.get_result()
+        return response.result
 
     def execute(self, userdata):
         rospy.loginfo('Executing state %s', PIVOT_MOTION_PLANNING)
-        time.sleep(2)
-        if self.counter < 3:
-            self.counter += 1
-            return failed
-        else:
+        result = self.action_client()
+        rospy.loginfo('ExecutePivotMotionAction result was %s', result)
+        if result == 1:
             return success
+        else:
+            return failed
 
 
 class ToolRemoval(smach.State):
