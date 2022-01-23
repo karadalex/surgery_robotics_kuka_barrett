@@ -90,7 +90,7 @@ class ToolTableScanning(smach.State):
         client = actionlib.SimpleActionClient('ScanToolTableVisualServo', ScanToolTableVisualServoAction)
         rospy.loginfo("Waiting for ScanToolTableVisualServoAction server")
         client.wait_for_server()
-        goal = ScanToolTableVisualServoGoal(tool_error_threshold=0.005)
+        goal = ScanToolTableVisualServoGoal(tool_error_threshold=0.001)
         client.send_goal(goal)
         rospy.loginfo("Waiting for ScanToolTableVisualServoAction result")
         client.wait_for_result()
@@ -110,16 +110,28 @@ class ToolTableScanning(smach.State):
 class ToolPicking(smach.State):
     def __init__(self):
         smach.State.__init__(self, outcomes=[failed, success, max_retries, abort])
-        self.counter = 0
+    
+    def action_client(self):
+        # Creates the SimpleActionClient, passing the type of the action to the constructor.
+        client = actionlib.SimpleActionClient('PickSurgicalTool', PickSurgicalToolAction)
+        rospy.loginfo("Waiting for PickSurgicalToolAction server")
+        client.wait_for_server()
+        # goal = PickSurgicalToolGoal(z_offset=0.31)
+        goal = PickSurgicalToolGoal(z_offset=0.21)
+        client.send_goal(goal)
+        rospy.loginfo("Waiting for PickSurgicalToolAction result")
+        client.wait_for_result()
+        response = client.get_result()
+        return response.result
 
     def execute(self, userdata):
         rospy.loginfo('Executing state %s', TOOL_PICKING)
-        time.sleep(2)
-        if self.counter < 3:
-            self.counter += 1
-            return failed
-        else:
+        result = self.action_client()
+        rospy.loginfo('PickSurgicalToolAction result was %s', result)
+        if result == 1:
             return success
+        else:
+            return failed
 
 
 class ToolPlacing(smach.State):

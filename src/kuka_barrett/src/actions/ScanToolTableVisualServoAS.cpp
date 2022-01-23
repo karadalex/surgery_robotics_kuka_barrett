@@ -50,7 +50,7 @@ public:
     tool_error_threshold = goal->tool_error_threshold;
     float error = 100.0;
     TrajectoryExecution traj = TrajectoryExecution(PLANNING_GROUP, pos_tolerance, orient_tolerance, plan_time_sec, replanning, plan_attempts, base_frame, nh_, plannerId);
-    // STart path from tool homeposition (from GoToToolHomePositionAS action server)
+    // Start path from tool homeposition (from GoToToolHomePositionAS action server)
     path.push_back({0.209815, -0.770712, 1.363938, M_PI, 0, -M_PI_2});
 
      // start executing the action
@@ -72,7 +72,9 @@ public:
 			current_pose[4] += vel.angular.y;
 			current_pose[5] += vel.angular.z;
       std::cout << vel.linear.x << "," << vel.linear.y << std::endl;
-			traj.moveToTarget(getPoseFromPathPoint(current_pose));
+      vector<geometry_msgs::Pose> local_path;
+      local_path.push_back(getPoseFromPathPoint(current_pose));
+			traj.executeCartesianPath(local_path, "visual servoing");
 
 			if (path.size() > 100) {
 				// If path has more than 100 states stored in it, then do some cleanup to free up some memory
