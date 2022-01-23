@@ -43,7 +43,7 @@ public:
     // start executing the action
     ROS_INFO("Executing GoToToolHomePosition action");
     TrajectoryExecution traj = TrajectoryExecution(PLANNING_GROUP, pos_tolerance, orient_tolerance, plan_time_sec, replanning, plan_attempts, base_frame, nh_, plannerId);
-    traj.moveToTarget(getPoseFromPathPoint({0.2, -0.5, 1.3, M_PI, 0, -M_PI_2}));
+    traj.moveToTarget(getPoseFromPathPoint({0.209815, -0.770712, 1.363938, M_PI, 0, -M_PI_2}));
 
     // publish the feedback
     feedback_.percent_complete = 100.0f;

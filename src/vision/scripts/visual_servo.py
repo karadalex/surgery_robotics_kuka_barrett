@@ -405,8 +405,8 @@ class Detection:
 
 
 def main(args):
-  ic = Detection()
   rospy.init_node('opencv_image_view', anonymous=True)
+  ic = Detection()
   try:
     rospy.spin()
   except KeyboardInterrupt:

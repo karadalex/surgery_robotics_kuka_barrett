@@ -58,7 +58,6 @@ class HomePosition(smach.State):
 class ToolHomePosition(smach.State):
     def __init__(self):
         smach.State.__init__(self, outcomes=[failed, success, abort])
-        self.counter = 0
 
     def action_client(self):
         # Creates the SimpleActionClient, passing the type of the action to the constructor.
@@ -85,16 +84,27 @@ class ToolHomePosition(smach.State):
 class ToolTableScanning(smach.State):
     def __init__(self):
         smach.State.__init__(self, outcomes=[tool_not_found, tool_found, abort])
-        self.counter = 0
+
+    def action_client(self):
+        # Creates the SimpleActionClient, passing the type of the action to the constructor.
+        client = actionlib.SimpleActionClient('ScanToolTableVisualServo', ScanToolTableVisualServoAction)
+        rospy.loginfo("Waiting for ScanToolTableVisualServoAction server")
+        client.wait_for_server()
+        goal = ScanToolTableVisualServoGoal(tool_error_threshold=0.005)
+        client.send_goal(goal)
+        rospy.loginfo("Waiting for ScanToolTableVisualServoAction result")
+        client.wait_for_result()
+        response = client.get_result()
+        return response.result
 
     def execute(self, userdata):
         rospy.loginfo('Executing state %s', TOOL_TABLE_SCANNING)
-        time.sleep(2)
-        if self.counter < 3:
-            self.counter += 1
-            return tool_not_found
-        else:
+        result = self.action_client()
+        rospy.loginfo('GoToToolHomePositionAction result was %s', result)
+        if result == 1:
             return tool_found
+        else:
+            return tool_not_found
 
 
 class ToolPicking(smach.State):

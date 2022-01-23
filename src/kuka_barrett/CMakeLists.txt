@@ -77,7 +77,7 @@ include_directories(${Eigen3_INCLUDE_DIRS})
 ## Generate actions in the 'action' folder
 add_action_files(
   DIRECTORY action
-  FILES GoToHomePosition.action GoToToolHomePosition.action
+  FILES GoToHomePosition.action GoToToolHomePosition.action ScanToolTableVisualServo.action
 )
 
 ## Generate added messages and services with any dependencies listed here
@@ -277,3 +277,6 @@ target_link_libraries(GoToHomePositionAS ${catkin_LIBRARIES})
 
 add_executable(GoToToolHomePositionAS src/actions/GoToToolHomePositionAS.cpp)
 target_link_libraries(GoToToolHomePositionAS ${catkin_LIBRARIES})
+
+add_executable(ScanToolTableVisualServoAS src/actions/ScanToolTableVisualServoAS.cpp)
+target_link_libraries(ScanToolTableVisualServoAS ${catkin_LIBRARIES})
