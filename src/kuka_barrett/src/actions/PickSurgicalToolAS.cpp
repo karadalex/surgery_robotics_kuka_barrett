@@ -18,8 +18,9 @@ void closedGripper(trajectory_msgs::JointTrajectory& posture)
 	/* Set them as closed. */
 	posture.points.resize(1);
 	posture.points[0].positions.resize(8);
-	for (int j = 0; j < posture.joint_names.size(); ++j)
-		posture.points[0].positions[j] = 0.7;
+  posture.points[0].positions = {0, 1.4, 1.0, 0, 1.4, 1.0, 1.4, 1.0};
+	// for (int j = 0; j < posture.joint_names.size(); ++j)
+	// 	posture.points[0].positions[j] = 0.7;
 	posture.points[0].time_from_start = ros::Duration(0.5);
 }
 class PickSurgicalToolAS {

@@ -9,7 +9,7 @@ rostopic pub --once /gripper_controller/command trajectory_msgs/JointTrajectory 
   frame_id: ''
 joint_names: ['bh_j11_joint', 'bh_j12_joint', 'bh_j13_joint', 'bh_j21_joint', 'bh_j22_joint', 'bh_j23_joint', 'bh_j32_joint', 'bh_j33_joint']
 points:
-- positions: [0,1.24,0.46,0,1.24,0.46,1.24,0.46]
+- positions: [0,1.4,1.0,0,1.4,1.0,1.4,1.0]
   velocities: []
   accelerations: []
   effort: []

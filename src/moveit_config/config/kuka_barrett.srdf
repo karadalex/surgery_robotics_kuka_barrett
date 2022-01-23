@@ -284,4 +284,14 @@
     <disable_collisions link1="iiwa_link_5" link2="iiwa_link_6" reason="Adjacent" />
     <disable_collisions link1="iiwa_link_5" link2="iiwa_link_7" reason="Never" />
     <disable_collisions link1="iiwa_link_6" link2="iiwa_link_7" reason="Adjacent" />
+    <disable_collisions link1="bh_base_link" link2="surgical_tool_link" reason="Adjacent" />
+    <disable_collisions link1="bh_finger_11_link" link2="surgical_tool_link" reason="Adjacent" />
+    <disable_collisions link1="bh_finger_12_link" link2="surgical_tool_link" reason="Adjacent" />
+    <disable_collisions link1="bh_finger_13_link" link2="surgical_tool_link" reason="Adjacent" />
+    <disable_collisions link1="bh_finger_21_link" link2="surgical_tool_link" reason="Adjacent" />
+    <disable_collisions link1="bh_finger_22_link" link2="surgical_tool_link" reason="Adjacent" />
+    <disable_collisions link1="bh_finger_23_link" link2="surgical_tool_link" reason="Adjacent" />
+    <disable_collisions link1="bh_finger_31_link" link2="surgical_tool_link" reason="Adjacent" />
+    <disable_collisions link1="bh_finger_32_link" link2="surgical_tool_link" reason="Adjacent" />
+    <disable_collisions link1="bh_finger_33_link" link2="surgical_tool_link" reason="Adjacent" />
 </robot>
