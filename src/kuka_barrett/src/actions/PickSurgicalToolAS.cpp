@@ -2,8 +2,26 @@
 #include <actionlib/server/simple_action_server.h>
 #include <kuka_barrett/PickSurgicalToolAction.h>
 #include "kinematics/TrajectoryExecution.h"
+#include <trajectory_msgs/JointTrajectory.h>
 
 
+void closedGripper(trajectory_msgs::JointTrajectory& posture)
+{
+	/* Add both finger joints of panda robot. */
+	posture.joint_names.resize(8);
+	posture.joint_names = {
+					"bh_j11_joint", "bh_j12_joint", "bh_j13_joint",
+					"bh_j21_joint", "bh_j22_joint", "bh_j23_joint",
+					"bh_j32_joint", "bh_j33_joint"
+	};
+
+	/* Set them as closed. */
+	posture.points.resize(1);
+	posture.points[0].positions.resize(8);
+	for (int j = 0; j < posture.joint_names.size(); ++j)
+		posture.points[0].positions[j] = 0.7;
+	posture.points[0].time_from_start = ros::Duration(0.5);
+}
 class PickSurgicalToolAS {
 
 protected:
@@ -16,6 +34,7 @@ protected:
   kuka_barrett::PickSurgicalToolResult result_;
 
   const std::string PLANNING_GROUP = "iiwa_arm";
+	const std::string GRIPPER_PLANNING_GROUP = "barrett_group";
   double pos_tolerance = 0.000005;
   double orient_tolerance = 0.000005;
   int plan_time_sec = 5;
@@ -24,6 +43,13 @@ protected:
   const string base_frame = "world";
   const string plannerId = "RRTConnect";
 
+	vector<string> gripper_joints = {
+		"bh_j11_joint", "bh_j12_joint", "bh_j13_joint",
+		"bh_j21_joint", "bh_j22_joint", "bh_j23_joint",
+		"bh_j32_joint", "bh_j33_joint"
+	};
+	ros::Publisher barrett_publisher;
+
 public:
 
   PickSurgicalToolAS(std::string name) :
@@ -31,6 +57,7 @@ public:
     action_name_(name)
   {
     as_.start();
+		barrett_publisher = nh_.advertise<trajectory_msgs::JointTrajectory>("/gripper_controller/command", 10);
   }
 
   ~PickSurgicalToolAS(void) {}
@@ -47,6 +74,11 @@ public:
     path.push_back(getPoseFromPathPoint({0.02, -0.48, 1.35, M_PI, 0, -M_PI_2}));
     path.push_back(getPoseFromPathPoint({0.02, -0.48, 1.20, M_PI, 0, -M_PI_2}));
     traj.executeCartesianPath(path, "picking pipeline", false);
+
+    // Plan to close the gripper
+		trajectory_msgs::JointTrajectory grasp;
+		closedGripper(grasp);
+		barrett_publisher.publish(grasp);
 
     // publish the feedback
     feedback_.percent_complete = 100.0f;

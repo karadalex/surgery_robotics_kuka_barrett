@@ -2,4 +2,5 @@
   <node name="GoToHomePositionAS" pkg="kuka_barrett" type="GoToHomePositionAS"/>
   <node name="GoToToolHomePositionAS" pkg="kuka_barrett" type="GoToToolHomePositionAS"/>
   <node name="ScanToolTableVisualServoAS" pkg="kuka_barrett" type="ScanToolTableVisualServoAS"/>
+  <node name="PickSurgicalToolAS" pkg="kuka_barrett" type="PickSurgicalToolAS"/>
 </launch>
