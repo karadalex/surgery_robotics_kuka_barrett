@@ -29,7 +29,8 @@
     
     <!-- Actual robot joint states -->
     <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
-        <param name="/use_gui" value="true"/>
+        <!-- Do not use joint_state_publisher gui because it adds noise in the joint states (falls behind actual values) and affects (adds noise) when calculating rcm error. -->
+        <param name="/use_gui" value="false"/>
         <rosparam param="/source_list">[/joint_states]</rosparam>
     </node>
 
