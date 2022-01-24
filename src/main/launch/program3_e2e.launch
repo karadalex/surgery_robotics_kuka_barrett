@@ -1,0 +1,13 @@
+<launch>
+  <!-- Program 3 default launchfile -->
+  <include file="$(find main)/launch/program3.launch" />
+
+  <!-- Action servers & Smach -->
+  <include file="$(find kuka_barrett)/launch/action_servers.launch" />
+  <node name="smach_viewer" pkg="smach_viewer" type="smach_viewer.py"/>
+
+  <!-- Other tools -->
+  <node name="opencv_image_view" pkg="vision" type="visual_servo.py"/>
+  <node name="fulcrum_state_node" pkg="taskspace" type="fulcrum_state_node"/>
+  <node name="rqt_plot" pkg="rqt_plot" type="rqt_plot" args="/fulcrum/error"/>
+</launch>

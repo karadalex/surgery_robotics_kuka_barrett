@@ -73,7 +73,7 @@ public:
     ROS_INFO("Executing PickSurgicalTool action");
     TrajectoryExecution traj = TrajectoryExecution(PLANNING_GROUP, pos_tolerance, orient_tolerance, plan_time_sec, replanning, plan_attempts, base_frame, nh_, plannerId);
     path.push_back(getPoseFromPathPoint({0.02, -0.48, 1.35, M_PI, 0, -M_PI_2}));
-    path.push_back(getPoseFromPathPoint({0.02, -0.48, 1.20, M_PI, 0, -M_PI_2}));
+    path.push_back(getPoseFromPathPoint({0.02, -0.48, 1.25, M_PI, 0, -M_PI_2}));
     traj.executeCartesianPath(path, "picking pipeline", false);
 
     // Plan to close the gripper

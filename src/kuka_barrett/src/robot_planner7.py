@@ -117,7 +117,7 @@ class ToolPicking(smach.State):
         rospy.loginfo("Waiting for PickSurgicalToolAction server")
         client.wait_for_server()
         # goal = PickSurgicalToolGoal(z_offset=0.31)
-        goal = PickSurgicalToolGoal(z_offset=0.21)
+        goal = PickSurgicalToolGoal(z_offset=0.18)
         client.send_goal(goal)
         rospy.loginfo("Waiting for PickSurgicalToolAction result")
         client.wait_for_result()
