@@ -76,8 +76,8 @@ void jointStateCallback(const sensor_msgs::JointState &msg) {
 
 		// Show calculated line in rviz, uncomment for debugging
 		// TODO: Instead of comment toggling enable/disable with topic or a parameter
-		visual_tools.publishLine(a, b);
-		visual_tools.trigger();
+		// visual_tools.publishLine(a, b);
+		// visual_tools.trigger();
 
 		Line3 ab = Line3::Through(a, b);
 		float xy_dist_error = ab.absDistance(f2);
