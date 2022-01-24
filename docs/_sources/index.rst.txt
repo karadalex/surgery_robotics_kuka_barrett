@@ -6,6 +6,14 @@
 Surgery Robotics with KUKA iiwa and Barrett hand's documentation!
 =================================================================
 
+.. raw:: html
+   
+   <iframe width="690" height="400" src="https://www.youtube.com/embed/lfV1vdHf7bk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+   <iframe width="690" height="400" src="https://www.youtube.com/embed/WFdqNZDU4lE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+
+
+
 .. toctree::
    :maxdepth: 2
    :caption: Getting Started
