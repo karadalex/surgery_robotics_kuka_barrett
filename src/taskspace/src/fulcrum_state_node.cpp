@@ -10,11 +10,13 @@
 #include <moveit/robot_state/robot_state.h>
 #include <moveit_visual_tools/moveit_visual_tools.h>
 #include <vector>
+#include <string>
 #include <std_msgs/Float64.h>
 #include <geometry_msgs/PoseWithCovarianceStamped.h>
 
 
 using namespace Eigen;
+using namespace std;
 
 typedef geometry_msgs::PoseWithCovarianceStamped covPose;
 
@@ -36,12 +38,20 @@ void jointStateCallback(const sensor_msgs::JointState &msg) {
 	moveit_visual_tools::MoveItVisualTools visual_tools = moveit_visual_tools::MoveItVisualTools("world");
 
 	const double* all_joint_values = msg.position.data();
-	// Joint names are the following with the following order
+	const string* all_joint_names = msg.name.data();
+	// Joint names are the following but may not be with the following order
+	// so it's important not to mix the gripper joints with the arm joints that are the ones
+	// needed in this node:
 	// name: [bh_j11_joint, bh_j12_joint, bh_j13_joint, bh_j21_joint, bh_j22_joint, bh_j23_joint,
 	//   bh_j32_joint, bh_j33_joint, iiwa_joint_1, iiwa_joint_2, iiwa_joint_3, iiwa_joint_4,
 	//   iiwa_joint_5, iiwa_joint_6, iiwa_joint_7]
-	for (int i = 8; i < 15; i++) {
-		joint_values.at(i-8) = all_joint_values[i];
+	for (int i = 0; i < 15; i++) {
+		string joint_name = all_joint_names[i];
+		if (joint_name.substr(0, 4) == "iiwa") {
+			char joint_ind_chr = joint_name[joint_name.size() - 1];
+			int joint_ind = atoi(&joint_ind_chr) - 1;
+			joint_values.at(joint_ind) = all_joint_values[i];
+		}
 	}
 
 	robot_state::RobotStatePtr kinematic_state(new robot_state::RobotState(kinematic_model));
@@ -66,8 +76,8 @@ void jointStateCallback(const sensor_msgs::JointState &msg) {
 
 		// Show calculated line in rviz, uncomment for debugging
 		// TODO: Instead of comment toggling enable/disable with topic or a parameter
-		// visual_tools.publishLine(a, b);
-		// visual_tools.trigger();
+		visual_tools.publishLine(a, b);
+		visual_tools.trigger();
 
 		Line3 ab = Line3::Through(a, b);
 		float xy_dist_error = ab.absDistance(f2);
