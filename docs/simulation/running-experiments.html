@@ -121,6 +121,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#robot-planner-4-simple-cube-pick-and-place-experiment">Robot Planner 4: Simple cube pick-and-place experiment</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#robot-planner-5-visual-servoing">Robot Planner 5: Visual servoing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#robot-planner-6-rcm-alignment-error-in-insertion-and-retraction">Robot Planner 6: RCM alignment error in insertion and retraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#end-to-end-simulation">End-to-end simulation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#spawn-surgical-tool-urdf">Spawn Surgical tool URDF</a></li>
 </ul>
 </li>
@@ -242,6 +243,7 @@ rosrun kuka_barrett robot_planner3a
 </div>
 <div class="section" id="b-line-segment-trajectories-in-task-space">
 <h3>3b: Line segment trajectories in task space<a class="headerlink" href="#b-line-segment-trajectories-in-task-space" title="Permalink to this headline">¶</a></h3>
+<img alt="../_images/3b_line_seg.png" src="../_images/3b_line_seg.png" />
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>roslaunch main program3.launch
 rosrun kuka_barrett robot_planner3b
 </pre></div>
@@ -331,6 +333,25 @@ rosrun kuka_barrett robot_planner6
 </div>
 <p>to inspect the nodes and topics of this experiment run the following ROS package</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rosrun rqt_graph rqt_graph
+</pre></div>
+</div>
+</div>
+<div class="section" id="end-to-end-simulation">
+<h2>End-to-end simulation<a class="headerlink" href="#end-to-end-simulation" title="Permalink to this headline">¶</a></h2>
+<iframe width="690" height="400" src="https://www.youtube.com/embed/lfV1vdHf7bk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><p>In separate terminals run the following commands</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>roslaunch main program3_e2e.launch
+rosrun vision visual_servo.py
+rosrun kuka_barrett robot_planner7.py
+</pre></div>
+</div>
+<p>or if you want more control over what to run, run the folloeing commands</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>roslaunch main program3.launch
+roslaunch kuka_barrett action_servers.launch
+rosrun vision visual_servo.py
+rosrun taskspace fulcrum_state_node
+rosrun smach_viewer smach_viewer.py
+rosrun rqt_plot rqt_plot /fulcrum/error
+rosrun kuka_barrett robot_planner7.py
 </pre></div>
 </div>
 </div>

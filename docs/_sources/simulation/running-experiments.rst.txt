@@ -42,6 +42,8 @@ Robot Planner 3: Trajectory planning
 3b: Line segment trajectories in task space
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+.. image:: ../images/3b_line_seg.png
+
 .. code-block:: bash
 
   roslaunch main program3.launch
@@ -157,6 +159,35 @@ to inspect the nodes and topics of this experiment run the following ROS package
 .. code-block:: bash
 
   rosrun rqt_graph rqt_graph
+
+
+End-to-end simulation
+------------------------
+
+.. raw:: html
+   
+  <iframe width="690" height="400" src="https://www.youtube.com/embed/lfV1vdHf7bk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+In separate terminals run the following commands
+
+.. code-block:: bash
+
+  roslaunch main program3_e2e.launch
+  rosrun vision visual_servo.py
+  rosrun kuka_barrett robot_planner7.py
+
+or if you want more control over what to run, run the folloeing commands
+
+.. code-block:: bash
+
+  roslaunch main program3.launch
+  roslaunch kuka_barrett action_servers.launch
+  rosrun vision visual_servo.py
+  rosrun taskspace fulcrum_state_node
+  rosrun smach_viewer smach_viewer.py
+  rosrun rqt_plot rqt_plot /fulcrum/error
+  rosrun kuka_barrett robot_planner7.py
+
 
 
 Spawn Surgical tool URDF
