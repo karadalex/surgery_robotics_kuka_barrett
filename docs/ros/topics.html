@@ -93,7 +93,11 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="nodes.html">Node Architecture</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tf.html">Transformations</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Topics</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Topics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#custom-topics">Custom Topics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#custom-topics-from-action-servers">Custom topics from action servers</a></li>
+</ul>
+</li>
 </ul>
 <p class="caption"><span class="caption-text">Kinematics</span></p>
 <ul>
@@ -189,6 +193,55 @@
             
   <div class="section" id="topics">
 <h1>Topics<a class="headerlink" href="#topics" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="custom-topics">
+<h2>Custom Topics<a class="headerlink" href="#custom-topics" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>/desired_robot_trajectory</p></li>
+<li><p>/desired_robot_trajectory_fwd</p></li>
+<li><p>/fulcrum/error</p></li>
+<li><p>/fulcrum/estimated/frame1</p></li>
+<li><p>/fulcrum/estimated/frame2</p></li>
+<li><p>/fulcrum/estimated/frame3</p></li>
+<li><p>/fulcrum/estimated/frame4</p></li>
+<li><p>/kinematic_state</p></li>
+<li><p>/opencv/test_topic_1</p></li>
+</ul>
+</div>
+<div class="section" id="custom-topics-from-action-servers">
+<h2>Custom topics from action servers<a class="headerlink" href="#custom-topics-from-action-servers" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>/ExecutePivotMotion/cancel</p></li>
+<li><p>/ExecutePivotMotion/feedback</p></li>
+<li><p>/ExecutePivotMotion/goal</p></li>
+<li><p>/ExecutePivotMotion/result</p></li>
+<li><p>/ExecutePivotMotion/status</p></li>
+<li><p>/GoToHomePosition/cancel</p></li>
+<li><p>/GoToHomePosition/feedback</p></li>
+<li><p>/GoToHomePosition/goal</p></li>
+<li><p>/GoToHomePosition/result</p></li>
+<li><p>/GoToHomePosition/status</p></li>
+<li><p>/GoToToolHomePosition/cancel</p></li>
+<li><p>/GoToToolHomePosition/feedback</p></li>
+<li><p>/GoToToolHomePosition/goal</p></li>
+<li><p>/GoToToolHomePosition/result</p></li>
+<li><p>/GoToToolHomePosition/status</p></li>
+<li><p>/PickSurgicalTool/cancel</p></li>
+<li><p>/PickSurgicalTool/feedback</p></li>
+<li><p>/PickSurgicalTool/goal</p></li>
+<li><p>/PickSurgicalTool/result</p></li>
+<li><p>/PickSurgicalTool/status</p></li>
+<li><p>/PlaceSurgicalTool/cancel</p></li>
+<li><p>/PlaceSurgicalTool/feedback</p></li>
+<li><p>/PlaceSurgicalTool/goal</p></li>
+<li><p>/PlaceSurgicalTool/result</p></li>
+<li><p>/PlaceSurgicalTool/status</p></li>
+<li><p>/ScanToolTableVisualServo/cancel</p></li>
+<li><p>/ScanToolTableVisualServo/feedback</p></li>
+<li><p>/ScanToolTableVisualServo/goal</p></li>
+<li><p>/ScanToolTableVisualServo/result</p></li>
+<li><p>/ScanToolTableVisualServo/status</p></li>
+</ul>
+</div>
 </div>
 
 
