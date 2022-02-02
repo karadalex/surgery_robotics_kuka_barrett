@@ -73,7 +73,15 @@ public:
     vector<vector<float>> preparation_path;
     // TCP pose around home position, such that the robot arm starts in an elbow-up configuration
     preparation_path.push_back({0.1, 0.087249, 1.8, 2.952052, 1.311528, -1.750799});
-    traj.moveToTarget(getPoseFromPathPoint(preparation_path.at(0)), "elbow-up start pose");
+    std::vector<geometry_msgs::Pose> path0;
+    path0.push_back(getPoseFromPathPoint({0.1, -0.36, 1.73, M_PI, 0, -M_PI_2}));
+    path0.push_back(getPoseFromPathPoint({0.1, -0.36, 1.73, -M_PI_2, M_PI_2, M_PI}));
+    path0.push_back(getPoseFromPathPoint({0.1, -0.36, 1.84, -M_PI, M_PI_2, -M_PI}));
+    path0.push_back(getPoseFromPathPoint({0.1, -0.1, 1.84, -M_PI, M_PI_2, -M_PI}));
+    path0.push_back(getPoseFromPathPoint({0.1, 0.15, 1.8, -M_PI, M_PI_2, -M_PI}));
+    path0.push_back(getPoseFromPathPoint(preparation_path.at(0)));
+    // traj.moveToTarget(getPoseFromPathPoint(preparation_path.at(0)), "elbow-up start pose");
+    traj.executeCartesianPath(path0, "elbow-up start pose");
 
     std::vector<geometry_msgs::Pose> path1;
     preparation_path.push_back({0.1, 0.087249, 1.953192, 2.952052, 1.311528, -1.750799});
